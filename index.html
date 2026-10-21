@@ -1,0 +1,1943 @@
+<!doctype html>
+<html lang="hr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Brainy</title>
+<meta name="description" content="Brainy – vježbaonica za 5. razred s Mozgićem.">
+<meta name="theme-color" content="#6A44F2">
+<link rel="manifest" href="/manifest.webmanifest">
+<link rel="icon" href="/icon-192.png" type="image/png">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Brainy">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;800&family=Nunito:wght@400;600;800&display=swap">
+<style>
+/* Layout: one centred column of cards; two chapter colours (Uvod = lapis, Prapovijest = earth) carry meaning throughout */
+:root {
+  --bg: #F4F1FF;
+  --bg2: #FFF3EA;
+  --card: #FFFFFF;
+  --ink: #1E1B3A;
+  --muted: #5E5A7A;
+  --line: #DDD8F0;
+  --accent: #6A44F2;
+  --accent-ink: #FFFFFF;
+  --gold: #C25A0A;
+  --gold-soft: #FFEEDD;
+  --hero1: #6A44F2;
+  --hero2: #C03FD0;
+  --sun: #FFCB3D;
+  --uvod: #2F4FA8;
+  --uvod-soft: #E2E8F8;
+  --pra: #8E5426;
+  --pra-soft: #F5E7DA;
+  --istok: #17766B;
+  --istok-soft: #DCF1EE;
+  --su: #7B3F9E;
+  --su-soft: #EFE3F6;
+  --f1: #1F6FB2;
+  --f1-soft: #DDEBF7;
+  --f2: #B32D6A;
+  --f2-soft: #F8E1EC;
+  --ok: #23824A;
+  --ok-soft: #DFF3E6;
+  --bad: #C0392F;
+  --bad-soft: #FBE3E1;
+  --warn: #B07A12;
+  --display: "Baloo 2", "Trebuchet MS", system-ui, sans-serif;
+  --body: "Nunito", "Segoe UI", system-ui, sans-serif;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #15132A; --bg2: #1C1426; --card: #211E3C; --ink: #EFEDFA; --muted: #ABA6C8; --line: #37325C;
+    --accent: #A890FF; --accent-ink: #15132A; --gold: #FFA45C; --gold-soft: #3D2616; --hero1: #4A2FC4; --hero2: #8A2A99; --sun: #FFCB3D;
+    --uvod: #8FA7F2; --uvod-soft: #1F2A4A; --pra: #E0A271; --pra-soft: #3A2718; --istok: #5FCDBD; --istok-soft: #15332F; --su: #CDA2EA; --su-soft: #33223F; --f1: #8CC2F0; --f1-soft: #172C40; --f2: #F296BF; --f2-soft: #3D1A2A;
+    --ok: #5CCF8B; --ok-soft: #173826; --bad: #FF8B80; --bad-soft: #401E1C; --warn: #E9B44C;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #15132A; --bg2: #1C1426; --card: #211E3C; --ink: #EFEDFA; --muted: #ABA6C8; --line: #37325C;
+  --accent: #A890FF; --accent-ink: #15132A; --gold: #FFA45C; --gold-soft: #3D2616; --hero1: #4A2FC4; --hero2: #8A2A99; --sun: #FFCB3D;
+  --uvod: #8FA7F2; --uvod-soft: #1F2A4A; --pra: #E0A271; --pra-soft: #3A2718; --istok: #5FCDBD; --istok-soft: #15332F; --su: #CDA2EA; --su-soft: #33223F; --f1: #8CC2F0; --f1-soft: #172C40; --f2: #F296BF; --f2-soft: #3D1A2A;
+  --ok: #5CCF8B; --ok-soft: #173826; --bad: #FF8B80; --bad-soft: #401E1C; --warn: #E9B44C;
+  color-scheme: dark;
+}
+* { box-sizing: border-box; }
+body {
+  background: linear-gradient(170deg, var(--bg) 0%, var(--bg2) 100%); background-color: var(--bg); color: var(--ink); min-height: 100vh;
+  font-family: var(--body); font-size: 18px; line-height: 1.5;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+  padding-block: 20px 48px;
+}
+main { max-width: 660px; margin: 0 auto; display: grid; gap: 16px; }
+h1, h2, h3 { font-family: var(--display); line-height: 1.15; margin: 0; text-wrap: balance; }
+h1 { font-size: clamp(2rem, 7vw, 2.6rem); font-weight: 800; }
+h2 { font-size: 1.45rem; font-weight: 800; }
+h3 { font-size: 1.15rem; font-weight: 800; }
+p { margin: 0; }
+.card {
+  background: var(--card); border-radius: 22px; padding: 20px;
+  box-shadow: 0 2px 0 var(--line), 0 10px 30px -20px rgba(29, 34, 50, .4);
+  display: grid; gap: 14px; min-width: 0;
+}
+.eyebrow { font-weight: 800; font-size: .78rem; letter-spacing: .1em; text-transform: uppercase; color: var(--muted); }
+.muted { color: var(--muted); }
+.small { font-size: .9rem; }
+button { font: inherit; cursor: pointer; color: inherit; }
+button:focus-visible, input:focus-visible, summary:focus-visible { outline: 3px solid var(--accent); outline-offset: 3px; }
+.btn {
+  border: 0; border-radius: 16px; padding: 12px 20px; min-height: 54px;
+  background: var(--accent); color: var(--accent-ink);
+  font-family: var(--display); font-weight: 800; font-size: 1.2rem;
+  box-shadow: 0 4px 0 color-mix(in srgb, var(--accent) 55%, #000);
+  transition: transform .08s;
+}
+.btn:active { transform: translateY(3px); box-shadow: 0 1px 0 color-mix(in srgb, var(--accent) 55%, #000); }
+.btn.ghost { background: transparent; color: var(--accent); box-shadow: inset 0 0 0 2px var(--accent); }
+.btn.gold { background: var(--gold); color: var(--accent-ink); box-shadow: 0 4px 0 color-mix(in srgb, var(--gold) 55%, #000); }
+.btn[disabled] { opacity: .45; cursor: default; }
+.row { display: flex; gap: 10px; flex-wrap: wrap; align-items: center; }
+.row > .btn { flex: 1 1 180px; }
+
+/* header stats */
+.stats { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; }
+.stat { background: var(--gold-soft); border-radius: 16px; padding: 10px 12px; display: grid; gap: 0; }
+.stat b { font-family: var(--display); font-size: 1.6rem; line-height: 1.1; color: var(--gold); font-variant-numeric: tabular-nums; }
+.stat span { font-size: .85rem; color: var(--ink); }
+
+/* chapters */
+.chapters { display: grid; gap: 10px; }
+.chap { border-radius: 16px; padding: 14px; display: grid; gap: 8px; border: 0; text-align: left; background: var(--uvod-soft); }
+.chap.pra { background: var(--pra-soft); }
+.chap.sel { box-shadow: inset 0 0 0 3px var(--uvod); }
+.chap.pra.sel { box-shadow: inset 0 0 0 3px var(--pra); }
+.chap.istok { background: var(--istok-soft); }
+.chap.istok.sel { box-shadow: inset 0 0 0 3px var(--istok); }
+.chap.istok h3 { color: var(--istok); }
+.tag.istok { background: var(--istok-soft); color: var(--istok); }
+.flash.istok { background: var(--istok-soft); }
+.chap-top { display: flex; justify-content: space-between; gap: 10px; align-items: baseline; flex-wrap: wrap; }
+.chap h3 { color: var(--uvod); }
+.chap.pra h3 { color: var(--pra); }
+.bar { height: 12px; background: color-mix(in srgb, var(--ink) 12%, transparent); border-radius: 99px; overflow: hidden; }
+.bar i { display: block; height: 100%; border-radius: 99px; background: var(--bad); transition: width .4s; }
+.bar i.mid { background: var(--warn); }
+.bar i.hi { background: var(--ok); }
+.pct { font-family: var(--display); font-weight: 800; font-variant-numeric: tabular-nums; }
+.chip-all { justify-self: start; border: 0; background: transparent; color: var(--accent); font-weight: 800; padding: 4px 0; text-decoration: underline; text-underline-offset: 3px; }
+
+/* badges */
+.badges { display: grid; grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); gap: 8px; }
+.badge { border-radius: 14px; padding: 10px; display: grid; gap: 4px; justify-items: center; text-align: center; background: color-mix(in srgb, var(--ink) 6%, transparent); color: var(--muted); font-size: .85rem; font-weight: 700; }
+.badge svg { width: 36px; height: 36px; }
+.badge.on { background: var(--gold-soft); color: var(--ink); }
+.badge.on svg { color: var(--gold); }
+
+/* quiz */
+.top { display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
+.count { font-family: var(--display); font-weight: 800; font-size: 1.1rem; font-variant-numeric: tabular-nums; }
+.pill { font-weight: 800; border-radius: 999px; padding: 4px 12px; font-variant-numeric: tabular-nums; background: var(--gold-soft); color: var(--gold); }
+.pill.timer { background: var(--uvod-soft); color: var(--uvod); }
+.pts { display: grid; gap: 8px; margin: 12px 0; }
+.pt { display: flex; gap: 10px; align-items: flex-start; text-align: left; border: 2px solid var(--line); background: transparent; color: var(--ink); border-radius: 14px; padding: 10px 12px; font: inherit; }
+.pt .box { flex: 0 0 22px; height: 22px; border-radius: 7px; border: 2px solid var(--line); display: grid; place-items: center; font-weight: 900; color: var(--accent-ink); }
+.pt.on { border-color: var(--ok); background: var(--ok-soft); }
+.pt.on .box { background: var(--ok); border-color: var(--ok); }
+.namefield { width: 100%; font: inherit; font-size: 1.1rem; padding: 12px 14px; border-radius: 14px; border: 2px solid var(--line); background: var(--bg); color: var(--ink); margin: 8px 0 12px; }
+.tasks { display: grid; gap: 8px; margin-top: 10px; }
+.task { display: flex; gap: 10px; align-items: center; border: 2px solid var(--line); border-radius: 14px; padding: 10px 12px; background: transparent; color: var(--ink); font: inherit; text-align: left; width: 100%; }
+.task .box { flex: 0 0 24px; height: 24px; border-radius: 50%; border: 2px solid var(--line); display: grid; place-items: center; font-weight: 900; color: var(--accent-ink); font-size: .85rem; }
+.task.done { border-color: var(--ok); background: var(--ok-soft); }
+.task.done .box { background: var(--ok); border-color: var(--ok); }
+.task .go { margin-left: auto; color: var(--accent); font-weight: 800; white-space: nowrap; }
+.report { white-space: pre-wrap; background: var(--bg); border-radius: 14px; padding: 12px; font-size: .9rem; margin: 8px 0; }
+textarea.namefield { min-height: 90px; font-size: .85rem; font-family: ui-monospace, monospace; word-break: break-all; }
+.subjects { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 12px; }
+.subj { position: relative; border: 0; border-radius: 20px; padding: 16px; display: grid; gap: 6px; align-content: start; text-align: left; color: var(--ink); font: inherit; min-height: 150px; }
+.subj .sico { width: 52px; height: 52px; border-radius: 16px; display: grid; place-items: center; }
+.subj .sico svg { width: 30px; height: 30px; }
+.subj h3 { font-size: 1.3rem; }
+.subj .book { font-size: .8rem; color: var(--muted); }
+.subj .bar { height: 8px; margin-top: 4px; }
+.subj .due { font-size: .8rem; font-weight: 800; }
+.subj.on { box-shadow: 0 4px 0 color-mix(in srgb, var(--ink) 14%, transparent); }
+.subj.on:active { transform: translateY(3px); box-shadow: 0 1px 0 color-mix(in srgb, var(--ink) 14%, transparent); }
+.subj.off { background: color-mix(in srgb, var(--ink) 5%, transparent); cursor: default; }
+.subj.off .sico { background: color-mix(in srgb, var(--ink) 8%, transparent); color: var(--muted); }
+.subj.off h3 { color: var(--muted); }
+.subj .soon { position: absolute; top: 12px; right: 12px; font-size: .7rem; font-weight: 800; text-transform: uppercase; letter-spacing: .05em; background: var(--card); color: var(--muted); border-radius: 99px; padding: 2px 8px; }
+.subj.povijest { background: var(--pra-soft); } .subj.povijest .sico { background: var(--pra); color: var(--card); } .subj.povijest h3 { color: var(--pra); }
+.back { justify-self: start; border: 0; background: transparent; color: var(--accent); font-weight: 800; padding: 4px 0; display: inline-flex; gap: 4px; align-items: center; }
+.tag.su { background: var(--su-soft); color: var(--su); } .tag.f1 { background: var(--f1-soft); color: var(--f1); } .tag.f2 { background: var(--f2-soft); color: var(--f2); }
+.flash.su .face { background: var(--su-soft); } .flash.f1 .face { background: var(--f1-soft); } .flash.f2 .face { background: var(--f2-soft); }
+.station.su .val { stroke: var(--su); } .station.su .ico { background: var(--su-soft); color: var(--su); } .station.su h3 { color: var(--su); }
+.station.f1 .val { stroke: var(--f1); } .station.f1 .ico { background: var(--f1-soft); color: var(--f1); } .station.f1 h3 { color: var(--f1); }
+.station.f2 .val { stroke: var(--f2); } .station.f2 .ico { background: var(--f2-soft); color: var(--f2); } .station.f2 h3 { color: var(--f2); }
+.subj.engleski { background: var(--f1-soft); } .subj.engleski .sico { background: var(--f1); color: var(--card); } .subj.engleski h3 { color: var(--f1); }
+.listen { display: inline-flex; gap: 6px; align-items: center; border: 2px solid var(--accent); color: var(--accent); background: transparent; border-radius: 99px; padding: 6px 14px; font-weight: 800; }
+.listen svg { width: 18px; height: 18px; }
+.model { background: var(--bg); border-radius: 14px; padding: 12px 14px; font-size: .95rem; line-height: 1.55; }
+.hero { background: linear-gradient(135deg, var(--hero1), var(--hero2)); color: #fff; box-shadow: 0 12px 30px -18px var(--hero1); position: relative; overflow: hidden; }
+.hero::after { content: ""; position: absolute; width: 220px; height: 220px; border-radius: 50%; right: -70px; top: -90px; background: rgba(255,255,255,.12); pointer-events: none; }
+.hero .eyebrow { color: rgba(255,255,255,.82); }
+.hero .stat { background: rgba(255,255,255,.16); }
+.hero .stat b { color: var(--sun); } .hero .stat span { color: #fff; }
+.hero .level { background: rgba(255,255,255,.16); }
+.hero .level .lv { background: #fff; color: var(--hero1); }
+.hero .level small { color: rgba(255,255,255,.85); }
+.hero .level .bar { background: rgba(255,255,255,.28); } .hero .level .bar i { background: var(--sun); }
+.hero .sound { background: rgba(255,255,255,.2); color: #fff; position: relative; z-index: 1; }
+.hero .back { color: #fff; }
+.prog { display: flex; height: 16px; border-radius: 99px; overflow: hidden; background: color-mix(in srgb, var(--ink) 10%, transparent); }
+.prog i { display: block; height: 100%; }
+.prog .p1 { background: var(--ok); } .prog .p2 { background: var(--sun); }
+.legend { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; }
+.legend div { display: grid; gap: 0; }
+.legend b { font-family: var(--display); font-size: 1.5rem; line-height: 1.1; font-variant-numeric: tabular-nums; }
+.legend span { font-size: .8rem; color: var(--muted); display: flex; gap: 5px; align-items: center; }
+.legend span::before { content: ""; width: 10px; height: 10px; border-radius: 3px; background: var(--c); flex: none; }
+.mz { flex: none; display: block; overflow: visible; }
+.mz.idle { animation: bob 2.6s ease-in-out infinite; transform-origin: 50% 100%; }
+.mz.jump { animation: jump .7s cubic-bezier(.3,1.6,.5,1) both; transform-origin: 50% 100%; }
+.mz.droop { animation: droop .6s ease-out both; transform-origin: 50% 100%; }
+@keyframes bob { 0%,100% { transform: translateY(0) rotate(-2deg); } 50% { transform: translateY(-5px) rotate(2deg); } }
+@keyframes jump { 0% { transform: scale(.7) translateY(10px); } 50% { transform: scale(1.08) translateY(-14px); } 100% { transform: none; } }
+@keyframes droop { 0% { transform: scale(1.05); } 100% { transform: none; } }
+.buddy { display: flex; gap: 10px; align-items: center; }
+.bubble { position: relative; background: var(--card); color: var(--ink); border-radius: 18px; padding: 10px 14px; font-weight: 800; line-height: 1.35; box-shadow: 0 2px 0 var(--line); }
+.bubble::before { content: ""; position: absolute; left: -8px; top: 50%; margin-top: -8px; border: 8px solid transparent; border-left: 0; border-right-color: var(--card); }
+.card:not(.hero) .bubble { background: var(--bg); box-shadow: none; }
+.card:not(.hero) .bubble::before { border-right-color: var(--bg); }
+.fbhead { display: flex; gap: 10px; align-items: center; }
+.pill.timer.low { background: var(--bad-soft); color: var(--bad); }
+.dots { display: flex; gap: 6px; flex-wrap: wrap; }
+.dot { width: 13px; height: 13px; border-radius: 50%; background: var(--line); }
+.dot.now { background: var(--accent); transform: scale(1.2); }
+.dot.ok { background: var(--ok); } .dot.bad { background: var(--bad); } .dot.done { background: var(--muted); }
+.tag { justify-self: start; font-weight: 800; font-size: .8rem; letter-spacing: .06em; text-transform: uppercase; border-radius: 999px; padding: 3px 10px; background: var(--uvod-soft); color: var(--uvod); }
+.tag.pra { background: var(--pra-soft); color: var(--pra); }
+.q { font-size: 1.3rem; font-weight: 800; line-height: 1.35; }
+.opts { display: grid; gap: 10px; }
+.opt {
+  text-align: left; border: 2px solid var(--line); background: var(--card); border-radius: 14px;
+  padding: 12px 14px; min-height: 52px; font-weight: 600;
+}
+.opt:hover { border-color: var(--accent); }
+.opt.pick { border-color: var(--accent); background: var(--uvod-soft); }
+.opt.ok { border-color: var(--ok); background: var(--ok-soft); }
+.opt.bad { border-color: var(--bad); background: var(--bad-soft); }
+.opt[disabled] { cursor: default; }
+input[type="text"] {
+  font: inherit; font-size: 1.2rem; width: 100%; padding: 12px 14px; border-radius: 14px;
+  border: 2px solid var(--line); background: var(--card); color: var(--ink);
+}
+input[type="text"]:focus { border-color: var(--accent); outline: none; }
+.hint { font-size: .85rem; color: var(--muted); }
+.seq { display: grid; gap: 8px; min-height: 54px; padding: 10px; border-radius: 14px; border: 2px dashed var(--line); }
+.seq .opt { display: flex; gap: 10px; align-items: center; }
+.seq .n { font-family: var(--display); font-weight: 800; color: var(--accent); min-width: 1.4em; }
+.pool { display: grid; gap: 8px; }
+.match { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.4fr); gap: 8px; align-items: start; }
+.match .col { display: grid; gap: 8px; }
+.match .opt { font-size: .95rem; padding: 10px 12px; display: flex; gap: 8px; align-items: center; }
+.match .opt .k { flex: none; width: 24px; height: 24px; border-radius: 50%; display: grid; place-items: center; font-size: .8rem; font-weight: 800; color: #fff; }
+.feedback { border-radius: 16px; padding: 14px; display: grid; gap: 6px; }
+.feedback.ok { background: var(--ok-soft); }
+.feedback.bad { background: var(--bad-soft); }
+.feedback h3 { font-size: 1.25rem; }
+.feedback.ok h3 { color: var(--ok); } .feedback.bad h3 { color: var(--bad); }
+.src { font-size: .85rem; color: var(--muted); }
+
+/* flashcards */
+.flash {
+  border: 0; border-radius: 22px; min-height: 240px; padding: 24px; display: grid; place-items: center; text-align: center; gap: 10px;
+  background: var(--uvod-soft); color: var(--ink);
+}
+.flash.pra { background: var(--pra-soft); }
+.flash .term { font-family: var(--display); font-weight: 800; font-size: 2rem; line-height: 1.1; }
+.flash .def { font-size: 1.15rem; font-weight: 600; }
+
+/* results */
+.big { font-family: var(--display); font-size: 3.2rem; font-weight: 800; line-height: 1; font-variant-numeric: tabular-nums; }
+.grade { display: flex; gap: 16px; align-items: center; flex-wrap: wrap; }
+.grade .mark { width: 88px; height: 88px; border-radius: 22px; display: grid; place-items: center; font-family: var(--display); font-size: 3rem; font-weight: 800; background: var(--gold-soft); color: var(--gold); }
+.review { display: grid; gap: 8px; }
+.rv { display: grid; grid-template-columns: 28px minmax(0, 1fr); gap: 8px; padding: 10px 0; border-top: 1px solid var(--line); font-size: .95rem; }
+.rv .m { font-weight: 800; font-size: 1.1rem; }
+.rv .m.ok { color: var(--ok); } .rv .m.bad { color: var(--bad); }
+.rv.wide { grid-template-columns: 46px minmax(0, 1fr); } .rv.wide .m { font-size: .95rem; }
+
+/* parents */
+details.card > summary { cursor: pointer; font-family: var(--display); font-weight: 800; font-size: 1.15rem; list-style: none; }
+details.card > summary::-webkit-details-marker { display: none; }
+details.card > summary::after { content: " ▾"; color: var(--muted); }
+table { width: 100%; border-collapse: collapse; font-size: .92rem; }
+th, td { text-align: left; padding: 6px 4px; border-bottom: 1px solid var(--line); vertical-align: top; }
+td.num, th.num { text-align: right; font-variant-numeric: tabular-nums; white-space: nowrap; }
+.tablewrap { overflow-x: auto; }
+@media (max-width: 460px) {
+  .stats { gap: 6px; }
+  .stat b { font-size: 1.35rem; }
+  .match { grid-template-columns: minmax(0, 1fr); }
+}
+/* motion */
+@keyframes rise { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: none; } }
+main > section, main > details { animation: rise .38s cubic-bezier(.2,.8,.3,1) both; }
+main > :nth-child(2) { animation-delay: .05s; } main > :nth-child(3) { animation-delay: .1s; } main > :nth-child(4) { animation-delay: .15s; } main > :nth-child(5) { animation-delay: .2s; } main > :nth-child(n+6) { animation-delay: .25s; }
+.btn, .opt, .task, .chap, .pt, .station { transition: transform .12s, background-color .2s, border-color .2s, box-shadow .2s; }
+.opt:active, .task:active, .pt:active, .station:active { transform: scale(.97); }
+@keyframes pop { 0% { transform: scale(.6); opacity: 0; } 60% { transform: scale(1.15); opacity: 1; } 100% { transform: scale(1); } }
+.pop { animation: pop .4s cubic-bezier(.2,.8,.3,1.4) both; }
+.fx-layer { position: fixed; inset: 0; pointer-events: none; z-index: 50; overflow: hidden; }
+.fx-bit { position: absolute; width: 10px; height: 14px; border-radius: 3px; }
+.fx-float { position: absolute; font-family: var(--display); font-weight: 800; font-size: 1.6rem; color: var(--ok); text-shadow: 0 2px 0 var(--card); }
+.combo { background: var(--bad-soft); color: var(--bad); }
+.combo svg { width: 14px; height: 14px; vertical-align: -2px; margin-right: 3px; }
+
+/* hero: level */
+.hero-top { display: flex; justify-content: space-between; align-items: flex-start; gap: 10px; }
+.sound { border: 0; background: color-mix(in srgb, var(--ink) 7%, transparent); color: var(--ink); width: 44px; height: 44px; border-radius: 50%; display: grid; place-items: center; flex: none; }
+.sound svg { width: 22px; height: 22px; }
+.level { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 4px 12px; align-items: center; background: var(--uvod-soft); border-radius: 16px; padding: 10px 14px; margin: 12px 0; }
+.level .lv { grid-row: span 2; width: 48px; height: 48px; border-radius: 14px; background: var(--accent); color: var(--accent-ink); display: grid; place-items: center; font-family: var(--display); font-weight: 800; font-size: 1.5rem; }
+.level b { font-family: var(--display); font-size: 1.1rem; }
+.level .bar { height: 10px; }
+.level .bar i { background: var(--accent); }
+.level small { grid-column: 2; color: var(--muted); font-size: .8rem; }
+
+/* timeline path */
+.path { position: relative; display: grid; gap: 14px; padding-left: 0; margin-top: 8px; }
+.path::before { content: ""; position: absolute; left: 35px; top: 30px; bottom: 30px; border-left: 4px dotted var(--line); }
+.station { position: relative; display: grid; grid-template-columns: 74px minmax(0, 1fr); gap: 14px; align-items: center; border: 0; background: transparent; color: var(--ink); text-align: left; padding: 6px; border-radius: 18px; font: inherit; }
+.station.sel { background: color-mix(in srgb, var(--ink) 6%, transparent); }
+.ring { position: relative; width: 70px; height: 70px; }
+.ring svg.r { position: absolute; inset: 0; transform: rotate(-90deg); }
+.ring .r circle { fill: none; stroke-width: 7; }
+.ring .r .trk { stroke: var(--line); }
+.ring .r .val { stroke-linecap: round; transition: stroke-dashoffset 1s cubic-bezier(.2,.8,.3,1); }
+.ring .ico { position: absolute; inset: 9px; border-radius: 50%; display: grid; place-items: center; }
+.ring .ico svg { width: 30px; height: 30px; }
+.station.uvod .val { stroke: var(--uvod); } .station.uvod .ico { background: var(--uvod-soft); color: var(--uvod); }
+.station.pra .val { stroke: var(--pra); } .station.pra .ico { background: var(--pra-soft); color: var(--pra); }
+.station.istok .val { stroke: var(--istok); } .station.istok .ico { background: var(--istok-soft); color: var(--istok); }
+.station h3 { font-size: 1.15rem; }
+.station.uvod h3 { color: var(--uvod); } .station.pra h3 { color: var(--pra); } .station.istok h3 { color: var(--istok); }
+.station .meta { font-size: .85rem; color: var(--muted); }
+.station .pct { font-size: 1.05rem; }
+.here { display: inline-block; margin-left: 6px; font-size: .72rem; font-weight: 800; text-transform: uppercase; letter-spacing: .05em; background: var(--gold); color: var(--accent-ink); border-radius: 99px; padding: 1px 8px; vertical-align: 2px; }
+.crown { position: absolute; top: -6px; right: -4px; width: 26px; height: 26px; border-radius: 50%; background: var(--gold); color: var(--accent-ink); display: grid; place-items: center; font-size: .8rem; font-weight: 900; }
+
+/* flip cards */
+.flash { background: transparent !important; perspective: 1200px; padding: 0; display: block; min-height: 250px; }
+.flip { position: relative; display: grid; min-height: 250px; transition: transform .55s cubic-bezier(.2,.8,.3,1); transform-style: preserve-3d; }
+.flash.flipped .flip { transform: rotateY(180deg); }
+.face { grid-area: 1 / 1; backface-visibility: hidden; -webkit-backface-visibility: hidden; border-radius: 22px; padding: 24px; display: grid; place-items: center; align-content: center; gap: 10px; background: var(--uvod-soft); }
+.face.back { transform: rotateY(180deg); }
+.flash.pra .face { background: var(--pra-soft); } .flash.istok .face { background: var(--istok-soft); }
+.face .tapme { font-size: .8rem; font-weight: 800; letter-spacing: .06em; text-transform: uppercase; color: var(--muted); }
+
+/* stars */
+.stars { display: flex; gap: 6px; margin: 6px 0; }
+.stars svg { width: 44px; height: 44px; color: var(--line); }
+.stars svg.on { color: var(--gold); }
+
+/* level-up overlay */
+.overlay { position: fixed; inset: 0; z-index: 40; display: grid; place-items: center; padding: 16px; background: color-mix(in srgb, var(--ink) 45%, transparent); }
+.overlay .card { max-width: 380px; text-align: center; display: grid; gap: 10px; justify-items: center; }
+.overlay .lv { width: 84px; height: 84px; border-radius: 24px; background: var(--accent); color: var(--accent-ink); display: grid; place-items: center; font-family: var(--display); font-weight: 800; font-size: 2.6rem; }
+
+@media (prefers-reduced-motion: reduce) { *, *::before, *::after { transition: none !important; animation: none !important; } }
+</style>
+</head>
+<body>
+<main id="app" aria-live="polite"></main>
+
+<script>
+/* ---------- Gradivo: Klio 5 (Školska knjiga), str. 10–65 ---------- */
+let CH = {
+  uvod: { name: 'Uvod u povijest', pages: 'str. 10–21' },
+  pra:  { name: 'Prapovijest', pages: 'str. 22–53' },
+  istok: { name: 'Stari istok', pages: 'str. 54–65' }
+};
+
+let Q = [
+  // ===== UVOD U POVIJEST =====
+  { id:'u01', ch:'uvod', t:'mc', p:10, q:'Što je povijest?',
+    a:['Znanost koja otkriva, proučava i objašnjava prošlost čovjeka od njegova postanka do danas','Znanost o Zemlji, njezinim oblicima i klimi','Skup izmišljenih priča o junacima','Znanost o biljkama i životinjama'],
+    ex:'Povijest je znanost koja otkriva, proučava i objašnjava prošlost čovjeka. Znanstvenici koji se njome bave su povjesničari i povjesničarke.' },
+  { id:'u02', ch:'uvod', t:'text', p:11, q:'Koji je grčki povjesničar nazvan „ocem povijesti”?', a:['Herodot'],
+    ex:'Herodot je živio u 5. st. pr. Krista. Provjeravao je točnost podataka i nastojao istinito pisati o prošlosti.' },
+  { id:'u03', ch:'uvod', t:'mc', p:11, q:'Tko je Herodota nazvao „ocem povijesti”?',
+    a:['Rimski govornik Marko Tulije Ciceron','Julije Cezar','Grčki pjesnik Homer','Aleksandar Veliki'],
+    ex:'Ciceron je živio u 1. st. pr. Krista. Svidio mu se način na koji je Herodot pisao o prošlosti.' },
+  { id:'u04', ch:'uvod', t:'mc', p:11, q:'Zašto Herodota nazivamo „ocem povijesti”?',
+    a:['Provjeravao je točnost podataka i nastojao istinito pisati o prošlosti','Izumio je pismo','Bio je prvi rimski car','Sastavio je prvi kalendar'],
+    ex:'Herodot je pisao na temelju izjava pouzdanih svjedoka i izvora te je provjeravao točnost podataka.' },
+  { id:'u05', ch:'uvod', t:'mc', p:11, q:'„Povijest je svjedok vremena, svjetlo istine, život pamćenja, učiteljica života, glasnica starine.” Tko je to napisao?',
+    a:['Ciceron','Herodot','Homer','Muza Klio'],
+    ex:'Tu izreku nalazimo u Ciceronovu spisu „O govorniku”.' },
+  { id:'u06', ch:'uvod', t:'match', p:11, q:'Poveži područje povijesti s onim što ono proučava.',
+    pairs:[['Povijest društva','Odnosi među ljudima i uloge muškaraca, žena i djece'],['Ekonomska povijest','Proizvodnja, trgovina i prijevoz robe'],['Povijest znanosti i tehnologije','Izumi i kako su promijenili život'],['Politička povijest','Države, vlast i borba za prava'],['Filozofsko-religijsko-kulturno područje','Ideje, vjerovanja i umjetnost']],
+    ex:'Povijest proučavamo u pet velikih područja: društvo, ekonomija, znanost i tehnologija, politika te filozofija, religija i kultura.' },
+  { id:'u07', ch:'uvod', t:'mc', p:12, q:'Koliko ima povijesnih koncepata?', a:['Šest','Pet','Četiri','Deset'],
+    ex:'Vrijeme i prostor, uzroci i posljedice, kontinuitet i promjena, rad s povijesnim izvorima, povijesna perspektiva te usporedba i sučeljavanje.' },
+  { id:'u08', ch:'uvod', t:'mc', p:12, q:'Što od navedenoga NIJE povijesni koncept?',
+    a:['Zbrajanje i oduzimanje','Uzroci i posljedice','Kontinuitet i promjena','Povijesna perspektiva'],
+    ex:'Šest povijesnih koncepata: vrijeme i prostor, uzroci i posljedice, kontinuitet i promjena, rad s povijesnim izvorima, povijesna perspektiva, usporedba i sučeljavanje.' },
+  { id:'u09', ch:'uvod', t:'mc', p:12, q:'Zašto su ljudi napravili prve kalendare?',
+    a:['Da bi znali kada se nešto dogodilo i mogli brojiti godine','Da bi lakše trgovali s drugim narodima','Da bi znali koliko je sati','Da bi pisali pisma'],
+    ex:'Čovjek je uočio promjenu godišnjih doba i naučio kada treba sijati, skupljati hranu ili ići u lov. Da bi brojio godine, nastali su kalendari.' },
+  { id:'u10', ch:'uvod', t:'match', p:13, q:'Poveži narod s događajem od kojega je počeo računati vrijeme.',
+    pairs:[['Židovi','Stvaranje svijeta (3761. pr. Kr.)'],['Grci','Prve olimpijske igre (776. pr. Kr.)'],['Rimljani','Osnutak grada Rima (753. pr. Kr.)'],['Arapi','Muhamedova seoba iz Meke u Medinu (622.)']],
+    ex:'Stari su narodi za početak računanja vremena odabrali sebi važne događaje.' },
+  { id:'u11', ch:'uvod', t:'text', p:13, q:'Kako se zove dugo razdoblje računanja vremena koje počinje nekim važnim događajem?', a:['era'],
+    ex:'Takvo se razdoblje naziva era. Danas je najraširenija kršćanska ili nova era.' },
+  { id:'u12', ch:'uvod', t:'mc', p:13, q:'Od kojeg događaja računamo godine u kršćanskoj (novoj) eri?',
+    a:['Od rođenja Isusa Krista','Od osnutka Rima','Od prvih olimpijskih igara','Od stvaranja svijeta'],
+    ex:'Današnja međunarodna era broji godine od rođenja Isusa Krista.' },
+  { id:'u13', ch:'uvod', t:'mc', p:13, q:'Što znači kratica „pr. n. e.”?', a:['Prije nove ere','Poslije nove ere','Prva nova era','Prije naše epohe'],
+    ex:'Pr. n. e. znači isto što i pr. Kr. (prije Krista). Pos. Kr. ili n. e. označavaju godine poslije Krista.' },
+  { id:'u14', ch:'uvod', t:'mc', p:13, q:'Koja je godina starija?', a:['500. pr. Kr.','200. pr. Kr.','100. pos. Kr.','2020.'],
+    ex:'Prije Krista godine se broje unatrag: što je broj veći, to je godina starija. 500. pr. Kr. dogodila se prije 200. pr. Kr.' },
+  { id:'u15', ch:'uvod', t:'mc', p:13, q:'Koja godina dolazi odmah nakon 1. godine pr. Kr.?', a:['1. godina pos. Kr.','Godina 0','2. godina pr. Kr.','10. godina pos. Kr.'],
+    ex:'Godine 0 nema. Nakon 1. godine prije Krista odmah slijedi 1. godina poslije Krista.' },
+  { id:'u16', ch:'uvod', t:'text', p:13, q:'Kako se zove znanost o vremenskom slijedu?', a:['kronologija'],
+    ex:'Riječ kronologija dolazi od grčkih riječi kronos (vrijeme) i logos (znanost).' },
+  { id:'u17', ch:'uvod', t:'mc', p:13, q:'Što znači grčka riječ „kronos”?', a:['Vrijeme','Znanost','Zemlja','Kralj'],
+    ex:'Kronos znači vrijeme, a logos znanost. Zajedno: kronologija, znanost o vremenskom slijedu.' },
+  { id:'u18', ch:'uvod', t:'mc', p:13, q:'Kako zovemo crtu na koju redom upisujemo događaje?', a:['Crta ili lenta vremena','Slijepa karta','Kalendar','Atlas'],
+    ex:'Na crti (lenti) vremena događaje poredamo kronološki pa se vidi tijek vremena i promjene.' },
+  { id:'u19', ch:'uvod', t:'order', p:14, q:'Poredaj razdoblja od najstarijeg do najnovijeg.',
+    items:['Prapovijest','Stari vijek','Srednji vijek','Novi vijek','Suvremeno doba'],
+    ex:'Prapovijest, a zatim povijest: stari vijek, srednji vijek, novi vijek i suvremeno doba.' },
+  { id:'u20', ch:'uvod', t:'match', p:14, q:'Poveži razdoblje s događajem kojim počinje.',
+    pairs:[['Stari vijek','Oko 3500. pr. Kr. – izum pisma u Mezopotamiji'],['Srednji vijek','476. – pad Zapadnoga Rimskog Carstva'],['Novi vijek','1492. – otkriće Amerike'],['Suvremeno doba','1918. – kraj Prvoga svjetskog rata']],
+    ex:'Neki povjesničari početak novog vijeka vežu i uz izum tiskarskog stroja (1440.) i prvu tiskanu knjigu, Bibliju (1455.).' },
+  { id:'u21', ch:'uvod', t:'mc', p:14, q:'Čime završava prapovijest i počinje povijest?',
+    a:['Pojavom pisma','Otkrićem vatre','Padom Rima','Otkrićem Amerike'],
+    ex:'Pismo je izumljeno oko 3500. pr. Krista u Mezopotamiji. Time počinje stari vijek.' },
+  { id:'u22', ch:'uvod', t:'mc', p:14, q:'Gdje je oko 3500. pr. Kr. izumljeno pismo?', a:['U Mezopotamiji','U Grčkoj','U Rimu','U Hrvatskoj'],
+    ex:'Pismo je nastalo u Mezopotamiji, a s njim počinje stari vijek.' },
+  { id:'u23', ch:'uvod', t:'mc', p:14, q:'Kako se zovu karte na kojima su ucrtane samo granice kontinenata ili država?',
+    a:['Slijepe karte','Atlasi','Kalendari','Povijesni izvori'],
+    ex:'Na slijepe karte sami upisujemo i ucrtavamo tražene podatke: države, gradove, granice, bitke.' },
+  { id:'u24', ch:'uvod', t:'text', p:14, q:'Kako se zove zbirka zemljovida?', a:['atlas','atlasi'],
+    ex:'Zbirka zemljovida zove se atlas. Povijesni zemljovidi prikazuju granice, bitke, smjerove kretanja i dr.' },
+  { id:'u25', ch:'uvod', t:'order', p:16, q:'Poredaj dijelove povijesnog događaja redom kojim se odvijaju.',
+    items:['Uzrok','Povod','Tijek','Posljedice'],
+    ex:'Uzroci su događaji koji su prethodili, povod je „kap koja je prelila čašu”, tijek je slijed događaja, a posljedice su ono što je događaj izazvao.' },
+  { id:'u26', ch:'uvod', t:'mc', p:16, q:'Što je povod povijesnog događaja?',
+    a:['Ono što je neposredno pokrenulo događaj, „kap koja je prelila čašu”','Ono što se dogodilo nakon događaja','Slijed događaja od početka do kraja','Mjesto gdje se događaj zbio'],
+    ex:'Povod je ono što je potaknulo i pokrenulo povijesni događaj.' },
+  { id:'u27', ch:'uvod', t:'mc', p:17, q:'Grad Split nastao je u Dioklecijanovoj palači iz rimskog doba i postoji do danas. Koji koncept to opisuje?',
+    a:['Kontinuitet','Povod','Povijesna perspektiva','Slijepa karta'],
+    ex:'Kontinuitet znači da nešto traje bez prekida. Splitski kontinuitet traje dulje od tri tisuće godina.' },
+  { id:'u28', ch:'uvod', t:'match', p:17, q:'Poveži vrstu povijesnog izvora s primjerom.',
+    pairs:[['Materijalni','Oružje, oruđe, nakit, posude'],['Pisani','Natpisi na glinenim pločicama, knjige, povelje'],['Slikovni','Crteži u špiljama, slike, fotografije'],['Zvučni (tonski)','Snimljeni govori, glazba na pločama i CD-ima'],['Usmeni','Priče koje se prenose s koljena na koljeno']],
+    ex:'Povijesni izvori su tragovi iz prošlosti: materijalni, pisani, slikovni, tonski (zvučni) i usmeni.' },
+  { id:'u29', ch:'uvod', t:'mc', p:17, q:'Glinena pločica s natpisom je…', a:['pisani izvor','materijalni izvor','zvučni izvor','usmeni izvor'],
+    ex:'Pisane izvore čini sve što je zapisano u prošlosti, i natpisi na glinenim pločicama ili kamenu.' },
+  { id:'u30', ch:'uvod', t:'mc', p:17, q:'Kameni nož iz prapovijesti je…', a:['materijalni izvor','pisani izvor','slikovni izvor','usmeni izvor'],
+    ex:'Materijalni izvori su predmeti iz prošlosti (oružje, oruđe, nakit, posude, odjeća). Čuvaju se u muzejima.' },
+  { id:'u31', ch:'uvod', t:'mc', p:17, q:'Crtež bizona na zidu špilje je…', a:['slikovni izvor','pisani izvor','zvučni izvor','usmeni izvor'],
+    ex:'Slikovni izvori su likovna djela iz prošlosti: crteži u špiljama, slike, fotografije, skulpture, građevine.' },
+  { id:'u32', ch:'uvod', t:'mc', p:18, q:'Bakine priče o njezinu djetinjstvu su…', a:['usmeni izvor','pisani izvor','materijalni izvor','slikovni izvor'],
+    ex:'Usmeni izvori ili usmena predaja prenose se pripovijedanjem s jedne generacije na drugu.' },
+  { id:'u33', ch:'uvod', t:'mc', p:17, q:'Gdje se najčešće čuvaju pisani izvori?', a:['U arhivima, muzejima i knjižnicama','U špiljama','U fonotekama','Na arheološkim nalazištima'],
+    ex:'Pisani izvori najčešće se čuvaju u arhivima, muzejima i knjižnicama.' },
+  { id:'u34', ch:'uvod', t:'mc', p:17, q:'Tko proučava materijalne izvore pomoću arheoloških iskapanja?', a:['Arheolog','Arhivist','Etnolog','Kronolog'],
+    ex:'Arheolozi iskapaju povijesne izvore na nalazištima i na temelju njih zaključuju o životu ljudi u prošlosti.' },
+  { id:'u35', ch:'uvod', t:'match', p:21, q:'Poveži pojam s objašnjenjem (pojmovnik).',
+    pairs:[['Arhiv','Čuvaju se pisani dokumenti'],['Fonoteka','Čuvaju se zvučni izvori'],['Filmoteka','Čuvaju se stare snimke i filmovi'],['Etnolog','Proučava i prikazuje kulturnu baštinu'],['Antropolog','Proučava način života ljudi']],
+    ex:'Arhivist se bavi prikupljanjem, čuvanjem i istraživanjem pisanih izvora.' },
+  { id:'u36', ch:'uvod', t:'mc', p:19, q:'Što je oživljena povijest?',
+    a:['Prikazivanje prošlosti onakvom kakva je bila, npr. kostimima i prikazima bitaka','Film o budućnosti','Čitanje udžbenika naglas','Crtanje crte vremena'],
+    ex:'Oživljena povijest (engl. living history) približava prošlost: npr. prikaz bitke Rimljana i Kelta u Sisku 2015.' },
+  { id:'u37', ch:'uvod', t:'mc', p:20, q:'Što znači povijesna perspektiva?',
+    a:['Isti događaj može se promatrati s različitih gledišta','Događaji se uvijek ponavljaju','Povijest se uči samo iz knjiga','Svi povjesničari uvijek misle isto'],
+    ex:'Povjesničari imaju različita iskustva i mišljenja, pa o istim događajima postoje različite perspektive.' },
+  { id:'u38', ch:'uvod', t:'mc', p:20, q:'Koje pitanje NIJE jedno od šest pitanja za istraživanje povijesti?',
+    a:['Koliko košta?','Tko?','Gdje?','Zašto?'],
+    ex:'Šest pitanja: tko, što, gdje, kad, zašto i kako.' },
+
+  // ===== PRAPOVIJEST =====
+  { id:'p01', ch:'pra', t:'mc', p:22, q:'Što je prapovijest?',
+    a:['Razdoblje u kojem ljudi još nisu poznavali pismo','Razdoblje rimskih careva','Razdoblje nakon otkrića Amerike','Vrijeme kada su nastali prvi gradovi u Europi'],
+    ex:'Prapovijest je veliko razdoblje prošlosti koje je trajalo tisućama godina, a čovjekovi preci nisu poznavali pismo.' },
+  { id:'p02', ch:'pra', t:'mc', p:22, q:'Koje izvore najčešće imamo iz prapovijesti?',
+    a:['Materijalne, katkad i slikovne','Pisane','Zvučne snimke','Novine'],
+    ex:'Iz prapovijesti nema pisanih izvora jer pismo još nije postojalo.' },
+  { id:'p03', ch:'pra', t:'text', p:22, q:'Koji se kontinent naziva „kolijevkom čovječanstva”?', a:['Afrika'],
+    ex:'Najstariji nalazi tjelesnih ostataka hominida pronađeni su u Africi.' },
+  { id:'p04', ch:'pra', t:'mc', p:22, q:'U kojem se dijelu Hrvatske nalazi Krapina?', a:['U Hrvatskom zagorju','U Dalmaciji','U Istri','U Slavoniji'],
+    ex:'U Krapini u Hrvatskom zagorju nađeno je boravište ljudi iz starijeg kamenog doba.' },
+  { id:'p05', ch:'pra', t:'order', p:26, q:'Poredaj od najstarijeg do najnovijeg.',
+    items:['Pojava prvih čovjekovih predaka (4 milijuna g. pr. Kr.)','Pojava neandertalaca (200 000 g. pr. Kr.)','Krapinski neandertalci (130 000 g. pr. Kr.)','Pojava kromanjonaca (35 000 g. pr. Kr.)','Crteži u Altamiri i Lascauxu (17 000 g. pr. Kr.)','Pojava pisma (3500. g. pr. Kr.)'],
+    ex:'Crta vremena prapovijesti na str. 24–25.' },
+  { id:'p06', ch:'pra', t:'match', p:25, q:'Poveži nalazište s današnjom državom.',
+    pairs:[['Altamira','Španjolska'],['Lascaux','Francuska'],['Neandertal','Njemačka'],['Stonehenge','Velika Britanija'],['Krapina','Hrvatska']],
+    ex:'Zemljovid prapovijesnih nalazišta na str. 24–25.' },
+  { id:'p07', ch:'pra', t:'mc', p:26, q:'Kako se zove razdoblje od pojave prvih čovjekovih predaka do pojave pisanih izvora?',
+    a:['Prapovijest','Stari vijek','Srednji vijek','Metalno doba'],
+    ex:'To je najdulje razdoblje ljudske prošlosti.' },
+  { id:'p08', ch:'pra', t:'mc', p:26, q:'Kako su živjeli ljudi u starijem kamenom dobu?',
+    a:['U skupinama od oko 20 članova, kao nomadi, često u špiljama','U velikim gradovima sa zidinama','U kućama od opeke uz rijeke','Sami, bez ikakve skupine'],
+    ex:'Udruživali su se u skupine da lakše pronađu hranu i obrane se od opasnih životinja.' },
+  { id:'p09', ch:'pra', t:'text', p:26, q:'Kako se zovu ljudi koji stalno mijenjaju mjesto boravka u potrazi za hranom?', a:['nomadi','nomad'],
+    ex:'Nomadi često mijenjaju mjesto boravka u potrazi za hranom i sigurnijim skrovištem.' },
+  { id:'p10', ch:'pra', t:'mc', p:26, q:'Po čemu su neandertalci dobili ime?',
+    a:['Po nalazištu u dolini Neandertal u Njemačkoj','Po svom poglavici','Po rijeci u Hrvatskoj','Po grčkom bogu'],
+    ex:'Pojavili su se prije oko 200 000 godina pr. Kr., a izumrli prije oko 28 000 godina pr. Kr.' },
+  { id:'p11', ch:'pra', t:'mc', p:26, q:'Kada su izumrli neandertalci?', a:['Oko 28 000 g. pr. Kr.','Oko 200 000 g. pr. Kr.','Oko 3500. g. pr. Kr.','476. godine'],
+    ex:'Neandertalci su se pojavili oko 200 000 g. pr. Kr., a izumrli oko 28 000 g. pr. Kr.' },
+  { id:'p12', ch:'pra', t:'mc', p:27, q:'Koje je od ovih nalazište starijeg kamenog doba u Hrvatskoj?',
+    a:['Špilja Šandalja kraj Pule','Altamira','Vučedol','Halštat'],
+    ex:'Nalazišta starijeg kamenog doba u Hrvatskoj: Šandalja, Punikve kraj Ivanca, Veternica, Vindija i Krapina.' },
+  { id:'p13', ch:'pra', t:'mc', p:27, q:'Na kojem se brdu kraj Krapine nalazi najveće nalazište neandertalaca?', a:['Na Hušnjakovu brdu','Na Medvednici','Na Velebitu','Na Učki'],
+    ex:'Polušpilja na Hušnjakovu brdu nalazi se kraj Krapine uz rijeku Krapinicu.' },
+  { id:'p14', ch:'pra', t:'text', p:27, q:'Kako se zove hrvatski prirodoslovac koji je istraživao krapinsko nalazište?', a:['Gorjanović-Kramberger','Dragutin Gorjanović-Kramberger','Gorjanović Kramberger','Kramberger','Gorjanović'],
+    ex:'Dragutin Gorjanović-Kramberger proslavio se otkrićem krapinskog neandertalca na prijelazu iz 19. u 20. stoljeće.' },
+  { id:'p15', ch:'pra', t:'mc', p:27, q:'Ostatci koliko neandertalaca pronađeni su u Krapini?', a:['Više od sedamdeset','Samo jednoga','Oko pet','Više od tisuću'],
+    ex:'Pronađeno je više od 5000 predmeta, ostatci više od 70 neandertalaca u dobi od 3 do 27 godina i više od 1000 komada oruđa i oružja.' },
+  { id:'p16', ch:'pra', t:'mc', p:27, q:'Zašto je špilja u Krapini bila pogodna za život?',
+    a:['Imala je dovoljno svjetla, mogla se održavati vatra, a blizu je bila voda','Bila je duboko pod zemljom i potpuno mračna','Bila je na vrhu snježne planine','Bila je okružena morem'],
+    ex:'S tog se mjesta moglo nadzirati okolno područje, a u blizini je bila voda.' },
+  { id:'p17', ch:'pra', t:'mc', p:28, q:'Kako se zove muzej krapinskih neandertalaca otvoren 2010.?', a:['Kraneamus','Neandertal muzej','Muzej Vučedol','Arheološki muzej Istre'],
+    ex:'Kraneamus je jedan od najsuvremenijih muzeja na svijetu, u blizini nalazišta na Hušnjakovu brdu.' },
+  { id:'p18', ch:'pra', t:'mc', p:29, q:'Što se dogodilo nakon završetka ledenog doba?',
+    a:['Ljudi prelaze na sjedilački način života i grade prva trajna naselja','Ljudi postaju nomadi','Nestaju sve šume','Izumljeno je pismo'],
+    ex:'Sa zatopljenjem nastupaju promjene: nomadski način života zamjenjuje sjedilački, pojavljuju se prva trajna naselja.' },
+  { id:'p19', ch:'pra', t:'mc', p:29, q:'Po čemu je kromanjonac dobio ime?', a:['Po nalazištu Cro-Magnon u Francuskoj','Po dolini u Njemačkoj','Po špilji u Hrvatskoj','Po rimskom caru'],
+    ex:'Kromanjonac (Homo sapiens) razvio se oko 35 000 g. pr. Kr.' },
+  { id:'p20', ch:'pra', t:'mc', p:29, q:'Što znači Homo sapiens?', a:['Razuman čovjek','Uspravan čovjek','Spretan čovjek','Kameni čovjek'],
+    ex:'Kromanjonac je razuman čovjek, Homo sapiens.' },
+  { id:'p21', ch:'pra', t:'mc', p:29, q:'Koja kultura pripada mlađem kamenom dobu u Hrvatskoj?', a:['Starčevačka kultura','Vučedolska kultura','Halštatska kultura','Latenska kultura'],
+    ex:'Kulture mlađega kamenog doba u Hrvatskoj: starčevačka, sopotska, danilska i hvarska.' },
+  { id:'p22', ch:'pra', t:'mc', p:29, q:'Gdje su ljudi u mlađem kamenom dobu na tlu Hrvatske najčešće živjeli?',
+    a:['Uz plodne nizine rijeka i obale Jadranskog mora','Na vrhovima planina','Samo na otocima','U pustinjama'],
+    ex:'Naselja su bila uz plodne nizine rijeka i obale Jadranskog mora.' },
+  { id:'p23', ch:'pra', t:'order', p:30, q:'Poredaj zajednice od najmanje do najveće.',
+    items:['Rod','Bratstvo','Pleme','Savez plemena'],
+    ex:'Rod čine ljudi povezani krvnim srodstvom. Više rodova čini bratstvo, više bratstava pleme, a plemena se udružuju u saveze.' },
+  { id:'p24', ch:'pra', t:'mc', p:30, q:'Što je rod?', a:['Zajednica ljudi povezanih krvnim srodstvom, na čelu s rodovskim starješinom','Savez više plemena','Prvi grad','Vrsta oruđa'],
+    ex:'Na čelu roda bili su najugledniji članovi, rodovski starješine.' },
+  { id:'p25', ch:'pra', t:'mc', p:30, q:'Gdje su nastala prva gradska naselja i prve civilizacije?', a:['Na području plodnog polumjeseca u Aziji','U Hrvatskom zagorju','U Skandinaviji','U Americi'],
+    ex:'Nakon pojave prvih stalnih naselja razvijaju se prvi gradovi i države.' },
+  { id:'p26', ch:'pra', t:'mc', p:30, q:'Gdje se nalazi Vučedol?', a:['Na desnoj obali Dunava pokraj Vukovara','Kraj Krapine','Kraj Pule','U Dalmaciji'],
+    ex:'Naselje je nastalo na uzvisini okruženoj strmim padinama, zato je bilo pogodno za život.' },
+  { id:'p27', ch:'pra', t:'mc', p:30, q:'U kojem se dobu razvila vučedolska kultura?', a:['U bakrenom dobu','U starijem kamenom dobu','U željeznom dobu','U srednjem vijeku'],
+    ex:'Vučedolska kultura razvila se u bakreno doba, u 3. tisućljeću pr. Kr.' },
+  { id:'p28', ch:'pra', t:'order', p:31, q:'Poredaj metalna doba redom kojim su nastupila.',
+    items:['Bakreno doba','Brončano doba','Željezno doba'],
+    ex:'Najprije bakar, zatim bronca (bakar + kositar) i na kraju željezo.' },
+  { id:'p29', ch:'pra', t:'mc', p:31, q:'Bronca je mješavina (slitina)…', a:['bakra i kositra','zlata i srebra','željeza i bakra','kamena i gline'],
+    ex:'Bakar se miješao s kositrom i tako se dobivala čvršća bronca. Tako je počelo brončano doba.' },
+  { id:'p30', ch:'pra', t:'mc', p:31, q:'Koji su bili prvi otkriveni metali?', a:['Zlato, srebro i bakar','Željezo i čelik','Aluminij i olovo','Bronca i željezo'],
+    ex:'Najrasprostranjeniji je bio bakar, od kojega se počelo izrađivati oruđe i oružje.' },
+  { id:'p31', ch:'pra', t:'mc', p:31, q:'Kada počinje metalno doba?', a:['Sredinom IV. tisućljeća pr. Kr.','Oko 200 000 g. pr. Kr.','476. godine','1492. godine'],
+    ex:'Sredinom IV. tisućljeća pr. Krista počelo je metalno doba.' },
+  { id:'p32', ch:'pra', t:'mc', p:31, q:'Kada se proširila upotreba željeza?', a:['Početkom I. tisućljeća pr. Kr.','Oko 35 000 g. pr. Kr.','U 15. stoljeću','Oko 10 000 g. pr. Kr.'],
+    ex:'Željezo je zbog svoje čvrstoće bilo pogodno za oružje i ubrzo je zamijenilo broncu.' },
+  { id:'p33', ch:'pra', t:'text', p:31, q:'Koji je narod zaslužan za širenje i unapređenje obrade željeza?', a:['Kelti','Kelt'],
+    ex:'Kelti su obradu željeza unaprijedili postupkom kaljenja.' },
+  { id:'p34', ch:'pra', t:'match', p:31, q:'Poveži nalazište sa željeznim dobom i državom.',
+    pairs:[['Halštat','Austrija – starije željezno doba'],['La Tène','Švicarska – mlađe željezno doba']],
+    ex:'Najznačajnije nalazište starijeg željeznog doba je Halštat u Austriji, a mlađeg La Tène (Laten) u Švicarskoj.' },
+  { id:'p35', ch:'pra', t:'mc', p:31, q:'Kada su keltski narodi naselili nizinske dijelove današnje Hrvatske?', a:['U IV. st. pr. Kr.','U I. st. pos. Kr.','Oko 35 000 g. pr. Kr.','1918. godine'],
+    ex:'U IV. st. pr. Krista Kelti naseljavaju nizinske dijelove Hrvatske, uglavnom uz rijeke i prometne smjerove.' },
+  { id:'p36', ch:'pra', t:'mc', p:31, q:'Kako se radi jednostavnosti često nazivaju prastanovnici hrvatskog prostora?', a:['Ilirski narodi','Kelti','Rimljani','Grci'],
+    ex:'Njihova imena znamo iz pisanih izvora grčkog i rimskog doba.' },
+  { id:'p37', ch:'pra', t:'mc', p:21, q:'Stonehenge je primjer megalitske kulture. Što je megalitska kultura?',
+    a:['Građenje obrednih građevina od velikih kamenih blokova','Crtanje po zidovima špilja','Izrada nakita od zlata','Pisanje na glinenim pločicama'],
+    ex:'Stonehenge u Velikoj Britaniji mogao je služiti i kao kalendar.' },
+  { id:'p38', ch:'pra', t:'mc', p:32, q:'Što je civilizacija?',
+    a:['Zajednica koja je stekla visoku razinu kulture, poznaje pismo i državu','Skupina nomada koja lovi životinje','Vrsta kamenog oruđa','Zbirka zemljovida'],
+    ex:'Civilizacija je zajednica koja je stekla visoku razinu kulture: poznaje pismo, državu itd.' },
+  { id:'p39', ch:'pra', t:'mc', p:32, q:'Što je kaljenje?',
+    a:['Zagrijavanje željeza, oblikovanje udarcima čekića i naglo hlađenje da bude čvršće','Bojenje keramike crvenom bojom','Pečenje kruha u peći','Glačanje kamena vodom i pijeskom'],
+    ex:'Kaljenje je postupak zagrijavanja na visokoj temperaturi i oblikovanja užarenog željeza udarcima čekića te naglog hlađenja kako bi mu se osigurala čvrstoća.' },
+  { id:'p40', ch:'pra', t:'mc', p:32, q:'Koje je pleme metalnog doba živjelo na području Istre?', a:['Histri','Delmati','Liburni','Japodi'],
+    ex:'Na zemljovidu metalnog doba: Histri u Istri, Japodi u unutrašnjosti, Liburni na sjevernom Jadranu, Delmati u Dalmaciji.' },
+  { id:'p41', ch:'pra', t:'text', p:33, q:'Kako se zove najjednostavnije oruđe starijeg kamenog doba, komad kamena grubo naoštren na vrhu ili s jedne strane?', a:['kameni oblutak','oblutak'],
+    ex:'Kameni oblutak dugo je služio za sve životne potrebe. Lijep primjerak pronađen je u špilji Šandalji.' },
+  { id:'p42', ch:'pra', t:'mc', p:33, q:'Gdje je u Hrvatskoj pronađen lijep primjerak kamenog oblutka?', a:['U špilji Šandalji','U Vučedolu','U Romualdovoj pećini','U Vinkovcima'],
+    ex:'Špilja Šandalja nalazi se kraj Pule.' },
+  { id:'p43', ch:'pra', t:'mc', p:33, q:'Što je ručni klin i čemu je služio?',
+    a:['Obostrano obrađen kamen prilagođen ruci, za lov, komadanje mesa i rezanje kože','Metalni mač Kelta','Glineni kalup za lijevanje bakra','Drveno koplje za ribolov'],
+    ex:'Kameni oblutak s vremenom je zamijenjen ručnim klinom, koji je bio obostrano obrađen.' },
+  { id:'p44', ch:'pra', t:'mc', p:33, q:'Od čega su ljudi starijeg kamenog doba još izrađivali oruđe i oružje?', a:['Od kosti i drveta','Od željeza','Od bronce','Od plastike'],
+    ex:'Osim od grubo obrađena kamena, oruđe i oružje izrađivali su i od kosti i drveta.' },
+  { id:'p45', ch:'pra', t:'mc', p:38, q:'Kako se dobivalo željezno oruđe?',
+    a:['Ruda se talila u posebnim pećima na visokim temperaturama i lijevala u kalupe','Željezo se skupljalo u rijekama','Kamen se glačao vodom','Glina se pekla na suncu'],
+    ex:'U posebnim pećima mogla se na visokim temperaturama taliti željezna ruda, koja se lijevala u kalupe.' },
+  { id:'p46', ch:'pra', t:'mc', p:38, q:'Što je nastalo kad su se saonicama dodali kotači?', a:['Prva kola','Prvi brodovi','Lončarsko kolo','Prvi mlinovi'],
+    ex:'Za prijevoz robe najprije su se upotrebljavale saonice. Izum kotača unaprijedio je promet: nastaju prva kola koja su vukle snažnije životinje.' },
+  { id:'p47', ch:'pra', t:'mc', p:38, q:'Na što upućuje raspored kuća u Vučedolu?', a:['Na raslojenost društva prema bogatstvu','Na to da su svi bili jednako bogati','Na to da su živjeli pod zemljom','Na to da su bili nomadi'],
+    ex:'Kuće su bile smještene uz rub naselja, a raspored upućuje na podjelu društva prema bogatstvu.' },
+  { id:'p48', ch:'pra', t:'mc', p:39, q:'Kako su građene vučedolske kuće?',
+    a:['Kolci u tlu, isprepleteno pruće oblijepljeno ilovačom, krov od trske','Od kamenih blokova i mramora','Od opeke s crijepom','Od leda i snijega'],
+    ex:'Kuće su bile četvrtasta tlocrta, pod od nabijene zemlje, a u sredini je bilo ognjište.' },
+  { id:'p49', ch:'pra', t:'mc', p:39, q:'Čemu je služila jama duboka do dva metra u vučedolskoj kući?', a:['Kao podrum za hranu, a poslije za otpad','Kao bunar','Kao grob','Kao skrovište od neprijatelja'],
+    ex:'U jamama su pronađeni ostatci keramičkih posuda, životinjskih kostiju, riblje ljuske i puževa.' },
+  { id:'p50', ch:'pra', t:'mc', p:39, q:'Od čega je bila izrađena odjeća Vučedolaca?', a:['Od lanene i vunene tkanine','Od svile','Samo od životinjskog krzna','Od pamuka'],
+    ex:'Tkanine su bojili žutim, crvenim, smeđim i crnim bojama koje su dobivali od raznih biljaka.' },
+  { id:'p51', ch:'pra', t:'mc', p:39, q:'Po čemu su bili poznati Kelti?', a:['Po kaljenju željeza i izradi dugih mačeva, oklopa i noževa','Po gradnji piramida','Po špiljskim crtežima','Po Vučedolskoj golubici'],
+    ex:'Keltski su narodi vješto obrađivali metale. Keramiku su izrađivali na lončarskom kolu, a naselja su počeli utvrđivati.' },
+  { id:'p52', ch:'pra', t:'mc', p:41, q:'Kako su ljudi starijeg kamenog doba dolazili do hrane?', a:['Skupljali su plodove i lovili životinje','Uzgajali su pšenicu','Kupovali su hranu na tržnici','Uzgajali su ovce i svinje'],
+    ex:'Skupljali su plodove i korijenje biljaka te lovili životinje u skupinama.' },
+  { id:'p53', ch:'pra', t:'mc', p:41, q:'Što su bili mamuti?', a:['Slonovi ledenog doba gustog krzna','Pripitomljeni psi','Vrsta ptica','Divlje svinje'],
+    ex:'Mamuti su bili slonovi ledenog doba obrasli gustom dlakom.' },
+  { id:'p54', ch:'pra', t:'mc', p:42, q:'Ostatci kojih životinja su pronađeni u Krapini?', a:['Špiljskog medvjeda, nosoroga, divljeg goveda i losa','Lavova i žirafa','Konja i kokoši','Dupina i morskih pasa'],
+    ex:'To svjedoči da su i krapinski neandertalci bili vješti lovci.' },
+  { id:'p55', ch:'pra', t:'mc', p:42, q:'Koje su žitarice ljudi uzgajali u mlađem kamenom dobu?', a:['Pšenicu, proso i ječam','Kukuruz i krumpir','Rižu i kavu','Rajčice i papriku'],
+    ex:'Ljudi su uočili da iz sjemena koje je palo na zemlju niče nova biljka pa počinju uzgajati žitarice.' },
+  { id:'p56', ch:'pra', t:'text', p:42, q:'Koja je prva životinja koju je čovjek pripitomio?', a:['pas','psa'],
+    ex:'Pas je bio od velike pomoći u lovu. Poslije su pripitomljena goveda, ovce i svinje.' },
+  { id:'p57', ch:'pra', t:'match', p:41, q:'Poveži zanimanje s onim što ono znači.',
+    pairs:[['Ratarstvo','Uzgoj biljaka i žitarica'],['Stočarstvo','Uzgoj domaćih životinja'],['Obrt','Izrada predmeta za svakodnevnu upotrebu'],['Rudarstvo','Vađenje ruda'],['Robna razmjena','Zamjena stvari bez novca']],
+    ex:'Ratarstvo i stočarstvo doveli su do sjedilačkog načina života, a metalno doba do pojave obrtnika i trgovaca.' },
+  { id:'p58', ch:'pra', t:'mc', p:42, q:'Što je donijelo ratarstvo i stočarstvo?', a:['Sjedilački način života i sigurnost u proizvodnji hrane','Nomadski način života','Pojavu pisma','Kraj ledenog doba'],
+    ex:'Proizvodnja hrane unijela je sigurnost u život ljudi jer više nisu ovisili o sreći u lovu.' },
+  { id:'p59', ch:'pra', t:'mc', p:43, q:'Kada se na našem prostoru počinje upotrebljavati novac?', a:['S prodorom Grka i Kelta u IV. st. pr. Kr.','U starijem kamenom dobu','Oko 10 000 g. pr. Kr.','Tek u srednjem vijeku'],
+    ex:'Prije toga ljudi su međusobno razmjenjivali stvari koje su im trebale (robna razmjena).' },
+  { id:'p60', ch:'pra', t:'mc', p:43, q:'Kojim su se unosnim poslom bavili ilirski narodi uz jadransku obalu?', a:['Gusarenjem','Rudarstvom zlata','Gradnjom piramida','Izradom papirusa'],
+    ex:'Iliri u unutrašnjosti bavili su se ratarstvom, stočarstvom i obrtima, a uz obalu je unosno bilo gusarenje.' },
+  { id:'p61', ch:'pra', t:'mc', p:43, q:'Do čega je dovela podjela zanimanja u metalnom dobu?', a:['Do raslojavanja društva i izdvajanja bogatijih članova','Do nestanka trgovine','Do povratka nomadskom životu','Do ledenog doba'],
+    ex:'Pojačana potreba za metalima utjecala je i na pojavu rudarstva.' },
+  { id:'p62', ch:'pra', t:'mc', p:44, q:'Što je Vučedolska golubica?', a:['Keramička posuda u obliku ptice, najpoznatiji predmet vučedolske kulture','Živa ptica iz Vučedola','Kameni kip s Krete','Brončani mač'],
+    ex:'Pronađena je 1938. tijekom arheoloških iskapanja u Vučedolu.' },
+  { id:'p63', ch:'pra', t:'mc', p:44, q:'Gdje se danas čuva Vučedolska golubica?', a:['U Arheološkom muzeju u Zagrebu','U Louvreu u Parizu','U muzeju Kraneamus','U Vukovaru na trgu'],
+    ex:'Golubica je pronađena 1938. u Vučedolu, a čuva se u Arheološkom muzeju u Zagrebu.' },
+  { id:'p64', ch:'pra', t:'mc', p:45, q:'Neki arheolozi smatraju da „golubica” zapravo prikazuje…', a:['jarebicu','orla','patku','sovu'],
+    ex:'Jarebica se povezuje s bogom vatre i kovačkog umijeća.' },
+  { id:'p65', ch:'pra', t:'match', p:45, q:'Poveži pojam s objašnjenjem.',
+    pairs:[['Lijevač','Rastaljeni metal lijeva u kalup'],['Kovač','Oblikuje predmete od metala'],['Kalup','Model prema kojem se oblikuje predmet'],['Keramika','Glina pečena na visokoj temperaturi']],
+    ex:'Vučedolci su bili izvrsni lijevači i kovači bakra.' },
+  { id:'p66', ch:'pra', t:'mc', p:46, q:'Po čemu se mlađe kameno doba razlikuje u obradi kamena?', a:['Kamen se počeo glačati vodom i pijeskom','Kamen se počeo taliti','Kamen se više nije upotrebljavao','Kamen se bojio crvenom bojom'],
+    ex:'S vremenom je čovjek počeo glačati kamen pa su nastajali fino uglađeni komadi oruđa i oružja. Time počinje mlađe kameno doba.' },
+  { id:'p67', ch:'pra', t:'mc', p:46, q:'Što znamo o tome kako su neandertalci postupali s mrtvima?', a:['Pokapali su ih, često u zgrčenom položaju','Ostavljali su ih u šumi','Spaljivali su ih u pećima','Gradili su im piramide'],
+    ex:'Od europskih pokopa na prvome mjestu treba spomenuti one u La Ferrassieu u Francuskoj.' },
+  { id:'p68', ch:'pra', t:'mc', p:47, q:'S kojim ljudima počinje vrhunac špiljskog slikarstva?', a:['S kromanjoncima','S neandertalcima','S Keltima','S Ilirima'],
+    ex:'Vrhunac umjetničkog stvaralaštva prapovijesnog doba počinje s kromanjoncima i pojavom špiljskog slikarstva.' },
+  { id:'p69', ch:'pra', t:'match', p:47, q:'Poveži špilju s državom.',
+    pairs:[['Lascaux','Francuska'],['Altamira','Španjolska'],['Magura','Bugarska'],['Coliboaia','Rumunjska'],['Romualdova pećina','Hrvatska (Istra)']],
+    ex:'Crteži iz Lascauxa i Altamire stari su oko 17 000 godina pr. Krista.' },
+  { id:'p70', ch:'pra', t:'mc', p:48, q:'Što su najčešće prikazivali špiljski crteži?', a:['Životinje: bizone, konje, jelene i bikove','Gradove i ceste','Brodove i more','Kraljeve i krune'],
+    ex:'Prikazan je i način lova tadašnjeg čovjeka, a uz životinje nalaze se i simboli te geometrijski likovi.' },
+  { id:'p71', ch:'pra', t:'mc', p:48, q:'Zašto su ljudi u prapovijesti slikali životinje na zidovima špilja?', a:['Vjerovali su da će ih tako lakše uloviti','Da bi uljepšali dom za goste','Da bi naučili pisati','Da bi prodavali slike'],
+    ex:'Znanstvenici vjeruju da su crteži bili dio religijskih obreda. Neke su životinje prikazane probodene kopljima.' },
+  { id:'p72', ch:'pra', t:'match', p:48, q:'Poveži boju s onim od čega se dobivala.',
+    pairs:[['Crvena','Mineral (hematit) u prahu'],['Crna','Ugljen'],['Bijela','Kreda']],
+    ex:'Mineral su ustrljali u prah i pomiješali s vodom. Boju su nanosili rukama, krznom, četkicama od dlake, perjem ili puhanjem iz usta.' },
+  { id:'p73', ch:'pra', t:'mc', p:48, q:'Kako su prapovijesni umjetnici osvjetljavali tamne špilje?', a:['Svjetiljkama od kamena u kojima je gorjelo životinjsko salo','Električnim lampama','Svijećama od voska','Ogledalima'],
+    ex:'Špilje su bile duboko ukopane pod zemljom pa im je trebalo svjetlo.' },
+  { id:'p74', ch:'pra', t:'mc', p:49, q:'Koliko su stari crteži u Romualdovoj pećini u Istri?', a:['Preko 30 000 godina','Oko 500 godina','Oko 3000 godina','Preko milijun godina'],
+    ex:'Otkriveno je oko 44 crteža bizona, divokoza, ljudi i drugih likova crvenom bojom. To su jedini dosad pronađeni primjeri špiljskog slikarstva starijeg kamenog doba u Hrvatskoj.' },
+  { id:'p75', ch:'pra', t:'mc', p:49, q:'Tko je s međunarodnim timom otkrio crteže u Romualdovoj pećini?', a:['Darko Komšo i Ivor Karavanić','Dragutin Gorjanović-Kramberger','Herodot i Ciceron','Marcel Ravidat'],
+    ex:'Romualdova pećina zove se i Špilja sv. Romualda.' },
+  { id:'p76', ch:'pra', t:'mc', p:49, q:'Zašto je za posjetitelje napravljena replika špilje Lascaux?', a:['Zbog mnoštva posjetitelja crteži su počeli propadati','Jer se špilja srušila','Jer su crteži ukradeni','Jer je špilja premala'],
+    ex:'Isto je učinjeno i u Altamiri u Španjolskoj.' },
+  { id:'p77', ch:'pra', t:'mc', p:50, q:'Što su Venere iz prapovijesti?', a:['Mali ženski kipići koji simboliziraju plodnost i majčinstvo','Rimske božice','Imena špilja','Vrste posuda'],
+    ex:'Najpoznatija je Venera iz Willendorfa u Austriji.' },
+  { id:'p78', ch:'pra', t:'mc', p:50, q:'Gdje je pronađena najpoznatija prapovijesna Venera?', a:['U Willendorfu u Austriji','U Krapini','U Vučedolu','U Lascauxu'],
+    ex:'Poznata je i Venera iz Pavlova u Češkoj.' },
+  { id:'p79', ch:'pra', t:'mc', p:51, q:'Kakva je bila vučedolska keramika?', a:['Tamna, sjajno polirana i ukrašena bijelim geometrijskim ukrasima','Bijela s plavim cvjetovima','Prozirna poput stakla','Zlatna'],
+    ex:'Motivi su najčešće bili geometrijski likovi, kružnice, sunce, križ i dvostruka sjekira.' },
+  { id:'p80', ch:'pra', t:'mc', p:51, q:'Od čega su Vučedolci dobivali bijeli prah za ukrase?', a:['Od usitnjenih puževa ili riječnih školjki pomiješanih sa smolom','Od krede iz Engleske','Od snijega','Od brašna'],
+    ex:'Bijeli prah nanosili su na keramiku u urezane ukrase.' },
+  { id:'p81', ch:'pra', t:'mc', p:52, q:'Što je Vučedolski Orion?', a:['Posuda iz Vinkovaca koja se smatra najstarijim europskim kalendarom','Zvijezda nazvana po Vučedolu','Brončani mač','Keltski svećenik'],
+    ex:'Trake na posudi predstavljaju godišnja doba, a znakovi zviježđa vidljiva na nebu.' },
+  { id:'p82', ch:'pra', t:'mc', p:52, q:'Koliko je dana imala vučedolska godina?', a:['360','365','100','12'],
+    ex:'Prema pretpostavci znanstvenika, svako je godišnje doba imalo 90 dana.' },
+  { id:'p83', ch:'pra', t:'mc', p:52, q:'Iliri su bili mnogobošci. Što to znači?', a:['Vjerovali su u više bogova','Imali su mnogo novca','Imali su jednog boga','Nisu vjerovali ni u što'],
+    ex:'Mnogobošci se nazivaju i politeisti. Kod Ilira je bio raširen kult Sunca i kult zmije.' },
+  { id:'p84', ch:'pra', t:'text', p:53, q:'Kako se zove zemljani ili kameni humak pod kojim se nalazi jedan ili više grobova?', a:['tumul','tumuli'],
+    ex:'Iliri su pokapali mrtve u grobne humke zvane tumuli, uz priloge od bronce i jantara, keramiku, oružje i oruđe.' },
+  { id:'p85', ch:'pra', t:'mc', p:53, q:'Tko su bili druidi?', a:['Keltski svećenici, liječnici i proroci','Ilirski gusari','Rimski vojnici','Vučedolski lončari'],
+    ex:'Druidi nisu zapisivali znanje, nego su ga prenosili usmenom predajom.' },
+
+
+  // ===== STARI ISTOK =====
+  { id:'s01', ch:'istok', t:'mc', p:54, q:'Što nazivamo Starim istokom?', a:['Prostor jugozapadne Azije i sjeveroistočne Afrike','Istočnu Hrvatsku','Kinu i Japan','Istočnu Europu'],
+    ex:'To je područje današnjih država Egipta, Jordana, Sirije, Libanona, Izraela, Iraka, Irana i Turske.' },
+  { id:'s02', ch:'istok', t:'mc', p:54, q:'Uz koje su rijeke nastale prve države Starog istoka?', a:['Nil, Eufrat i Tigris','Dunav i Savu','Rajnu i Volgu','Amazonu i Misisipi'],
+    ex:'Prve države nastale su oko velikih rijeka: Nila u Egiptu te Eufrata i Tigrisa u Mezopotamiji.' },
+  { id:'s03', ch:'istok', t:'match', p:54, q:'Poveži rijeku s područjem.',
+    pairs:[['Nil','Egipat'],['Eufrat i Tigris','Mezopotamija']],
+    ex:'Velike rijeke izlijevale su se iz korita i poplavljivale okolno zemljište.' },
+  { id:'s04', ch:'istok', t:'mc', p:54, q:'Zašto su poplave rijeka bile korisne?', a:['Nanosile su mulj koji je zemlju činio plodnom','Donosile su zlato','Hladile su zrak','Tjerale su neprijatelje'],
+    ex:'Poplave je trebalo obuzdati kanalima i nasipima da bi se ljudi mogli baviti poljodjelstvom.' },
+  { id:'s05', ch:'istok', t:'mc', p:54, q:'Zašto Stari istok nazivamo kolijevkom civilizacije?', a:['Tu su nastali prvi gradovi, države, zakoni i pismo','Tu su živjeli prvi neandertalci','Tu su nastali prvi crteži u špiljama','Tu je otkrivena Amerika'],
+    ex:'Najvažnije ljudsko dostignuće koje je tu niklo je pismo.' },
+  { id:'s06', ch:'istok', t:'mc', p:55, q:'Što je zigurat?', a:['Stepenasta građevina s hramom i zvjezdarnicom na vrhu','Egipatski kralj','Vrsta pisma','Kanal za navodnjavanje'],
+    ex:'Na vrhu zigurata nalazila se zvjezdarnica s kipom i hramom mjesnog božanstva.' },
+  { id:'s07', ch:'istok', t:'order', p:56, q:'Poredaj događaje Starog istoka od najstarijeg.',
+    items:['Klinasto pismo Sumerana (3500. pr. Kr.)','Džoserova piramida u Egiptu','Hamurabijev zakonik u Babilonu (1780. pr. Kr.)','Glasovno pismo Feničana (1200. pr. Kr.)'],
+    ex:'Crta vremena Starog istoka na str. 56–57.' },
+  { id:'s08', ch:'istok', t:'mc', p:56, q:'U kojoj se današnjoj državi nalaze piramide u Gizi?', a:['U Egiptu','U Iraku','U Grčkoj','U Turskoj'],
+    ex:'Zemljovid Starog istoka na str. 56–57.' },
+  { id:'s09', ch:'istok', t:'mc', p:58, q:'Što je grad?', a:['Naselje s više tisuća stanovnika koji se bave različitim zanimanjima','Svako selo uz rijeku','Kuća s vrtom','Skupina nomada'],
+    ex:'U Hrvatskoj su gradovi naselja od dvije tisuće stanovnika i više.' },
+  { id:'s10', ch:'istok', t:'mc', p:58, q:'Koji je jedan od najstarijih gradova na svijetu?', a:['Jerihon u Palestini (oko 9000. pr. Kr.)','Zagreb','Rim','Pariz'],
+    ex:'Jerihon postoji i danas.' },
+  { id:'s11', ch:'istok', t:'mc', p:58, q:'Kada su se gradovi prvi put pojavili na Starom istoku?', a:['U III. tisućljeću pr. Kr.','U starijem kamenom dobu','1492. godine','U IV. st. pos. Kr.'],
+    ex:'Gradovi su bili središta pismenosti i kulture te svjetovne i religijske vlasti.' },
+  { id:'s12', ch:'istok', t:'text', p:59, q:'Kako se zove područje između rijeka Eufrata i Tigrisa?', a:['Mezopotamija'],
+    ex:'Riječ Mezopotamija grčkog je podrijetla i znači međurječje.' },
+  { id:'s13', ch:'istok', t:'mc', p:59, q:'Što znači riječ Mezopotamija?', a:['Međurječje','Plodna zemlja','Zemlja faraona','Velika pustinja'],
+    ex:'Mezopotamija se nalazi između planina na sjeveru i pustinje na jugu.' },
+  { id:'s14', ch:'istok', t:'mc', p:59, q:'Zašto su ljudi u Mezopotamiji gradili kanale?', a:['Da bi navodnjavali polja u sušnim razdobljima i obuzdali poplave','Da bi plovili do Europe','Da bi se kupali','Da bi lovili ribu'],
+    ex:'Uspjeli su ovladati rijekom, sušnim razdobljem i poplavama pa su se počeli stalno naseljavati na obali.' },
+  { id:'s15', ch:'istok', t:'mc', p:59, q:'Što je grad-država?', a:['Grad okružen zidinama koji ima sva obilježja države','Država bez gradova','Selo uz rijeku','Hram na vrhu zigurata'],
+    ex:'Za gradnju kanala trebalo je mnogo ljudi pa su se udruživali. Tako nastaju gradovi, središta većih zajednica.' }
+,
+  { id:'s16', ch:'istok', t:'mc', p:60, q:'Gdje su živjeli Sumerani?', a:['U južnom dijelu Mezopotamije','U Egiptu uz Nil','Na Kreti','U Hrvatskom zagorju'],
+    ex:'Sumerani su ondje u IV. tisućljeću pr. Kr. osnovali svoje gradove-države.' },
+  { id:'s17', ch:'istok', t:'mc', p:60, q:'Koji su bili najpoznatiji sumerski gradovi?', a:['Ur, Uruk, Eridu, Kiš, Lagaš i Nipur','Rim, Atena i Sparta','Memfis i Teba','Vukovar i Vinkovci'],
+    ex:'Sumerski gradovi-države bili su odvojeni kanalima i graničnim kamenjem i nikad se nisu ujedinili u jednu državu.' },
+  { id:'s18', ch:'istok', t:'mc', p:60, q:'Što se isticalo u središtu svakoga sumerskog grada?', a:['Hram i kraljevska palača','Tržnica i kazalište','Luka i svjetionik','Stadion'],
+    ex:'Hram na vrhu zigurata služio je i kao zvjezdarnica.' },
+  { id:'s19', ch:'istok', t:'mc', p:60, q:'Što su izradili sumerski svećenici promatrajući zvijezde?', a:['Prvi kalendar s 12 mjeseci','Prvi kompas','Prve naočale','Prvi sat s kazaljkama'],
+    ex:'Proučavali su zvijezde i predviđali kada će Eufrat i Tigris poplaviti okolno područje.' },
+  { id:'s20', ch:'istok', t:'mc', p:60, q:'Koji je akadski kralj oko 2300. pr. Kr. pokorio sumerske gradove?', a:['Sargon','Hamurabi','Asurbanipal','Nabukodonozor'],
+    ex:'Akađani su stvorili akadsku državu koja se prostirala cijelom Mezopotamijom sve do Sredozemnog mora.' },
+  { id:'s21', ch:'istok', t:'mc', p:61, q:'Što su Akađani preuzeli od Sumerana?', a:['Pismo, kulturu i religiju','Piramide','Željezno oružje','Novac'],
+    ex:'Akadska država bila je prva država na području Mezopotamije.' },
+  { id:'s22', ch:'istok', t:'match', p:61, q:'Na koje se dvije države raspala akadska država?',
+    pairs:[['Na sjeveru','Asirska država'],['Na jugu','Babilonska država']],
+    ex:'S vremenom se država raspala na dvije velike države.' },
+  { id:'s23', ch:'istok', t:'mc', p:62, q:'Koji je kralj u XVIII. st. pr. Kr. od Babilona stvorio veliku državu?', a:['Hamurabi','Sargon','Asurbanipal','Džoser'],
+    ex:'Babilon je postao prijestolnica, a južna Mezopotamija dobila je ime Babilonija.' },
+  { id:'s24', ch:'istok', t:'mc', p:62, q:'Na kojoj je rijeci bio sagrađen Babilon?', a:['Na Eufratu, na obje obale','Na Nilu','Na Tigrisu','Na Dunavu'],
+    ex:'Babilon je bio jedan od najbogatijih gradova Mezopotamije od XVIII. do VI. st. pr. Kr.' },
+  { id:'s25', ch:'istok', t:'mc', p:62, q:'Po kome je grad Ašur dobio ime?', a:['Po bogu Ašuru','Po kralju Sargonu','Po rijeci','Po Herodotu'],
+    ex:'Ašur je bio središte asirske države, na zapadnoj obali rijeke Tigrisa.' },
+  { id:'s26', ch:'istok', t:'mc', p:62, q:'Po čemu su Asirci ostali zapamćeni?', a:['Kao neustrašivi ratnici s željeznim oružjem, okrutni prema podanicima','Kao miroljubivi ratari','Kao graditelji piramida','Kao izumitelji glasovnog pisma'],
+    ex:'Brzo su ovladali upotrebom željeza, a njihova je vojska dugo bila nepobjediva.' },
+  { id:'s27', ch:'istok', t:'text', p:63, q:'Kako se zvala nova asirska prijestolnica, puna raskošnih palača i hramova?', a:['Ninive','Niniva','Ninivi'],
+    ex:'Pobjede u osvajačkim pohodima omogućile su asirskim vladarima da s opljačkanim bogatstvom sagrade novu prijestolnicu.' },
+  { id:'s28', ch:'istok', t:'mc', p:63, q:'Tko je bio najpoznatiji asirski vladar (VII. st. pr. Kr.)?', a:['Asurbanipal','Hamurabi','Sargon','Nabukodonozor II.'],
+    ex:'Čuvao je granice države i gradio raskošne palače u Ninivi.' },
+  { id:'s29', ch:'istok', t:'mc', p:63, q:'Što je sačuvano u Asurbanipalovoj kraljevskoj biblioteci i arhivu?', a:['Više od 25 000 glinenih pločica s klinastim pismom','Tisuće papirusnih svitaka','Tiskane knjige','Kipovi bogova'],
+    ex:'Među njima je i Ep o Gilgamešu.' },
+  { id:'s30', ch:'istok', t:'mc', p:63, q:'Koji je narod napao Asiriju i spalio Ninivu?', a:['Kaldejci','Sumerani','Egipćani','Kelti'],
+    ex:'Nakon Asurbanipalove smrti sukobi za vlast i pobune oslabili su Asiriju.' },
+  { id:'s31', ch:'istok', t:'mc', p:64, q:'Koji je kaldejski kralj obnovio Babilon i sagradio palače, hramove, parkove i zidine?', a:['Nabukodonozor II. Veliki','Hamurabi','Asurbanipal','Sargon'],
+    ex:'Babilonska je država bila najmoćnija u VII. i VI. st. pr. Kr.' },
+  { id:'s32', ch:'istok', t:'mc', p:64, q:'Tko je osvojio Babilon u VI. st. pr. Kr.?', a:['Perzijanci','Asirci','Rimljani','Grci'],
+    ex:'Nakon Nabukodonozora II. Babilon gubi moć.' },
+  { id:'s33', ch:'istok', t:'mc', p:65, q:'Kako se zovu bogato ukrašena ulazna vrata Babilona?', a:['Ištarina vrata','Lavlja vrata','Zlatna vrata','Hamurabijeva vrata'],
+    ex:'Nazvana su prema mezopotamskoj božici Ištar.' },
+  { id:'s34', ch:'istok', t:'mc', p:65, q:'Koje se babilonsko čudo ubraja među sedam svjetskih čuda?', a:['Viseći vrtovi','Piramide','Zigurat u Uru','Ištarina vrata'],
+    ex:'Strabon opisuje terase s vrtovima podignute jedna iznad druge.' },
+  { id:'s35', ch:'istok', t:'mc', p:65, q:'Što je stadij?', a:['Mjera za duljinu (oko 180–192 m)','Sportsko igralište','Vrsta pisma','Babilonski kralj'],
+    ex:'Stadij su koristili narodi staroga vijeka. Herodot i Strabon različito opisuju veličinu Babilona (povijesna perspektiva).' },
+  { id:'s36', ch:'istok', t:'order', p:60, q:'Poredaj od najstarijeg.',
+    items:['Sumerski gradovi-države (IV. tis. pr. Kr.)','Sargon i akadska država (oko 2300. pr. Kr.)','Hamurabi u Babilonu (XVIII. st. pr. Kr.)','Asurbanipal u Ninivi (VII. st. pr. Kr.)','Perzijanci osvajaju Babilon (VI. st. pr. Kr.)'],
+    ex:'Mezopotamija na str. 60–65.' },
+  { id:'p86', ch:'pra', t:'mc', p:34, q:'Od čega su neandertalci gradili prve kolibe?', a:['Od granja, lišća i kože','Od kamenih blokova','Od opeke','Od leda'],
+    ex:'Kolibe su im pružale utočište od hladnoće i sigurnost od divljih zvijeri.' },
+  { id:'p87', ch:'pra', t:'mc', p:34, q:'Kako su neandertalci palili vatru?', a:['Kresanjem posebne vrste kamena o kamen pokraj suhog lišća','Šibicama','Povećalom','Trljanjem ruku'],
+    ex:'Neandertalci su prvi čovjekovi preci koji su naučili koristiti se vatrom.' },
+  { id:'p88', ch:'pra', t:'mc', p:34, q:'Čemu je ljudima služila vatra?', a:['Za toplinu, obranu od zvijeri, pripremu hrane, a kasnije za keramiku','Samo za svjetlo','Samo za lov','Za pisanje'],
+    ex:'Vatru su ljudi najprije vjerojatno vidjeli kad je grom udario u stablo ili za suše.' },
+  { id:'p89', ch:'pra', t:'mc', p:35, q:'Koji se izum smatra najvažnijim izumom mlađega kamenog doba?', a:['Luk i strijela','Kotač','Pismo','Novac'],
+    ex:'S lukom i strijelom lov je postao sigurniji i lakši, a ozljede lovaca rjeđe.' },
+  { id:'p90', ch:'pra', t:'mc', p:35, q:'Kako su nastale kamene sjekire?', a:['Glačanjem i bušenjem kamena i dodavanjem drvene drške','Lijevanjem bakra u kalup','Kovanjem željeza','Pečenjem gline'],
+    ex:'Glačanje je bio zahtjevan proces: kamen se trljao finim pijeskom.' },
+  { id:'p91', ch:'pra', t:'mc', p:35, q:'Od čega su izrađivane igle u mlađem kamenom dobu?', a:['Od životinjskih kostiju','Od željeza','Od zlata','Od stakla'],
+    ex:'Igle su omogućile spajanje komada kože ili krzna u odjeću. Kasnije nastaju tkanine od vune i biljnih vlakana.' },
+  { id:'p92', ch:'pra', t:'mc', p:35, q:'Što je frula iz Divjih Baba?', a:['Jedan od najstarijih glazbenih instrumenata, od medvjeđe kosti (oko 43 000 godina)','Keltski mač','Vučedolska posuda','Rimska svirala'],
+    ex:'Pronađena je u Sloveniji. Smatra se da su je izradili neandertalci.' },
+  { id:'p93', ch:'pra', t:'mc', p:36, q:'Što je zamijenilo zašiljeni štap za obradu zemlje?', a:['Plug koji su vukle pripitomljene životinje','Traktor','Kameni oblutak','Luk i strijela'],
+    ex:'Tako je mukotrpna obrada zemlje uvelike olakšana.' },
+  { id:'p94', ch:'pra', t:'mc', p:36, q:'Za što su služili žrvnjevi?', a:['Za mljevenje žitarica','Za paljenje vatre','Za lov na ribe','Za pisanje'],
+    ex:'Kameni mužar služio je za usitnjavanje hrane. Lončarsko kolo donijeli su Kelti u Europu.' },
+  { id:'p95', ch:'pra', t:'match', p:37, q:'Poveži nastambu s opisom.',
+    pairs:[['Zemunica','Dijelom ukopana u zemlju, krov od granja'],['Koliba','Nad zemljom, od granja i drva'],['Sojenica','Drvena kuća na stupovima nad rijekom ili jezerom'],['Gradina','Naselje na uzvisini utvrđeno kamenim zidinama']],
+    ex:'Sojenice su štitile od poplava, divljih zvijeri i neprijatelja. Gradine su gradili stanovnici metalnog doba na tlu Hrvatske.' },
+  { id:'p96', ch:'pra', t:'mc', p:37, q:'Što su gradine?', a:['Naselja na uzvisinama utvrđena kamenim zidinama, nasipima i opkopima','Kuće na stupovima u jezeru','Špilje za stanovanje','Grobni humci'],
+    ex:'Bila su to naselja na teže pristupačnim uzdignutim mjestima uz obale mora i u unutrašnjosti Hrvatske.' }
+];
+
+let CARDS = [
+  { ch:'uvod', term:'Povijest', def:'Znanost koja otkriva, proučava i objašnjava prošlost čovjeka od njegova postanka do danas.', p:10 },
+  { ch:'uvod', term:'Herodot', def:'Grčki povjesničar iz 5. st. pr. Kr., „otac povijesti”.', p:11 },
+  { ch:'uvod', term:'Era', def:'Dugo razdoblje računanja vremena koje počinje nekim važnim događajem.', p:13 },
+  { ch:'uvod', term:'Kronologija', def:'Znanost o vremenskom slijedu (kronos = vrijeme, logos = znanost).', p:13 },
+  { ch:'uvod', term:'pr. Kr. / pr. n. e.', def:'Prije Krista / prije nove ere. Godine se broje unatrag.', p:13 },
+  { ch:'uvod', term:'Crta vremena', def:'Crta (lenta) na koju kronološki upisujemo događaje.', p:13 },
+  { ch:'uvod', term:'Slijepa karta', def:'Karta na kojoj su ucrtane samo granice kontinenata ili država.', p:14 },
+  { ch:'uvod', term:'Atlas', def:'Zbirka zemljovida.', p:14 },
+  { ch:'uvod', term:'Povod', def:'Ono što je neposredno pokrenulo događaj, „kap koja je prelila čašu”.', p:16 },
+  { ch:'uvod', term:'Kontinuitet', def:'Kad se nešto razvija bez prekida (npr. grad Split od rimskog doba do danas).', p:17 },
+  { ch:'uvod', term:'Povijesni izvori', def:'Tragovi iz prošlosti: materijalni, pisani, slikovni, tonski (zvučni) i usmeni.', p:17 },
+  { ch:'uvod', term:'Arhiv', def:'Ustanova u kojoj se čuvaju pisani dokumenti iz prošlosti.', p:21 },
+  { ch:'uvod', term:'Fonoteka', def:'Ustanova u kojoj se čuvaju zvučni povijesni izvori.', p:21 },
+  { ch:'uvod', term:'Filmoteka', def:'Ustanova u kojoj se čuvaju stare snimke i filmski zapisi.', p:21 },
+  { ch:'uvod', term:'Arheolog', def:'Znanstvenik koji s pomoću materijalnih izvora zaključuje o životu ljudi u prošlosti.', p:21 },
+  { ch:'uvod', term:'Antropolog', def:'Znanstvenik koji proučava način života ljudi.', p:21 },
+  { ch:'uvod', term:'Etnolog', def:'Znanstvenik koji prikuplja, proučava i prikazuje kulturnu baštinu.', p:21 },
+  { ch:'uvod', term:'Arhivist', def:'Znanstvenik koji prikuplja, čuva i istražuje pisane izvore.', p:21 },
+  { ch:'uvod', term:'Megalitska kultura', def:'Prapovijesna kultura građenja obrednih građevina od velikih kamenih blokova.', p:21 },
+  { ch:'pra', term:'Prapovijest', def:'Razdoblje u kojem ljudi još nisu poznavali pismo.', p:22 },
+  { ch:'pra', term:'Kolijevka čovječanstva', def:'Afrika, gdje su pronađeni najstariji ostatci hominida.', p:22 },
+  { ch:'pra', term:'Ledeno doba', def:'Razdoblje povremenog zahlađenja na Zemlji.', p:26 },
+  { ch:'pra', term:'Nomad', def:'Čovjek koji često mijenja mjesto boravka u potrazi za hranom.', p:26 },
+  { ch:'pra', term:'Neandertalac', def:'Pračovjek starijeg kamenog doba (oko 200 000 – 28 000 g. pr. Kr.), nazvan po dolini Neandertal.', p:26 },
+  { ch:'pra', term:'Krapinski neandertalac', def:'Nalazište na Hušnjakovu brdu kraj Krapine; istraživao ga je Dragutin Gorjanović-Kramberger.', p:27 },
+  { ch:'pra', term:'Kromanjonac', def:'Homo sapiens („razuman čovjek”), oko 35 000 g. pr. Kr., nazvan po nalazištu Cro-Magnon u Francuskoj.', p:29 },
+  { ch:'pra', term:'Mlađe kameno doba', def:'Sjedilački način života i prva trajna naselja (u Hrvatskoj: starčevačka, sopotska, danilska, hvarska kultura).', p:29 },
+  { ch:'pra', term:'Rod', def:'Zajednica povezana krvnim srodstvom, na čelu s rodovskim starješinom.', p:30 },
+  { ch:'pra', term:'Bratstvo', def:'Više rodova zajedno.', p:30 },
+  { ch:'pra', term:'Pleme', def:'Više bratstava zajedno; plemena se udružuju u saveze plemena.', p:30 },
+  { ch:'pra', term:'Vučedolska kultura', def:'Kultura bakrenog doba (3. tisućljeće pr. Kr.), Vučedol na Dunavu kraj Vukovara.', p:30 },
+  { ch:'pra', term:'Bronca', def:'Mješavina bakra i kositra; daje ime brončanom dobu.', p:31 },
+  { ch:'pra', term:'Kelti', def:'Narod zaslužan za širenje obrade željeza; u IV. st. pr. Kr. naselili nizinsku Hrvatsku.', p:31 },
+  { ch:'pra', term:'Halštat i La Tène', def:'Nalazišta starijeg (Austrija) i mlađeg (Švicarska) željeznog doba.', p:31 },
+  { ch:'pra', term:'Ilirski narodi', def:'Zajednički naziv za prastanovnike hrvatskog povijesnog prostora.', p:31 },
+  { ch:'pra', term:'Arheološko nalazište', def:'Mjesto gdje su se sačuvali ostatci drevnih stvari, ljudi, životinja i građevina.', p:32 },
+  { ch:'pra', term:'Kultura', def:'Sve materijalne i duhovne stečevine neke zajednice ljudi u prošlosti.', p:32 },
+  { ch:'pra', term:'Civilizacija', def:'Zajednica visoke razine kulture koja poznaje pismo, državu itd.', p:32 },
+  { ch:'pra', term:'Kaljenje', def:'Zagrijavanje i kovanje užarenog željeza pa naglo hlađenje da bude čvršće.', p:32 },
+  { ch:'pra', term:'Megaron', def:'Vrsta pravokutne građevine.', p:32 },
+  { ch:'pra', term:'Kameni oblutak', def:'Prvo jednostavno oruđe: kamen grubo naoštren na vrhu ili s jedne strane.', p:33 },
+  { ch:'pra', term:'Ručni klin', def:'Obostrano obrađen kamen prilagođen ruci; za lov, meso i kožu.', p:33 },
+  { ch:'pra', term:'Rekonstrukcija', def:'Obnova ili ponovna gradnja neke građevine ili predmeta.', p:40 },
+  { ch:'pra', term:'Ratarstvo', def:'Uzgoj biljaka, npr. pšenice, prosa i ječma.', p:42 },
+  { ch:'pra', term:'Stočarstvo', def:'Uzgoj pripitomljenih životinja: goveda, ovaca, svinja.', p:42 },
+  { ch:'pra', term:'Robna razmjena', def:'Zamjena stvari za stvari, bez novca.', p:43 },
+  { ch:'pra', term:'Lijevač', def:'Osoba koja rastaljeni metal lijeva u kalup.', p:45 },
+  { ch:'pra', term:'Kovač', def:'Osoba koja oblikuje predmete od metala.', p:45 },
+  { ch:'pra', term:'Kalup', def:'Model prema kojem se oblikuje neki predmet.', p:45 },
+  { ch:'pra', term:'Keramika', def:'Proizvod od gline pečen na visokoj temperaturi.', p:45 },
+  { ch:'pra', term:'Vučedolska golubica', def:'Keramička posuda u obliku ptice (1938.), Arheološki muzej u Zagrebu.', p:44 },
+  { ch:'pra', term:'Špiljsko slikarstvo', def:'Crteži životinja na zidovima špilja (Lascaux, Altamira, Romualdova pećina).', p:47 },
+  { ch:'pra', term:'Venera', def:'Mali ženski kipić, simbol plodnosti (Venera iz Willendorfa).', p:50 },
+  { ch:'pra', term:'Romualdova pećina', def:'Špilja u Istri s 44 crteža starija od 30 000 godina.', p:49 },
+  { ch:'pra', term:'Vučedolski Orion', def:'Posuda iz Vinkovaca, najstariji europski kalendar (godina od 360 dana).', p:52 },
+  { ch:'pra', term:'Mnogobošci (politeisti)', def:'Ljudi koji vjeruju u više bogova.', p:52 },
+  { ch:'pra', term:'Tumul', def:'Zemljani ili kameni humak pod kojim je jedan ili više grobova.', p:53 },
+  { ch:'pra', term:'Druidi', def:'Keltski svećenici, liječnici i proroci; znanje su prenosili usmeno.', p:53 },
+  { ch:'pra', term:'Mineral', def:'Kristal koji se može naći u stijenama.', p:53 },
+  { ch:'istok', term:'Stari istok', def:'Jugozapadna Azija i sjeveroistočna Afrika; kolijevka civilizacije.', p:54 },
+  { ch:'istok', term:'Zigurat', def:'Stepenasta građevina s hramom i zvjezdarnicom na vrhu.', p:55 },
+  { ch:'istok', term:'Grad', def:'Naselje s više tisuća stanovnika različitih zanimanja.', p:58 },
+  { ch:'istok', term:'Jerihon', def:'Jedan od najstarijih gradova na svijetu (oko 9000. pr. Kr.), Palestina.', p:58 },
+  { ch:'istok', term:'Mezopotamija', def:'Međurječje: područje između Eufrata i Tigrisa.', p:59 },
+  { ch:'istok', term:'Kanali za navodnjavanje', def:'Kanali kojima se voda iz rijeke dovodila do polja.', p:59 },
+  { ch:'istok', term:'Grad-država', def:'Grad sa zidinama koji ima sva obilježja države.', p:59 }
+,
+  { ch:'pra', term:'Luk i strijela', def:'Najvažniji izum mlađeg kamenog doba; lov postaje sigurniji.', p:35 },
+  { ch:'pra', term:'Zemunica', def:'Prva nastamba, dijelom ukopana u zemlju, s krovom od granja.', p:37 },
+  { ch:'pra', term:'Sojenica', def:'Drvena kuća na stupovima nad rijekom ili jezerom.', p:37 },
+  { ch:'pra', term:'Gradina', def:'Naselje na uzvisini utvrđeno kamenim zidinama, nasipima i opkopima.', p:37 },
+  { ch:'pra', term:'Žrvanj', def:'Kameno oruđe za mljevenje žitarica.', p:36 },
+  { ch:'istok', term:'Sumerani', def:'Narod južne Mezopotamije (IV. tis. pr. Kr.), gradovi-države Ur, Uruk, Eridu, Kiš, Lagaš, Nipur.', p:60 },
+  { ch:'istok', term:'Sargon', def:'Akadski kralj koji je oko 2300. pr. Kr. pokorio sumerske gradove.', p:60 },
+  { ch:'istok', term:'Hamurabi', def:'Babilonski kralj (XVIII. st. pr. Kr.) koji je stvorio veliku državu.', p:62 },
+  { ch:'istok', term:'Asirci', def:'Ratnici sa sjevera Mezopotamije; središte Ašur, poslije Ninive.', p:62 },
+  { ch:'istok', term:'Asurbanipal', def:'Asirski vladar (VII. st. pr. Kr.); knjižnica s više od 25 000 glinenih pločica.', p:63 },
+  { ch:'istok', term:'Nabukodonozor II. Veliki', def:'Kaldejski kralj koji je obnovio Babilon (VII. i VI. st. pr. Kr.).', p:64 },
+  { ch:'istok', term:'Ištarina vrata', def:'Bogato ukrašena ulazna vrata Babilona, nazvana po božici Ištar.', p:65 },
+  { ch:'istok', term:'Viseći vrtovi', def:'Babilonski vrtovi na terasama, jedno od sedam svjetskih čuda.', p:65 }
+];
+
+let ORAL = [
+  // ===== UVOD U POVIJEST =====
+  { id:'o01', ch:'uvod', p:10, q:'Što je povijest i tko se njome bavi?',
+    pts:['Znanost koja otkriva, proučava i objašnjava prošlost čovjeka','Od postanka čovjeka do danas','Njome se bave povjesničari i povjesničarke'] },
+  { id:'o02', ch:'uvod', p:11, q:'Tko je Herodot i zašto ga zovemo „ocem povijesti”?',
+    pts:['Grčki povjesničar iz 5. st. pr. Kr.','Provjeravao je točnost podataka','Pisao je na temelju pouzdanih svjedoka i izvora','Tako ga je nazvao Ciceron'] },
+  { id:'o03', ch:'uvod', p:11, q:'Nabroji područja koja povijest proučava.',
+    pts:['Društvo','Ekonomija','Znanost i tehnologija','Politika','Filozofija, religija i kultura'] },
+  { id:'o04', ch:'uvod', p:13, q:'Objasni kako računamo vrijeme: što je era i kako brojimo godine prije i poslije Krista?',
+    pts:['Era je razdoblje koje se računa od nekog važnog događaja','Danas koristimo kršćansku (novu) eru, od rođenja Isusa Krista','Prije Krista godine brojimo unatrag (veći broj = starija godina)','Godine 0 nema','Kratice: pr. Kr. / pr. n. e. i pos. Kr. / n. e.'] },
+  { id:'o05', ch:'uvod', p:13, q:'Što je kronologija i čemu služi crta vremena?',
+    pts:['Kronologija je znanost o vremenskom slijedu događaja','Od grčkih riječi kronos (vrijeme) i logos (znanost)','Na crti vremena događaje poredamo redom kako su se dogodili','Tako vidimo tijek vremena i promjene'] },
+  { id:'o06', ch:'uvod', p:14, q:'Nabroji velika razdoblja povijesti i reci čime počinje stari vijek.',
+    pts:['Prapovijest','Stari vijek, srednji vijek, novi vijek, suvremeno doba','Stari vijek počinje izumom pisma','Pismo je izumljeno oko 3500. pr. Kr. u Mezopotamiji'] },
+  { id:'o07', ch:'uvod', p:16, q:'Objasni razliku između uzroka, povoda, tijeka i posljedica.',
+    pts:['Uzroci su događaji koji su prethodili','Povod je „kap koja je prelila čašu”, ono što je pokrenulo događaj','Tijek je slijed događaja','Posljedice su ono što je događaj izazvao'] },
+  { id:'o08', ch:'uvod', p:17, q:'Što su povijesni izvori? Nabroji vrste i daj primjer za svaku.',
+    pts:['Tragovi iz prošlosti','Materijalni (oružje, oruđe, nakit, posude)','Pisani (zapisi, natpisi na pločicama ili kamenu)','Slikovni (crteži u špiljama, slike, fotografije, skulpture)','Tonski (zvučni) i usmeni (usmena predaja)'] },
+  { id:'o09', ch:'uvod', p:17, q:'Gdje se čuvaju povijesni izvori i tko ih pronalazi i proučava?',
+    pts:['Materijalni izvori čuvaju se u muzejima','Pisani izvori u arhivima, muzejima i knjižnicama','Arheolozi iskapaju izvore na nalazištima','Arhivisti prikupljaju, čuvaju i istražuju pisane izvore'] },
+  { id:'o10', ch:'uvod', p:17, q:'Što znači kontinuitet? Navedi primjer.',
+    pts:['Nešto traje bez prekida','Primjer: Split, kontinuitet dulje od tri tisuće godina'] },
+  { id:'o11', ch:'uvod', p:20, q:'Što je povijesna perspektiva i koja pitanja postavljamo kad istražujemo događaj?',
+    pts:['Povjesničari imaju različita iskustva i mišljenja','Zato o istim događajima postoje različita gledišta','Pitanja: tko, što, gdje, kad, zašto i kako'] },
+
+  // ===== PRAPOVIJEST =====
+  { id:'o12', ch:'uvod', p:12, q:'Zašto su ljudi počeli računati vrijeme i praviti kalendare?',
+    pts:['Uočili su promjenu godišnjih doba','Morali su znati kada sijati, skupljati hranu ili ići u lov','Kalendar služi za brojenje godina','Godine su brojili od sebi važnog događaja (era)'] },
+
+  { id:'o20', ch:'pra', p:22, q:'Što je prapovijest i zašto iz nje nemamo pisanih izvora?',
+    pts:['Najdulje razdoblje ljudske prošlosti, trajalo tisućama godina','Ljudi nisu poznavali pismo','Zato znamo samo iz materijalnih i slikovnih izvora','Završava izumom pisma'] },
+  { id:'o21', ch:'pra', p:26, q:'Nabroji razdoblja prapovijesti redom.',
+    pts:['Kameno doba: starije i mlađe','Metalno doba','Bakreno doba','Brončano doba','Željezno doba'] },
+  { id:'o22', ch:'pra', p:26, q:'Opiši kako su ljudi živjeli u starijem kamenom dobu.',
+    pts:['Bili su nomadi, stalno su se selili','Živjeli su u skupinama (lakše do hrane, obrana od životinja)','Skupljali su plodove i korijenje i lovili','Živjeli su u špiljama i kolibama','Oruđe: kameni oblutak, zatim ručni klin'] },
+  { id:'o23', ch:'pra', p:26, q:'Tko su bili neandertalci?',
+    pts:['Pojavili su se oko 200 000 g. pr. Kr.','Izumrli su oko 28 000 g. pr. Kr.','Prvi su se naučili koristiti vatrom','Bili su vješti lovci'] },
+  { id:'o24', ch:'pra', p:27, q:'Ispričaj sve što znaš o krapinskom pračovjeku.',
+    pts:['Nalazište na Hušnjakovu brdu kraj Krapine, uz rijeku Krapinicu','Otkrio ga je Dragutin Gorjanović-Kramberger (kraj 19. st.)','Ostatci više od 70 neandertalaca, više od 5000 predmeta','Mjesto je bilo dobro: pogled na okolicu i voda u blizini','U blizini je muzej Kraneamus'] },
+  { id:'o25', ch:'pra', p:27, q:'Nabroji nalazišta starijeg kamenog doba u Hrvatskoj.',
+    pts:['Krapina','Šandalja kraj Pule','Vindija','Veternica','Punikve kraj Ivanca'] },
+  { id:'o26', ch:'pra', p:29, q:'Što se promijenilo u mlađem kamenom dobu?',
+    pts:['Zatopljenje klime','Kamen se glača (fino uglađeno oruđe)','Ljudi počinju uzgajati biljke (ratarstvo) i stoku (stočarstvo)','Sjedilački način života, prva stalna naselja','Pojavljuje se kromanjonac (Homo sapiens)'] },
+  { id:'o27', ch:'pra', p:42, q:'Zašto su ratarstvo i stočarstvo bili tako važni?',
+    pts:['Ljudi proizvode hranu i ne ovise o sreći u lovu','Život je sigurniji','Ljudi ostaju na jednom mjestu (sjedilački život)','Pripitomljeni pas, zatim goveda, ovce, svinje'] },
+  { id:'o28', ch:'pra', p:35, q:'Navedi važne izume prapovijesti i čemu su služili.',
+    pts:['Vatra: toplina, svjetlo, priprema hrane, zaštita','Luk i strijela: lov sigurniji i lakši','Igla: šivanje odjeće od kože i krzna','Žrvanj: mljevenje žitarica','Kotač: prva kola i lakši prijevoz'] },
+  { id:'o29', ch:'pra', p:37, q:'Opiši nastambe i naselja u prapovijesti.',
+    pts:['Špilje i kolibe','Zemunica: dijelom ukopana u zemlju','Sojenica: kuća na stupovima nad vodom (zaštita od poplava, zvijeri, neprijatelja)','Gradina: naselje na uzvisini s kamenim zidinama (metalno doba)'] },
+  { id:'o30', ch:'pra', p:30, q:'Kako je bila organizirana zajednica u prapovijesti?',
+    pts:['Rod: ljudi povezani krvnim srodstvom','Na čelu roda bio je rodovski starješina','Više rodova čini bratstvo, više bratstava pleme','Plemena se udružuju u saveze'] },
+  { id:'o31', ch:'pra', p:29, q:'Nabroji kulture mlađeg kamenog doba u Hrvatskoj i gdje su ljudi živjeli.',
+    pts:['Starčevačka','Sopotska','Danilska','Hvarska','Naselja uz plodne nizine rijeka i obalu Jadrana'] },
+  { id:'o32', ch:'pra', p:31, q:'Kako je počelo metalno doba i kojim su redom ljudi koristili metale?',
+    pts:['Počelo je sredinom IV. tisućljeća pr. Kr.','Najprije bakar','Zatim bronca (bakar + kositar), čvršća','Na kraju željezo, najčvršće, posebno za oružje','Pojavljuju se obrtnici, trgovci i rudarstvo'] },
+  { id:'o33', ch:'pra', p:30, q:'Što znaš o vučedolskoj kulturi?',
+    pts:['Bakreno doba, 3. tisućljeće pr. Kr.','Naselje na uzvisini sa strmim padinama (kraj Vukovara)','Bili su izvrsni lijevači i kovači bakra','Vučedolska golubica (1938., Arheološki muzej u Zagrebu)','Vučedolski Orion: najstariji europski kalendar'] },
+  { id:'o34', ch:'pra', p:31, q:'Tko su bili Kelti i po čemu su poznati?',
+    pts:['U IV. st. pr. Kr. naseljavaju nizinske dijelove Hrvatske','Vješto su obrađivali metale, unaprijedili kaljenje željeza','Keramika na lončarskom kolu','Utvrđivali su naselja','Svećenici druidi, znanje se prenosilo usmeno'] },
+  { id:'o35', ch:'pra', p:32, q:'Tko su bili Iliri? Nabroji ilirska plemena i opiši njihov način života.',
+    pts:['Histri (Istra), Liburni (sjeverni Jadran), Delmati (Dalmacija), Japodi (unutrašnjost)','Ratarstvo, stočarstvo i obrti','Uz obalu i gusarenje','Mnogobošci: kult Sunca i kult zmije','Pokapali su mrtve u tumule'] },
+  { id:'o36', ch:'pra', p:47, q:'Opiši špiljsko slikarstvo: gdje ga nalazimo, što prikazuje i kako su slikali?',
+    pts:['Lascaux (Francuska) i Altamira (Španjolska), oko 17 000 g. pr. Kr.','Romualdova pećina u Istri: oko 44 crteža, jedina u Hrvatskoj','Prikazuju životinje i lov','Vjerojatno dio religijskih obreda','Boja od minerala i vode; nanosili rukama, krznom, perjem, puhanjem'] },
+  { id:'o37', ch:'pra', p:50, q:'Što su Venere i što su ljudi u prapovijesti vjerovali?',
+    pts:['Mali ženski kipići','Simbol plodnosti','Najpoznatija je Venera iz Willendorfa (Austrija)','Ljudi su bili mnogobošci (politeisti)','Pokapali su mrtve s prilozima'] },
+
+  { id:'o38', ch:'pra', p:26, q:'Zašto su ljudi u starijem kamenom dobu živjeli u skupinama?',
+    pts:['Lakše su pronalazili hranu','Lakše su se branili od opasnih životinja','Zajedno su mogli loviti velike životinje (mamute)'] },
+  { id:'o39', ch:'pra', p:27, q:'Zašto je Hušnjakovo brdo kraj Krapine bilo dobro mjesto za život?',
+    pts:['S tog se mjesta moglo nadzirati okolno područje','U blizini je bila voda (rijeka Krapinica)','Polušpilja je pružala zaklon'] },
+  { id:'o40', ch:'pra', p:29, q:'Zašto su ljudi u mlađem kamenom dobu prestali biti nomadi?',
+    pts:['Klima se zatoplila','Počeli su uzgajati biljke i stoku','Morali su ostati uz svoja polja i životinje','Hrana je bila sigurnija pa su gradili stalna naselja'] },
+  { id:'o41', ch:'pra', p:35, q:'Zašto je izum luka i strijele bio tako važan?',
+    pts:['Lov je postao sigurniji i lakši','Lovci su se rjeđe ozljeđivali','Životinje su se mogle loviti iz daljine'] },
+  { id:'o42', ch:'pra', p:31, q:'Zašto je bronca zamijenila bakar, a željezo broncu?',
+    pts:['Bronca (bakar + kositar) čvršća je od bakra','Željezo je još čvršće','Željezo je bilo pogodno za oružje','Kelti su ga dodatno očvrsnuli kaljenjem'] },
+  { id:'o43', ch:'pra', p:37, q:'Zašto su ljudi gradili sojenice i gradine?',
+    pts:['Sojenice su štitile od poplava, divljih zvijeri i neprijatelja','Gradine su bile na teško pristupačnim uzvisinama','Gradine su bile utvrđene zidinama, nasipima i opkopima'] },
+  { id:'o44', ch:'pra', p:48, q:'Zašto su ljudi u prapovijesti slikali po zidovima špilja?',
+    pts:['Crteži su vjerojatno bili dio religijskih obreda','Željeli su uspjeh u lovu (životinje probodene kopljima)','Prikazivali su kako su lovili'] },
+
+  // ===== STARI ISTOK =====
+  { id:'o50', ch:'istok', p:54, q:'Gdje se nalazio Stari istok i zašto su prve države nastale baš tamo?',
+    pts:['Jugozapadna Azija i sjeveroistočna Afrika','Uz velike rijeke: Nil, Eufrat i Tigris','Rijeke su poplavljivale i donosile plodno tlo','Za kanale i nasipe trebalo je mnogo ljudi pa su se udruživali','Tu je nastalo pismo'] },
+  { id:'o51', ch:'istok', p:58, q:'Što je grad i koji je jedan od najstarijih gradova na svijetu?',
+    pts:['Naselje s više tisuća stanovnika različitih zanimanja','Središte pismenosti, kulture i vlasti','Jerihon u Palestini, oko 9000. pr. Kr.','Jerihon postoji i danas'] },
+  { id:'o52', ch:'istok', p:59, q:'Što znači Mezopotamija i kako su ljudi ondje ovladali rijekama?',
+    pts:['Grčka riječ, znači međurječje','Između Eufrata i Tigrisa','Gradili su kanale za navodnjavanje i nasipe','Tako nastaju gradovi i gradovi-države'] },
+  { id:'o53', ch:'istok', p:60, q:'Ispričaj što znaš o Sumeranima.',
+    pts:['Južna Mezopotamija, IV. tisućljeće pr. Kr.','Gradovi-države: Ur, Uruk, Eridu, Kiš, Lagaš, Nipur','Nikad se nisu ujedinili u jednu državu','Gradili su zigurate s hramom i zvjezdarnicom','Proučavali su zvijezde i predviđali poplave'] },
+  { id:'o54', ch:'istok', p:55, q:'Što je zigurat?',
+    pts:['Stepenasta građevina','Na vrhu hram mjesnog božanstva','Služio je i kao zvjezdarnica'] },
+  { id:'o55', ch:'istok', p:60, q:'Tko je bio Sargon i što je stvorio?',
+    pts:['Akadski kralj','Oko 2300. pr. Kr. pokorio je sumerske gradove','Stvorio je akadsku državu, prvu državu u Mezopotamiji','Prostirala se do Sredozemnog mora','Poslije se raspala na dvije države'] },
+  { id:'o56', ch:'istok', p:62, q:'Što znaš o Babilonu i Hamurabiju?',
+    pts:['Hamurabi je babilonski kralj iz XVIII. st. pr. Kr.','Stvorio je veliku državu','Babilon je postao prijestolnica, južna Mezopotamija zove se Babilonija','Babilon je bio jedan od najbogatijih gradova'] },
+  { id:'o57', ch:'istok', p:62, q:'Tko su bili Asirci?',
+    pts:['Ratnici sa sjevera Mezopotamije','Središte Ašur, poslije Ninive','Brzo su ovladali željezom, vojska dugo nepobjediva','Asurbanipal: knjižnica s više od 25 000 glinenih pločica (Ep o Gilgamešu)','Nakon njegove smrti Asirija slabi'] },
+  { id:'o58', ch:'istok', p:64, q:'Opiši Babilon u vrijeme Nabukodonozora II.',
+    pts:['Kaldejski kralj, VII. i VI. st. pr. Kr.','Obnovio je Babilon, država je tada najmoćnija','Ištarina vrata: bogato ukrašena ulazna vrata','Viseći vrtovi na terasama, jedno od sedam svjetskih čuda','Poslije njega Babilon gubi moć'] },
+  { id:'o59', ch:'istok', p:59, q:'Zašto su prvi gradovi i države nastali uz velike rijeke?',
+    pts:['Uz rijeke je bilo vode i plodne zemlje','Poplave je trebalo obuzdati kanalima i nasipima','Za to je trebalo mnogo ljudi pa su se udruživali','Tako nastaju gradovi, središta većih zajednica'] },
+  { id:'o60', ch:'istok', p:60, q:'Zašto su Sumerani proučavali zvijezde?',
+    pts:['Da bi predvidjeli kada će Eufrat i Tigris poplaviti','Na vrhu zigurata bila je zvjezdarnica','Znanje im je pomagalo u poljodjelstvu'] },
+  { id:'o61', ch:'istok', p:14, q:'Zašto je izum pisma toliko važan?',
+    pts:['Njime završava prapovijest i počinje stari vijek','Nastaju prvi pisani izvori','Znanje se moglo zapisati i sačuvati (Asurbanipalova knjižnica)','Pismo je nastalo u Mezopotamiji oko 3500. pr. Kr.'] },
+  { id:'o62', ch:'istok', p:62, q:'Zašto su Asirci dugo bili nepobjedivi i zašto je Asirija ipak oslabila?',
+    pts:['Brzo su ovladali upotrebom željeza','Imali su jaku vojsku i osvajali druge','Nakon Asurbanipalove smrti bilo je sukoba za vlast i pobuna'] }
+];
+
+/* ---------- Gradivo: Dip in 5 (Školska knjiga), str. 6–17 ---------- */
+const EN_CH = {
+  su: { name: 'Starting up', pages: 'str. 6–7' },
+  f1: { name: 'Unit 1: Friends', pages: 'str. 8–13' },
+  f2: { name: 'New teachers, new subjects', pages: 'str. 14–17' }
+};
+const EN_Q = [
+  // ===== STARTING UP =====
+  { id:'e01', ch:'su', t:'text', p:6, q:'Pjesma „Recipe for a good pupil”: If you want to be good ____, too.', a:['pupils'], ex:'If you want to be good pupils, too, here is a recipe for all of you.' },
+  { id:'e02', ch:'su', t:'mc', p:6, q:'Don\'t bring a ball. Bring your ____ instead.', a:['slippers','marks','teachers','pupils'], ex:'Slippers su papuče. U školu nosimo papuče, a ne loptu.' },
+  { id:'e03', ch:'su', t:'mc', p:6, q:'Don\'t forget your notebooks, ____ and some glue.', a:['pencil box','slippers','marks','teachers'], ex:'Pencil box je pernica.' },
+  { id:'e04', ch:'su', t:'mc', p:6, q:'Mobile phones or iPods are truly fun and cool, but ____ don\'t allow them when you are at school.', a:['teachers','pupils','slippers','marks'], ex:'Teachers (učitelji) ne dopuštaju mobitele u školi.' },
+  { id:'e05', ch:'su', t:'mc', p:6, q:'And never hide your ____ from your mum.', a:['marks','slippers','pencil box','teachers'], ex:'Marks su ocjene. Nikad ne skrivaj ocjene od mame!' },
+  { id:'e06', ch:'su', t:'match', p:6, q:'Poveži englesku riječ s hrvatskom.', pairs:[['slippers','papuče'],['marks','ocjene'],['pencil box','pernica'],['pupil','učenik'],['glue','ljepilo']], ex:'Riječi iz pjesme „Recipe for a good pupil”.' },
+  { id:'e07', ch:'su', t:'mc', p:7, q:'Tko kaže: „Who is absent?”', a:['Teacher (učitelj)','Pupil (učenik)'], ex:'Učitelj pita tko nije došao. Absent = odsutan.' },
+  { id:'e08', ch:'su', t:'mc', p:7, q:'Tko kaže: „May I go out?”', a:['Pupil (učenik)','Teacher (učitelj)'], ex:'Učenik pita smije li izaći.' },
+  { id:'e09', ch:'su', t:'mc', p:7, q:'Tko kaže: „Open your books at page 8, please!”', a:['Teacher (učitelj)','Pupil (učenik)'], ex:'Učitelj daje uputu razredu.' },
+  { id:'e10', ch:'su', t:'mc', p:7, q:'Tko kaže: „Sorry I\'m late.”', a:['Pupil (učenik)','Teacher (učitelj)'], ex:'Učenik se ispričava jer kasni.' },
+  { id:'e11', ch:'su', t:'mc', p:7, q:'Tko kaže: „Copy this into your notebooks!”', a:['Teacher (učitelj)','Pupil (učenik)'], ex:'Učitelj kaže da prepišemo u bilježnicu.' },
+  { id:'e12', ch:'su', t:'mc', p:7, q:'Tko kaže: „How do you say ‘pčela’ in English?”', a:['Pupil (učenik)','Teacher (učitelj)'], ex:'Učenik pita kako se nešto kaže na engleskom. Pčela = bee.' },
+  { id:'e13', ch:'su', t:'mc', p:7, q:'Tko kaže: „Be quiet, please!”', a:['Teacher (učitelj)','Pupil (učenik)'], ex:'Učitelj traži tišinu.' },
+  { id:'e14', ch:'su', t:'mc', p:7, q:'Tko kaže: „I\'ve finished!”', a:['Pupil (učenik)','Teacher (učitelj)'], ex:'Učenik kaže da je gotov.' },
+  { id:'e15', ch:'su', t:'match', p:7, q:'Poveži rečenicu s prijevodom.', pairs:[['May I go out?','Smijem li izaći?'],['Who is absent?','Tko je odsutan?'],['Sorry I\'m late.','Oprostite što kasnim.'],['Can you say that again, please?','Možete li to ponoviti, molim?'],['What does „dangerous” mean?','Što znači „dangerous”?']], ex:'Rečenice koje često čuješ na satu engleskog.' },
+  { id:'e16', ch:'su', t:'mc', p:7, q:'Kako ćeš na engleskom pitati što je za zadaću?', a:['What do we have for homework?','Who is absent?','May I go out?','Here you are.'], ex:'Homework = domaća zadaća.' },
+  { id:'e17', ch:'su', t:'mc', p:7, q:'Što znači „Here you are.”?', a:['Izvoli.','Ovdje si.','Gdje si?','Hvala.'], ex:'„Here you are” kažemo kad nekome nešto dajemo: izvoli.' },
+
+  // ===== UNIT 1: FRIENDS (Lesson 1) =====
+  { id:'e20', ch:'f1', t:'mc', p:10, q:'Cathy and Mike are…', a:['neighbours and very good friends','brother and sister','in the same class','teachers'], ex:'They are neighbours. They are also very good friends. They are not in the same class, but every day they go to school together.' },
+  { id:'e21', ch:'f1', t:'mc', p:10, q:'Are Cathy and Mike in the same class?', a:['No, they aren\'t.','Yes, they are.'], ex:'Cathy and Mike are not in the same class, but they go to school together.' },
+  { id:'e22', ch:'f1', t:'match', p:10, q:'Spoji riječi u izraze (Match).', pairs:[['only','child'],['karate','club'],['pain','in the neck'],['free-time','activity'],['cuddly','animals'],['computer','games'],['fifth','form']], ex:'Vocabulary, str. 10.' },
+  { id:'e23', ch:'f1', t:'match', p:10, q:'Kako se to kaže na hrvatskom?', pairs:[['only child','jedinac / jedinica'],['fifth form','peti razred'],['free-time activity','slobodna aktivnost'],['cuddly animals','plišane igračke'],['pain in the neck','gnjavator, davež']], ex:'Can you say these expressions in Croatian? (str. 10)' },
+  { id:'e24', ch:'f1', t:'mc', p:10, q:'„My brother is a real pain in the neck.” Što to znači?', a:['Moj brat je pravi gnjavator.','Mog brata boli vrat.','Moj brat je pravi prijatelj.','Moj brat je u petom razredu.'], ex:'Pain in the neck = netko tko nas gnjavi.' },
+  { id:'e25', ch:'f1', t:'mc', p:11, q:'She ____ at home.', a:['is','are','am','be'], ex:'She / He / It → is. She is (She\'s) at home.' },
+  { id:'e26', ch:'f1', t:'mc', p:11, q:'You ____ a baby. (niječno)', a:['aren\'t','isn\'t','am not','not'], ex:'You are not = You aren\'t.' },
+  { id:'e27', ch:'f1', t:'mc', p:11, q:'It ____ big.', a:['is','are','am','have'], ex:'It is (It\'s) big.' },
+  { id:'e28', ch:'f1', t:'mc', p:11, q:'We ____ lazy. (niječno)', a:['aren\'t','isn\'t','am not','haven\'t'], ex:'We are not = We aren\'t.' },
+  { id:'e29', ch:'f1', t:'text', p:11, q:'Napiši skraćeni oblik: I am = ?', a:['I\'m','Im','I m'], ex:'I am = I\'m.' },
+  { id:'e30', ch:'f1', t:'text', p:11, q:'Napiši skraćeni oblik: She is not = She ____', a:['isn\'t','isnt','is not'], ex:'She is not = She isn\'t.' },
+  { id:'e31', ch:'f1', t:'text', p:11, q:'Napiši skraćeni oblik: They are = ?', a:['They\'re','Theyre','They re'], ex:'They are = They\'re.' },
+  { id:'e32', ch:'f1', t:'mc', p:11, q:'He ____ got a sister.', a:['has','have','is','are'], ex:'He / She / It → has got. He has got (He\'s got) a sister.' },
+  { id:'e33', ch:'f1', t:'mc', p:11, q:'I ____ got a brother.', a:['have','has','am','is'], ex:'I / You / We / They → have got. I have got (I\'ve got) a brother.' },
+  { id:'e34', ch:'f1', t:'mc', p:11, q:'It ____ got big ears. (niječno)', a:['hasn\'t','haven\'t','isn\'t','aren\'t'], ex:'It has not got = It hasn\'t got.' },
+  { id:'e35', ch:'f1', t:'mc', p:11, q:'They ____ got a house. (niječno)', a:['haven\'t','hasn\'t','aren\'t','isn\'t'], ex:'They have not got = They haven\'t got.' },
+  { id:'e36', ch:'f1', t:'text', p:11, q:'Napiši skraćeni oblik: He has not got = He ____ got', a:['hasn\'t','hasnt'], ex:'He has not got = He hasn\'t got.' },
+  { id:'e37', ch:'f1', t:'text', p:11, q:'Napiši skraćeni oblik: We have got = ?', a:['We\'ve got','Weve got','We ve got'], ex:'We have got = We\'ve got.' },
+  { id:'e38', ch:'f1', t:'mc', p:11, q:'Koja je rečenica točna?', a:['She has got a cat.','She have got a cat.','She is got a cat.','She are got a cat.'], ex:'She → has got.' },
+  { id:'e39', ch:'f1', t:'mc', p:11, q:'Koja je rečenica točna?', a:['We are good at sport.','We is good at sport.','We am good at sport.','We has good at sport.'], ex:'We → are.' },
+
+  { id:'e57', ch:'f1', t:'mc', p:10, q:'Who says: „I\'m in the fifth form this year.”?', a:['Mike','Cathy'], ex:'Mike: I am 11 years old and I am in the fifth form this year.' },
+  { id:'e58', ch:'f1', t:'mc', p:10, q:'Who says: „My surname is Roberts.”?', a:['Cathy','Mike'], ex:'Cathy: My surname is Roberts.' },
+  { id:'e59', ch:'f1', t:'mc', p:10, q:'Who says: „My birthday is in November.”?', a:['Cathy','Mike'], ex:'Cathy is 10, but her birthday is in November, so she is almost 11.' },
+  { id:'e5a', ch:'f1', t:'mc', p:10, q:'Who says: „My brother is a real pain in the neck.”?', a:['Mike','Cathy'], ex:'Mike has got a little brother. He is a real pain in the neck.' },
+  { id:'e5b', ch:'f1', t:'mc', p:10, q:'Who says: „We have got a pet.”?', a:['Mike','Cathy'], ex:'Mike has got a pet, a parrot called Lilly. Cathy hasn\'t got a pet because her flat is not very big.' },
+  { id:'e5c', ch:'f1', t:'mc', p:10, q:'Who says: „I am not an only child.”?', a:['Cathy','Mike'], ex:'Cathy: My family is not so big, but I am not an only child. I\'ve got a big sister, Amy.' },
+  { id:'e5d', ch:'f1', t:'mc', p:10, q:'Who says: „Computer games are my hobby.”?', a:['Mike','Cathy'], ex:'Mike is in front of the computer 3 hours a day. His parents are angry.' },
+  { id:'e5e', ch:'f1', t:'mc', p:10, q:'Who says: „Dancing is my favourite free-time activity.”?', a:['Cathy','Mike'], ex:'Cathy is a member of a karate club and she is good at dancing, too.' },
+  { id:'e5f', ch:'f1', t:'mc', p:10, q:'What is Mike\'s pet?', a:['a parrot called Lilly','a dog called Rex','a cat called Amy','He hasn\'t got a pet.'], ex:'We have also got a pet, a parrot called Lilly.' },
+  { id:'e5g', ch:'f1', t:'mc', p:10, q:'What is Cathy and Linda\'s hobby?', a:['They collect stickers.','They play computer games.','They play the piano.','They go skateboarding.'], ex:'We have got the same hobby: we collect stickers. I\'ve got 3 full albums.' },
+  { id:'e5h', ch:'f1', t:'text', p:10, q:'What is the name of Cathy\'s big sister?', a:['Amy'], ex:'Amy always sings. She isn\'t bad at singing at all.' },
+  { id:'e5i', ch:'f1', t:'mc', p:10, q:'Mike\'s parents call him…', a:['Mikey','Michael','Pete','007'], ex:'My name is Michael, or Mike for short. My parents call me Mikey, but I\'m not a baby.' },
+  { id:'e40', ch:'f1', t:'mc', p:12, q:'Who is Linda?', a:['Cathy\'s best friend','Mike\'s sister','Pete\'s cousin','A teacher'], ex:'This is Linda. She is Cathy\'s best friend.' },
+  { id:'e41', ch:'f1', t:'mc', p:12, q:'Who is Pete?', a:['Mike\'s best friend','Cathy\'s brother','Linda\'s brother','A new teacher'], ex:'This is Pete. He is Mike\'s best friend.' },
+  { id:'e42', ch:'f1', t:'mc', p:12, q:'What instrument does Linda play?', a:['the piano','the guitar','the drums','the violin'], ex:'Linda plays the piano. Her piano classes are three times a week.' },
+  { id:'e43', ch:'f1', t:'text', p:12, q:'What is the name of Linda\'s big brother?', a:['Jack'], ex:'Jack is older and he always says: „You girls are stupid!”' },
+  { id:'e44', ch:'f1', t:'mc', p:12, q:'Linda shares her room with her brother. What beds have they got?', a:['bunk beds','one big bed','no beds','water beds'], ex:'They have got bunk beds (kreveti na kat). Linda is on the top bed and Jack has got the bottom bed.' },
+  { id:'e45', ch:'f1', t:'mc', p:12, q:'What is Linda\'s favourite colour?', a:['blue','pink','red','green'], ex:'Linda is a girl, but her favourite colour isn\'t pink. It is blue.' },
+  { id:'e46', ch:'f1', t:'mc', p:12, q:'What is Linda bad at?', a:['sport','dancing','the piano','English'], ex:'She is interested in dancing, but she is really bad at sport. So what!' },
+  { id:'e47', ch:'f1', t:'text', p:12, q:'What is Pete\'s full name?', a:['Peter'], ex:'My name is Peter, but all my friends call me Pete.' },
+  { id:'e48', ch:'f1', t:'mc', p:12, q:'What is Pete\'s nickname?', a:['007','Inspector J','James','Bond'], ex:'His nickname is 007 because he is crazy about detective and spy stories.' },
+  { id:'e49', ch:'f1', t:'mc', p:12, q:'Who is Pete\'s favourite spy?', a:['James Bond','Inspector J','Sherlock Holmes','Mickey Mouse'], ex:'His favourite spy is James Bond. His favourite comic is „Inspector J”.' },
+  { id:'e50', ch:'f1', t:'mc', p:12, q:'What belt has Pete got in karate?', a:['a green belt','a black belt','a white belt','a red belt'], ex:'He is a member of a karate club. He has got a green belt already.' },
+  { id:'e51', ch:'f1', t:'text', p:12, q:'What is Pete\'s favourite free-time activity?', a:['skateboarding'], ex:'But my favourite free-time activity is skateboarding.' },
+  { id:'e52', ch:'f1', t:'mc', p:12, q:'How many cousins in America has Pete got?', a:['two (twins)','one','three','none'], ex:'He has got two cousins in America. They are twins from Los Angeles.' },
+  { id:'e53', ch:'f1', t:'mc', p:12, q:'Where is Disneyland?', a:['near Los Angeles','in London','in New York','in Zagreb'], ex:'Disneyland is near Los Angeles. It is an amusement park.' },
+  { id:'e54', ch:'f1', t:'match', p:12, q:'Tko je to? Poveži.', pairs:[['Linda','plays the piano'],['Pete','is crazy about spy stories'],['Jack','has got the bottom bed'],['Cathy','is Linda\'s best friend']], ex:'Linda and Pete, str. 12.' },
+  { id:'e55', ch:'f1', t:'mc', p:12, q:'Odaberi točno: Linda ____ Cathy\'s best friend.', a:['is','am','are','have got'], ex:'Linda (she) → is.' },
+  { id:'e56', ch:'f1', t:'mc', p:12, q:'Odaberi točno: We ____ bunk beds.', a:['have got','has got','are','is'], ex:'We → have got.' },
+
+  // ===== NEW TEACHERS, NEW SUBJECTS (Lesson 2) =====
+  { id:'e60', ch:'f2', t:'match', p:14, q:'Poveži predmet s hrvatskim nazivom.', pairs:[['maths','matematika'],['PE','tjelesni (TZK)'],['IT','informatika'],['science','priroda'],['religion','vjeronauk'],['art','likovni']], ex:'School subjects, str. 14.' },
+  { id:'e61', ch:'f2', t:'mc', p:14, q:'Što znači PE?', a:['Physical Education','Personal English','Pupils\' Education','Play Every day'], ex:'PE = Physical Education (tjelesni i zdravstveni odgoj).' },
+  { id:'e62', ch:'f2', t:'text', p:14, q:'Što znači IT? Information ____', a:['Technology'], ex:'IT = Information Technology (informatika).' },
+  { id:'e63', ch:'f2', t:'mc', p:14, q:'In ____ you learn about things and people from the past.', a:['history','geography','science','maths'], ex:'In history you can hear stories about heroes and battles. You must learn some years, too.' },
+  { id:'e64', ch:'f2', t:'mc', p:14, q:'In ____ you learn about nature: plants, animals, people.', a:['science','history','IT','PE'], ex:'In science you learn about all living creatures. You can even do some experiments.' },
+  { id:'e65', ch:'f2', t:'mc', p:14, q:'In ____ you learn about rivers, lakes, mountains, continents, countries and cities.', a:['geography','history','music','art'], ex:'In geography you need a map and a globe.' },
+  { id:'e66', ch:'f2', t:'mc', p:14, q:'In ____ you work with numbers.', a:['maths','IT','music','geography'], ex:'In maths you add, subtract, multiply and divide numbers.' },
+  { id:'e67', ch:'f2', t:'mc', p:14, q:'In ____ you learn everything about computers.', a:['IT','maths','science','art'], ex:'In IT you sometimes play games and find interesting things on the Internet.' },
+  { id:'e68', ch:'f2', t:'mc', p:14, q:'In ____ you play different sports. You need sneakers.', a:['PE','music','history','religion'], ex:'In PE you are in the gym or in the school playground.' },
+  { id:'e69', ch:'f2', t:'match', p:15, q:'Poveži znak s riječi.', pairs:[['+','add'],['−','subtract'],['×','multiply'],['÷','divide']], ex:'Two plus two is four. Four minus three is one. Two times six is twelve. Ten divided by two is five.' },
+  { id:'e70', ch:'f2', t:'text', p:14, q:'Two times six is ____ (napiši riječima)', a:['twelve'], ex:'2 × 6 = 12, twelve.' },
+  { id:'e71', ch:'f2', t:'text', p:14, q:'Ten divided by two is ____ (napiši riječima)', a:['five'], ex:'10 ÷ 2 = 5, five.' },
+  { id:'e72', ch:'f2', t:'match', p:15, q:'Match.', pairs:[['past','the time before now'],['planet','a large body in space (Earth)'],['continent','Africa, Europe'],['chat','a talk with friends'],['plant','a flower, a tree'],['gym','a room where you do sport']], ex:'Vocabulary, str. 15.' },
+  { id:'e73', ch:'f2', t:'mc', p:15, q:'Ispravi rečenicu: „In history you work with numbers.”', a:['In maths you work with numbers.','In IT you work with numbers.','In art you work with numbers.','In PE you work with numbers.'], ex:'S brojevima radimo na matematici (maths).' },
+  { id:'e74', ch:'f2', t:'mc', p:15, q:'Ispravi rečenicu: „In science you play different sports.”', a:['In PE you play different sports.','In maths you play different sports.','In history you play different sports.','In music you play different sports.'], ex:'Sport je na tjelesnom (PE).' },
+  { id:'e75', ch:'f2', t:'mc', p:15, q:'Mike\'s timetable: What is his first lesson on Monday?', a:['maths','history','English','music'], ex:'Mike has got maths first on Monday, Tuesday, Wednesday and Friday.' },
+  { id:'e76', ch:'f2', t:'mc', p:15, q:'Mike\'s timetable: What is his first lesson on Thursday?', a:['PE','maths','English','German'], ex:'Thursday starts with PE, Mike\'s favourite subject.' },
+  { id:'e77', ch:'f2', t:'mc', p:15, q:'Mike\'s timetable: What is his last lesson on Friday?', a:['geography','religion','maths','music'], ex:'On Friday the last lesson is geography.' },
+  { id:'e78', ch:'f2', t:'mc', p:16, q:'Why isn\'t Mike\'s timetable OK?', a:['He has got maths on four days, and he isn\'t good at maths.','He hasn\'t got PE.','He has got no breaks.','He has got history every day.'], ex:'Our first lesson is maths on Monday, maths on Tuesday, maths on Wednesday and maths on Friday.' },
+  { id:'e79', ch:'f2', t:'mc', p:16, q:'Who is Mike\'s maths teacher?', a:['Mr Finch','Ms Jones','Ms Pitt','Ms Jason'], ex:'Mr Finch. He is really strict and Mike isn\'t good at maths. He\'s really scared.' },
+  { id:'e80', ch:'f2', t:'mc', p:16, q:'What is Mike\'s favourite subject?', a:['PE','maths','history','music'], ex:'The first lesson on Thursday is PE, Mike\'s favourite subject.' },
+  { id:'e81', ch:'f2', t:'mc', p:16, q:'Who is Mike\'s form teacher (razrednica)?', a:['Ms Jones','Mr Finch','Ms Pitt','Cathy'], ex:'Ms Jones is great. She is his PE teacher and his form teacher, too.' },
+  { id:'e82', ch:'f2', t:'mc', p:16, q:'Who is Mike\'s history teacher?', a:['Ms Pitt','Ms Jones','Mr Finch','Mr Jason'], ex:'Ms Pitt is very nice, but her hair is a bit unusual.' },
+  { id:'e83', ch:'f2', t:'mc', p:16, q:'What is unusual about Ms Pitt?', a:['her hair','her car','her voice','her shoes'], ex:'Her hair is a bit unusual. Maybe the colour.' },
+  { id:'e84', ch:'f2', t:'mc', p:16, q:'How many new pupils are there in Mike\'s class?', a:['two','three','one','none'], ex:'There are two new pupils. Their father is a writer.' },
+  { id:'e85', ch:'f2', t:'mc', p:16, q:'What does the new pupils\' father write?', a:['detective stories','songs','school books','poems'], ex:'Their father is a writer. He writes detective stories.' },
+  { id:'e86', ch:'f2', t:'mc', p:16, q:'True or false? Ms Jones is old.', a:['False','True'], ex:'Cathy thinks Ms Jones is wonderful, very pretty and young.' },
+  { id:'e87', ch:'f2', t:'mc', p:16, q:'True or false? Mr Finch is strict.', a:['True','False'], ex:'Mr Finch is really strict.' },
+  { id:'e88', ch:'f2', t:'match', p:17, q:'Poveži osobnu zamjenicu s posvojnim pridjevom.', pairs:[['I','my'],['you','your'],['he','his'],['she','her'],['it','its'],['we','our'],['they','their']], ex:'Personal pronouns and possessive adjectives, str. 17.' },
+  { id:'e89', ch:'f2', t:'mc', p:17, q:'Mr Finch is a strict teacher. ____ tests are difficult.', a:['His','Her','Their','Its'], ex:'Mr Finch = he → his.' },
+  { id:'e90', ch:'f2', t:'mc', p:17, q:'Ms Pitt is unusual. ____ clothes are funny.', a:['Her','His','Their','Our'], ex:'Ms Pitt = she → her.' },
+  { id:'e91', ch:'f2', t:'mc', p:17, q:'Mike and Cathy like Ms Jason. She is ____ favourite teacher.', a:['their','her','his','our'], ex:'Mike and Cathy = they → their.' },
+  { id:'e92', ch:'f2', t:'mc', p:17, q:'Look at that bird! ____ wing is broken.', a:['Its','It\'s','His','Her'], ex:'Bird = it → its. (It\'s = it is!)' },
+  { id:'e93', ch:'f2', t:'text', p:17, q:'We are good at sport. ____ favourite subject is PE.', a:['Our'], ex:'We → our.' },
+  { id:'e94', ch:'f2', t:'text', p:17, q:'Who are you? What is ____ name?', a:['your'], ex:'You → your.' },
+  { id:'e95', ch:'f2', t:'text', p:17, q:'I am in class 5B. ____ form teacher is Ms Jason.', a:['My'], ex:'I → my.' },
+  { id:'e96', ch:'f2', t:'order', p:17, q:'Složi rečenicu.', items:['My','favourite','subject','is','PE.'], ex:'My favourite subject is PE.' }
+];
+const EN_CARDS = [
+  { ch:'su', term:'pupil', def:'učenik, učenica', p:6 }, { ch:'su', term:'slippers', def:'papuče', p:6 }, { ch:'su', term:'marks', def:'ocjene', p:6 },
+  { ch:'su', term:'pencil box', def:'pernica', p:6 }, { ch:'su', term:'backpack', def:'ruksak', p:6 }, { ch:'su', term:'scissors', def:'škare', p:6 },
+  { ch:'su', term:'glue', def:'ljepilo', p:6 }, { ch:'su', term:'notebook', def:'bilježnica', p:6 }, { ch:'su', term:'absent', def:'odsutan', p:7 },
+  { ch:'su', term:'homework', def:'domaća zadaća', p:7 }, { ch:'su', term:'Be quiet, please!', def:'Tišina, molim!', p:7 }, { ch:'su', term:'May I go out?', def:'Smijem li izaći?', p:7 },
+  { ch:'f1', term:'neighbours', def:'susjedi', p:10 }, { ch:'f1', term:'only child', def:'jedinac, jedinica', p:10 }, { ch:'f1', term:'pain in the neck', def:'gnjavator, davež', p:10 },
+  { ch:'f1', term:'free-time activity', def:'slobodna aktivnost', p:10 }, { ch:'f1', term:'cuddly animals', def:'plišane igračke', p:10 }, { ch:'f1', term:'fifth form', def:'peti razred', p:10 },
+  { ch:'f1', term:'relatives', def:'rođaci, rodbina', p:10 }, { ch:'f1', term:'pet', def:'kućni ljubimac', p:10 }, { ch:'f1', term:'crazy about', def:'lud za nečim, obožavati', p:11 },
+  { ch:'f1', term:'interested in', def:'zanimati se za', p:11 }, { ch:'f1', term:'good at / bad at', def:'dobar u / loš u', p:11 }, { ch:'f1', term:'bunk beds', def:'kreveti na kat', p:12 },
+  { ch:'f1', term:'nickname', def:'nadimak', p:12 }, { ch:'f1', term:'cousin', def:'bratić, sestrična', p:12 }, { ch:'f1', term:'twins', def:'blizanci', p:12 },
+  { ch:'f1', term:'amusement park', def:'zabavni park', p:12 }, { ch:'f1', term:'spy', def:'špijun', p:12 },
+  { ch:'f2', term:'subject', def:'školski predmet', p:14 }, { ch:'f2', term:'timetable', def:'raspored sati', p:15 }, { ch:'f2', term:'science', def:'priroda', p:14 },
+  { ch:'f2', term:'PE', def:'tjelesni i zdravstveni odgoj', p:14 }, { ch:'f2', term:'IT', def:'informatika', p:14 }, { ch:'f2', term:'religion', def:'vjeronauk', p:14 },
+  { ch:'f2', term:'add / subtract', def:'zbrajati / oduzimati', p:14 }, { ch:'f2', term:'multiply / divide', def:'množiti / dijeliti', p:14 }, { ch:'f2', term:'sneakers', def:'tenisice', p:14 },
+  { ch:'f2', term:'experiment', def:'pokus', p:14 }, { ch:'f2', term:'form teacher', def:'razrednik, razrednica', p:16 }, { ch:'f2', term:'strict', def:'strog', p:16 },
+  { ch:'f2', term:'scared', def:'uplašen', p:16 }, { ch:'f2', term:'unusual', def:'neobičan', p:16 }, { ch:'f2', term:'writer', def:'pisac', p:16 },
+  { ch:'f2', term:'break', def:'odmor (između sati)', p:15 }
+];
+const EN_ORAL = [
+  { id:'eo1', ch:'f1', p:13, q:'Talk about yourself. Reci barem 5 rečenica na engleskom.', pts:['I am … years old.','I\'ve got … / I haven\'t got …','My favourite colour is …','I\'m good at … / I\'m bad at …','I\'m interested in … / I\'m crazy about …'] },
+  { id:'eo2', ch:'f1', p:13, q:'Talk about your best friend.', pts:['My best friend is …','He / She is … years old.','He / She has got …','He / She is good at …','His / Her favourite … is …'] },
+  { id:'eo3', ch:'f1', p:12, q:'Say five things about Linda.', pts:['She is Cathy\'s best friend.','She plays the piano.','She has got a big brother, Jack.','Her favourite colour is blue.','She is interested in dancing, but she is bad at sport.'] },
+  { id:'eo4', ch:'f1', p:12, q:'Say five things about Pete.', pts:['His name is Peter. He is Mike\'s best friend.','His nickname is 007.','He is crazy about detective and spy stories.','He is a member of a karate club (green belt).','His favourite free-time activity is skateboarding.'] },
+  { id:'eo5', ch:'f1', p:10, q:'Prepričaj: Cathy and Mike (str. 10)', pts:['They are neighbours and very good friends, but not in the same class.','Mike is 11, in the fifth form. He has got a big family and a parrot called Lilly.','Computer games are Mike\'s hobby. His best friend is Pete.','Cathy Roberts is 10. She has got a big sister, Amy, and a lot of cuddly animals.','Cathy\'s best friend is Linda. They collect stickers. Cathy loves dancing.'],
+    model:'Cathy and Mike are neighbours. They are very good friends, but they are not in the same class. Every day they go to school together. Mike is eleven years old and he is in the fifth form. He has got a big family: a mum, a dad, a big sister and a little brother. They have got a parrot called Lilly. Computer games are his hobby. His best friend is Pete. Cathy\'s surname is Roberts. She is ten. She has got a big sister, Amy. She hasn\'t got a pet, but she has got a lot of cuddly animals. Her best friend is Linda. They collect stickers. Cathy is good at dancing.' },
+  { id:'eo6', ch:'f2', p:17, q:'Talk about your school: subjects and teachers.', pts:['I have got … subjects.','My timetable is …','My favourite subject is …','I am good at … but I am bad at …','My form teacher is …'] },
+  { id:'eo7', ch:'f2', p:16, q:'Prepričaj: Mike\'s first week at school (str. 16)', model:'It is the first week of school. Mike and Cathy have got a lot of new teachers and new subjects. Mike says everything is fine, but his timetable is horrible. He has got maths on Monday, Tuesday, Wednesday and Friday. His maths teacher is Mr Finch. He is really strict and Mike isn\'t good at maths, so he is scared. On Thursday his first lesson is PE. That is his favourite subject. Ms Jones is his PE teacher and his form teacher, too. She is great. His history teacher is Ms Pitt. She is very nice, but her hair is a bit unusual. There are two new pupils in Mike\'s class. Their father is a writer. He writes detective stories.', pts:['His timetable is horrible: maths on four days.','Mr Finch is his maths teacher. He is strict.','His favourite subject is PE.','Ms Jones is his PE teacher and form teacher.','Ms Pitt is his history teacher. Her hair is unusual.','There are two new pupils. Their father is a writer.'] },
+  { id:'eo8', ch:'f2', p:14, q:'Prepričaj: What do you learn in different subjects? (str. 14)', pts:['In history you learn about people and things from the past.','In science you learn about nature: plants, animals, people.','In geography you learn about rivers, mountains, countries and cities.','In maths you work with numbers: add, subtract, multiply, divide.','In IT you learn about computers. In PE you play sports.'],
+    model:'In history you learn about things and people from the past. You read about heroes and battles. In science you learn about nature: plants, animals and people. You can do experiments. In geography you learn about rivers, lakes, mountains, continents, countries and cities. You need a map and a globe. In maths you work with numbers. You add, subtract, multiply and divide. In IT you learn everything about computers. In PE you play different sports in the gym or in the playground.' },
+  { id:'eo10', ch:'f2', p:15, q:'Prepričaj: Mike\'s timetable (str. 15)', pts:['Mike has got eleven subjects.','His first lesson on Monday, Tuesday, Wednesday and Friday is maths.','On Thursday his first lesson is PE.','After the second lesson there is a break.','His last lesson on Friday is geography.'],
+    model:'This is Mike\'s new timetable. He has got eleven subjects. On Monday, Tuesday, Wednesday and Friday his first lesson is maths. On Thursday his first lesson is PE. After the second lesson there is a break, and there is lunch before the last lesson. On Monday he has got history, English, geography and music. On Friday his last lesson is geography.' },
+  { id:'eo9', ch:'su', p:7, q:'Što kažeš na satu engleskog kad: kasniš, želiš izaći, ne razumiješ riječ, završio/la si?', pts:['Sorry I\'m late.','May I go out?','What does „…” mean?','I\'ve finished!'] }
+];
+
+const DATA = {
+  povijest: { CH, Q, CARDS, ORAL, book: 'Klio 5', name: 'Povijest', path: 'Put kroz vrijeme' },
+  engleski: { CH: EN_CH, Q: EN_Q, CARDS: EN_CARDS, ORAL: EN_ORAL, book: 'Dip in 5', name: 'Engleski', path: 'Moj put kroz knjigu', lang: 'en-GB' }
+};
+let SUBJ = 'povijest';
+function useSubj(id) { SUBJ = id; ({ CH, Q, CARDS, ORAL } = DATA[id]); }
+const BOOK = () => DATA[SUBJ].book;
+const LK = t => SUBJ === 'povijest' ? t : t + '|' + SUBJ;
+function speak(text, btn) {
+  try {
+    if (!window.speechSynthesis) return;
+    speechSynthesis.cancel();
+    const u = new SpeechSynthesisUtterance(text); u.lang = DATA[SUBJ].lang || 'hr-HR'; u.rate = .9;
+    const v = speechSynthesis.getVoices().find(v => v.lang && v.lang.replace('_', '-').startsWith(u.lang.slice(0, 2)));
+    if (v) u.voice = v;
+    speechSynthesis.speak(u);
+  } catch (e) {}
+}
+
+/* ---------- Spremanje ---------- */
+const KEY = 'zoe-povijest-klio5-v1';
+const DAY = () => { const d = new Date(); return Math.floor((d.getTime() - d.getTimezoneOffset() * 60000) / 864e5); };
+const WEEK = d => Math.floor((d + 3) / 7);
+function fresh() { return { pts: 0, streak: 0, lastDay: null, jokerWeek: null, items: {}, badges: [], exams: [], rounds: 0, cardsDone: 0, name: '', oral: {}, log: {}, ex: {}, plans: {} }; }
+let S = fresh();
+try { const raw = localStorage.getItem(KEY); if (raw) S = Object.assign(fresh(), JSON.parse(raw)); } catch (e) {}
+function migrate() { if (!S.ex) S.ex = {}; if (!S.plans) S.plans = {}; if (S['examDay'] != null && S.ex.povijest == null) S.ex.povijest = S['examDay']; delete S['examDay']; delete S['plan']; }
+migrate();
+function save() { try { const { editDate, ...rest } = S; localStorage.setItem(KEY, JSON.stringify(rest)); } catch (e) {} }
+function it(id) { return S.items[id] || (S.items[id] = { l: 0, d: 0, lc: null, r: 0, w: 0 }); }
+
+const GAPS = [0, 1, 3, 7, 14, 30];
+function lg(t) { t = t == null ? DAY() : t; return S.log[LK(t)] || (S.log[LK(t)] = { q: 0, ok: 0, r: 0, oral: 0, ex: 0, cards: 0 }); }
+function record(id, ok, counts) {
+  const s = it(id), t = DAY(); const L = lg(t); L.q++; if (ok) L.ok++;
+  if (ok) { s.r++; if (s.lc !== t) { s.l = Math.min(s.l + 1, 5); s.lc = t; } s.d = t + GAPS[s.l]; }
+  else { s.w++; s.l = 0; s.d = t; }
+}
+function chapterPct(ch) {
+  const qs = Object.values(DATA).find(d => d.CH[ch]).Q.filter(q => q.ch === ch);
+  const sum = qs.reduce((a, q) => a + Math.min(S.items[q.id] ? S.items[q.id].l : 0, 3), 0);
+  return Math.round(100 * sum / (3 * qs.length));
+}
+function shownStreak() {
+  if (S.lastDay == null) return 0;
+  const t = DAY();
+  if (S.lastDay >= t - 1) return S.streak;
+  if (S.lastDay === t - 2 && S.jokerWeek !== WEEK(t)) return S.streak;
+  return 0;
+}
+function bumpStreak() {
+  const t = DAY();
+  if (S.lastDay === t) return;
+  if (S.lastDay === t - 1) S.streak++;
+  else if (S.lastDay === t - 2 && S.jokerWeek !== WEEK(t)) { S.streak++; S.jokerWeek = WEEK(t); }
+  else S.streak = 1;
+  S.lastDay = t;
+}
+
+const BADGES = [
+  { id:'first', name:'Prvi krug', test: () => S.rounds >= 1 },
+  { id:'s3', name:'3 dana zaredom', test: () => S.streak >= 3 },
+  { id:'s7', name:'7 dana zaredom', test: () => S.streak >= 7 },
+  { id:'p100', name:'100 bodova', test: () => S.pts >= 100 },
+  { id:'p500', name:'500 bodova', test: () => S.pts >= 500 },
+  { id:'uvod80', name:'Uvod: 80 %', test: () => chapterPct('uvod') >= 80 },
+  { id:'pra80', name:'Prapovijest: 80 %', test: () => chapterPct('pra') >= 80 },
+  { id:'istok80', name:'Stari istok: 80 %', test: () => chapterPct('istok') >= 80 },
+  { id:'r10', name:'10 krugova', test: () => S.rounds >= 10 },
+  { id:'exam1', name:'Prvi probni ispit', test: () => S.exams.length >= 1 },
+  { id:'exam4', name:'Ispit za 4 ili 5', test: () => S.exams.some(e => e.g >= 4) },
+  { id:'cards', name:'Sve kartice', test: () => S.cardsDone >= 1 }
+];
+function checkBadges() {
+  const fresh = [];
+  BADGES.forEach(b => { if (!S.badges.includes(b.id) && b.test()) { S.badges.push(b.id); fresh.push(b.name); } });
+  return fresh;
+}
+
+/* ---------- Pomoćne funkcije ---------- */
+const $app = document.getElementById('app');
+function h(tag, attrs, ...kids) {
+  const el = document.createElement(tag);
+  if (attrs) for (const k in attrs) {
+    if (k === 'class') el.className = attrs[k];
+    else if (k.startsWith('on')) el.addEventListener(k.slice(2), attrs[k]);
+    else if (attrs[k] !== false && attrs[k] != null) el.setAttribute(k, attrs[k] === true ? '' : attrs[k]);
+  }
+  kids.flat().forEach(c => { if (c != null && c !== false) el.append(c instanceof Node ? c : document.createTextNode(c)); });
+  return el;
+}
+function shuffle(a) { a = a.slice(); for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; }
+function norm(s) { return s.toLowerCase().replace(/đ/g, 'd').normalize('NFD').replace(/[̀-ͯ]/g, '').replace(/[^a-z0-9 ]/g, ' ').replace(/\s+/g, ' ').trim(); }
+function lev(a, b) {
+  const m = a.length, n = b.length, d = Array.from({ length: m + 1 }, (_, i) => [i]);
+  for (let j = 1; j <= n; j++) d[0][j] = j;
+  for (let i = 1; i <= m; i++) for (let j = 1; j <= n; j++) d[i][j] = Math.min(d[i-1][j] + 1, d[i][j-1] + 1, d[i-1][j-1] + (a[i-1] === b[j-1] ? 0 : 1));
+  return d[m][n];
+}
+function textOk(given, answers) {
+  const g = norm(given); if (!g) return false;
+  return answers.some(a => { const n = norm(a); return g === n || (n.length >= 5 && lev(g, n) <= 1); });
+}
+function clear() { $app.replaceChildren(); window.scrollTo(0, 0); }
+function chapterTag(ch) { return h('span', { class: 'tag ' + ch }, CH[ch].name); }
+const PAIR_COLORS = ['#2F4FA8', '#8E5426', '#23824A', '#A3367A', '#B07A12'];
+function correctText(q) {
+  if (q.t === 'mc') return q.a[0];
+  if (q.t === 'text') return q.a[0];
+  if (q.t === 'order') return q.items.join(' → ');
+  if (q.t === 'match') return q.pairs.map(p => p[0] + ' = ' + p[1]).join('; ');
+}
+
+/* ---------- Widgeti za pitanja ---------- */
+// Each widget returns { el, result(): {ok, given} | null, reveal() }
+function mcWidget(q, onPick) {
+  const opts = shuffle(q.a);
+  let picked = null;
+  const btns = opts.map(o => h('button', { class: 'opt', type: 'button', onclick: () => {
+    picked = o; btns.forEach(b => b.classList.toggle('pick', b.textContent === o)); if (!onPick) beep('tap'); if (onPick) onPick();
+  } }, o));
+  return {
+    el: h('div', { class: 'opts' }, btns),
+    result: () => picked == null ? null : { ok: picked === q.a[0], given: picked },
+    reveal: () => btns.forEach(b => { b.disabled = true; b.classList.remove('pick'); if (b.textContent === q.a[0]) b.classList.add('ok'); else if (b.textContent === picked) b.classList.add('bad'); })
+  };
+}
+function textWidget(q, onEnter) {
+  const inp = h('input', { type: 'text', id: 'answer-' + q.id, autocomplete: 'off', autocapitalize: 'off', spellcheck: 'false', placeholder: 'Upiši odgovor…',
+    onkeydown: e => { if (e.key === 'Enter' && onEnter) { e.preventDefault(); onEnter(); } } });
+  setTimeout(() => inp.focus({ preventScroll: true }), 50);
+  return {
+    el: h('div', { class: 'opts' }, inp, h('p', { class: 'hint' }, 'Kvačice (č, ć, š, ž, đ) nisu obavezne.')),
+    result: () => inp.value.trim() ? { ok: textOk(inp.value, q.a), given: inp.value.trim() } : null,
+    reveal: () => { inp.disabled = true; }
+  };
+}
+function orderWidget(q) {
+  let pool = shuffle(q.items); while (q.items.length > 1 && pool.join('|') === q.items.join('|')) pool = shuffle(q.items);
+  const chosen = [];
+  const seq = h('div', { class: 'seq', 'aria-label': 'Tvoj redoslijed' });
+  const poolEl = h('div', { class: 'pool' });
+  let locked = false;
+  function draw() {
+    seq.replaceChildren(...(chosen.length ? chosen.map((c, i) => h('button', { class: 'opt', type: 'button', disabled: locked, onclick: () => { chosen.splice(i, 1); pool.push(c); draw(); } }, h('span', { class: 'n' }, (i + 1) + '.'), c))
+      : [h('p', { class: 'hint' }, 'Dodiruj stavke ispod redom, od prve do zadnje.')]));
+    poolEl.replaceChildren(...pool.map((c, i) => h('button', { class: 'opt', type: 'button', disabled: locked, onclick: () => { pool.splice(i, 1); chosen.push(c); draw(); } }, c)));
+  }
+  draw();
+  return {
+    el: h('div', { class: 'opts' }, seq, poolEl),
+    result: () => pool.length ? null : { ok: chosen.join('|') === q.items.join('|'), given: chosen.join(' → ') },
+    reveal: () => { locked = true; draw(); [...seq.children].forEach((b, i) => b.classList && b.classList.add(chosen[i] === q.items[i] ? 'ok' : 'bad')); }
+  };
+}
+function matchWidget(q) {
+  const lefts = q.pairs.map(p => p[0]);
+  const rights = shuffle(q.pairs.map(p => p[1]));
+  const link = {}; // left -> right
+  let sel = null, locked = false;
+  const L = h('div', { class: 'col' }), R = h('div', { class: 'col' });
+  function color(left) { return PAIR_COLORS[lefts.indexOf(left) % PAIR_COLORS.length]; }
+  function draw() {
+    L.replaceChildren(...lefts.map((l, i) => {
+      const b = h('button', { class: 'opt' + (sel === l ? ' pick' : ''), type: 'button', disabled: locked, onclick: () => { if (link[l]) { delete link[l]; sel = null; } else sel = (sel === l ? null : l); draw(); } },
+        h('span', { class: 'k', style: 'background:' + (link[l] || sel === l ? color(l) : 'var(--line)') }, String(i + 1)), l);
+      if (locked) b.classList.add(link[l] === q.pairs[i][1] ? 'ok' : 'bad');
+      return b;
+    }));
+    R.replaceChildren(...rights.map(r => {
+      const owner = Object.keys(link).find(k => link[k] === r);
+      return h('button', { class: 'opt', type: 'button', disabled: locked, onclick: () => {
+        if (!sel) { if (owner) { delete link[owner]; draw(); } return; }
+        if (owner) delete link[owner];
+        link[sel] = r; sel = null; draw();
+      } }, h('span', { class: 'k', style: 'background:' + (owner ? color(owner) : 'var(--line)') }, owner ? String(lefts.indexOf(owner) + 1) : ''), r);
+    }));
+  }
+  draw();
+  return {
+    el: h('div', { class: 'opts' }, h('p', { class: 'hint' }, 'Dodirni pojam lijevo, zatim njegov par desno.'), h('div', { class: 'match' }, L, R)),
+    result: () => Object.keys(link).length < lefts.length ? null : { ok: q.pairs.every(p => link[p[0]] === p[1]), given: lefts.map(l => l + ' = ' + link[l]).join('; ') },
+    reveal: () => { locked = true; sel = null; draw(); }
+  };
+}
+function widgetFor(q, onReady) {
+  if (q.t === 'mc') return mcWidget(q, onReady);
+  if (q.t === 'text') return textWidget(q, onReady);
+  if (q.t === 'order') return orderWidget(q);
+  return matchWidget(q);
+}
+
+/* ---------- Početni zaslon ---------- */
+let chosenCh = 'all';
+const badgeIcon = () => {
+  const s = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+  s.setAttribute('viewBox', '0 0 24 24'); s.setAttribute('aria-hidden', 'true');
+  s.innerHTML = '<circle cx="12" cy="9" r="6" fill="currentColor" opacity=".9"/><path d="M8 14l-2 8 6-3 6 3-2-8" fill="currentColor" opacity=".55"/><path d="M12 5.8l1 2.1 2.3.3-1.7 1.6.4 2.3-2-1.1-2 1.1.4-2.3-1.7-1.6 2.3-.3z" fill="var(--card)"/>';
+  return s;
+};
+/* ---------- Efekti i zvuk ---------- */
+const reduced = () => window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
+let fxLayer = null;
+function layer() { if (!fxLayer || !fxLayer.isConnected) { fxLayer = h('div', { class: 'fx-layer', 'aria-hidden': 'true' }); document.body.append(fxLayer); } return fxLayer; }
+function confetti(el, n) {
+  if (reduced()) return;
+  const r = el ? el.getBoundingClientRect() : { left: innerWidth / 2, top: innerHeight / 3, width: 0, height: 0 };
+  const x0 = r.left + r.width / 2, y0 = r.top + Math.min(r.height / 2, 60);
+  const cs = getComputedStyle(document.documentElement);
+  const cols = ['--gold', '--ok', '--uvod', '--pra', '--istok', '--bad'].map(v => cs.getPropertyValue(v).trim());
+  for (let i = 0; i < (n || 26); i++) {
+    const b = h('span', { class: 'fx-bit' }); b.style.left = x0 + 'px'; b.style.top = y0 + 'px'; b.style.background = cols[i % cols.length];
+    layer().append(b);
+    const a = Math.random() * Math.PI * 2, d = 80 + Math.random() * 140;
+    const dx = Math.cos(a) * d, dy = Math.sin(a) * d - 60;
+    b.animate([{ transform: 'translate(0,0) rotate(0)', opacity: 1 }, { transform: 'translate(' + dx + 'px,' + (dy + 160) + 'px) rotate(' + (Math.random() * 720 - 360) + 'deg)', opacity: 0 }],
+      { duration: 900 + Math.random() * 500, easing: 'cubic-bezier(.2,.7,.4,1)' }).onfinish = () => b.remove();
+  }
+}
+function floatText(el, text) {
+  if (reduced() || !el) return;
+  const r = el.getBoundingClientRect();
+  const t = h('span', { class: 'fx-float' }, text); t.style.left = (r.left + r.width / 2 - 20) + 'px'; t.style.top = r.top + 'px';
+  layer().append(t);
+  t.animate([{ transform: 'translateY(0) scale(.8)', opacity: 0 }, { transform: 'translateY(-20px) scale(1.15)', opacity: 1, offset: .25 }, { transform: 'translateY(-70px) scale(1)', opacity: 0 }], { duration: 1000, easing: 'ease-out' }).onfinish = () => t.remove();
+}
+function shake(el) { if (!reduced() && el) el.animate([{ transform: 'translateX(0)' }, { transform: 'translateX(-9px)' }, { transform: 'translateX(9px)' }, { transform: 'translateX(-6px)' }, { transform: 'translateX(5px)' }, { transform: 'translateX(0)' }], { duration: 380 }); }
+let actx = null;
+function beep(kind) {
+  if (S.sound === false) return;
+  try {
+    actx = actx || new (window.AudioContext || window.webkitAudioContext)();
+    const seq = { ok: [[660, 0], [880, .09]], bad: [[220, 0], [180, .12]], win: [[523, 0], [659, .1], [784, .2], [1047, .3]], tap: [[520, 0]], flip: [[400, 0], [600, .05]] }[kind] || [];
+    seq.forEach(([fr, at]) => {
+      const o = actx.createOscillator(), g = actx.createGain(), t0 = actx.currentTime + at;
+      o.type = kind === 'bad' ? 'sawtooth' : 'triangle'; o.frequency.value = fr;
+      g.gain.setValueAtTime(0.0001, t0); g.gain.exponentialRampToValueAtTime(kind === 'bad' ? .06 : .12, t0 + .01); g.gain.exponentialRampToValueAtTime(0.0001, t0 + (kind === 'win' ? .3 : .16));
+      o.connect(g); g.connect(actx.destination); o.start(t0); o.stop(t0 + .35);
+    });
+  } catch (e) {}
+}
+function svgEl(inner, vb) { const s = document.createElementNS('http://www.w3.org/2000/svg', 'svg'); s.setAttribute('viewBox', vb || '0 0 24 24'); s.setAttribute('aria-hidden', 'true'); s.innerHTML = inner; return s; }
+const SUBJECTS = [
+  { id: 'povijest', name: 'Povijest', book: 'Klio 5 · Školska knjiga', on: true, icon: '<path d="M3 21h18M4 18h16M6 18V9M10 18V9M14 18V9M18 18V9M3 9h18L12 3z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>' },
+  { id: 'geografija', name: 'Geografija', book: 'Gea 1 · Školska knjiga', icon: '<circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" stroke-width="2"/><path d="M3 12h18M12 3c3 3 3 15 0 18M12 3c-3 3-3 15 0 18" fill="none" stroke="currentColor" stroke-width="2"/>' },
+  { id: 'priroda', name: 'Priroda', book: 'Priroda 5 · Alfa', icon: '<path d="M5 19C5 9 11 4 20 4c0 9-5 15-15 15z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><path d="M5 19l9-9" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>' },
+  { id: 'matematika', name: 'Matematika', book: 'Uskoro', icon: '<path d="M7 4v6M4 7h6M14 7h6M5 15l4 4M9 15l-4 4M14 15h6M14 19h6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>' },
+  { id: 'hrvatski', name: 'Hrvatski', book: 'Uskoro', icon: '<path d="M4 19L8.5 5h1L14 19M5.5 14h7M16 19v-6a2.5 2.5 0 015 0v6M16 16h5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>' },
+  { id: 'engleski', name: 'Engleski', book: 'Dip in 5 · Školska knjiga', on: true, icon: '<path d="M4 5h16v11H9l-5 4z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><path d="M8 9h8M8 12h5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>' }
+];
+function subjPct(id) { const ks = Object.keys(DATA[id].CH); return Math.round(ks.reduce((a, c) => a + chapterPct(c), 0) / ks.length); }
+function hub() {
+  if (!S.name) { askName(); return; }
+  clear();
+  const st = shownStreak();
+  $app.append(
+    h('section', { class: 'card hero' },
+      h('p', { class: 'eyebrow' }, 'Brainy · 5. razred'),
+      h('div', { class: 'hero-top' }, h('h1', null, 'Bok, ' + S.name + '!'),
+        h('button', { class: 'sound', type: 'button', 'aria-label': S.sound === false ? 'Uključi zvuk' : 'Isključi zvuk', onclick: () => { S.sound = S.sound === false; save(); if (S.sound) beep('tap'); hub(); } }, svgEl(S.sound === false ? ICONS.soundOff : ICONS.soundOn))),
+      buddy('wave', st >= 2 ? 'Već ' + st + ' dana zaredom! Nastavimo?' : S.rounds ? 'Drago mi je da si opet tu! Što učimo danas?' : 'Ja sam Mozgić. Odaberi predmet i krenimo!', 84),
+      levelCard(),
+      h('div', { class: 'stats' },
+        h('div', { class: 'stat' }, h('b', null, String(S.pts)), h('span', null, 'bodova')),
+        h('div', { class: 'stat' }, h('b', null, String(st)), h('span', null, st === 1 ? 'dan zaredom' : 'dana zaredom')),
+        h('div', { class: 'stat' }, h('b', null, String(S.badges.length)), h('span', null, 'znački')))),
+    h('section', { class: 'card' },
+      h('h2', null, 'Što danas učiš?'),
+      h('div', { class: 'subjects' }, SUBJECTS.map(sb => {
+        if (!sb.on) return h('div', { class: 'subj off', 'aria-disabled': 'true' }, h('span', { class: 'soon' }, 'Uskoro'), h('div', { class: 'sico' }, svgEl(sb.icon)), h('h3', null, sb.name), h('span', { class: 'book' }, sb.book));
+        const pct = subjPct(sb.id), dq = DATA[sb.id].Q, due = dq.filter(q => S.items[q.id] && S.items[q.id].d <= DAY() && S.items[q.id].l < 5).length, started = dq.some(q => S.items[q.id]);
+        return h('button', { class: 'subj on ' + sb.id, type: 'button', onclick: () => { beep('tap'); useSubj(sb.id); chosenCh = 'all'; home(); } },
+          h('div', { class: 'sico' }, svgEl(sb.icon)), h('h3', null, sb.name), h('span', { class: 'book' }, sb.book),
+          h('div', { class: 'bar' }, h('i', { class: pct >= 80 ? 'hi' : pct >= 50 ? 'mid' : '', style: 'width:' + Math.max(pct, 3) + '%' })),
+          h('span', { class: 'small' }, pct + ' % naučeno'),
+          !started ? h('span', { class: 'due', style: 'color:var(--pra)' }, 'Počni ovdje!') : due ? h('span', { class: 'due', style: 'color:var(--bad)' }, due + ' za ponoviti danas') : h('span', { class: 'due', style: 'color:var(--ok)' }, 'Sve ponovljeno'));
+      })),
+      h('p', { class: 'small muted' }, 'Novi predmeti dolaze čim roditelji pošalju stranice iz knjige.'))
+,
+    h('section', { class: 'card' },
+      h('h2', null, 'Značke'),
+      h('div', { class: 'badges' }, BADGES.map(b => h('div', { class: 'badge' + (S.badges.includes(b.id) ? ' on' : '') }, badgeIcon(), b.name)))
+    )
+  );
+  maybeLevelUp();
+}
+const ICONS = {
+  su: '<path d="M7 7V5a5 5 0 0110 0v2" fill="none" stroke="currentColor" stroke-width="2"/><rect x="4" y="7" width="16" height="14" rx="3" fill="currentColor"/><path d="M9 13h6" stroke="var(--card)" stroke-width="2" stroke-linecap="round"/>',
+  f1: '<circle cx="8" cy="8" r="3.2" fill="currentColor"/><circle cx="16" cy="8" r="3.2" fill="currentColor"/><path d="M2.5 20c0-4 2.5-6.5 5.5-6.5s5.5 2.5 5.5 6.5M10.5 20c0-4 2.5-6.5 5.5-6.5s5.5 2.5 5.5 6.5" fill="currentColor"/>',
+  f2: '<rect x="3" y="4" width="18" height="17" rx="2" fill="none" stroke="currentColor" stroke-width="2"/><path d="M3 9h18M8 2v4M16 2v4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><path d="M7 13h4M7 17h7" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>',
+  speaker: '<path d="M4 9v6h4l5 4V5L8 9z" fill="currentColor"/><path d="M16 8.5a5 5 0 010 7" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>',
+  uvod: '<path d="M6 3h12M6 21h12M7 3c0 5 5 6 5 9s-5 4-5 9M17 3c0 5-5 6-5 9s5 4 5 9" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><path d="M9 19c1-2 2-3 3-3s2 1 3 3z" fill="currentColor"/>',
+  pra: '<path d="M12 2C8 7 6 11 6 15a6 6 0 0012 0c0-4-2-8-6-13z" fill="currentColor" opacity=".9"/><path d="M10 12l2 2-1 3" fill="none" stroke="var(--card)" stroke-width="1.6" stroke-linecap="round"/>',
+  istok: '<path d="M3 21h18v-4H3zM5 17h14v-4H5zM7.5 13h9V9h-9zM10 9h4V5h-4z" fill="currentColor"/><path d="M12 5V2" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>',
+  soundOn: '<path d="M4 9v6h4l5 4V5L8 9z" fill="currentColor"/><path d="M16 8.5a5 5 0 010 7M18.5 6a8.5 8.5 0 010 12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>',
+  soundOff: '<path d="M4 9v6h4l5 4V5L8 9z" fill="currentColor"/><path d="M17 9l5 6M22 9l-5 6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>',
+  flame: '<path d="M12 2c1 4 6 6 6 12a6 6 0 01-12 0c0-3 2-5 3-6 0 2 1 3 2 3 0-3-1-6 1-9z" fill="currentColor"/>',
+  star: '<path d="M12 2.5l2.9 6 6.6.8-4.9 4.5 1.3 6.5L12 17l-5.9 3.3 1.3-6.5L2.5 9.3l6.6-.8z" fill="currentColor"/>'
+};
+const LEVELS = [[0, 'Kameni oblutak'], [100, 'Ručni klin'], [250, 'Luk i strijela'], [450, 'Vučedolska golubica'], [700, 'Brončani mač'], [1000, 'Keltski kovač'], [1400, 'Glinena pločica'], [1900, 'Zigurat'], [2500, 'Ištarina vrata'], [3200, 'Viseći vrtovi'], [4000, 'Herodot, otac povijesti']];
+function levelOf(p) { let i = 0; while (i + 1 < LEVELS.length && p >= LEVELS[i + 1][0]) i++; return i; }
+function levelCard() {
+  const i = levelOf(S.pts), next = LEVELS[i + 1];
+  const pct = next ? Math.round(100 * (S.pts - LEVELS[i][0]) / (next[0] - LEVELS[i][0])) : 100;
+  return h('div', { class: 'level' }, h('div', { class: 'lv' }, String(i + 1)), h('b', null, LEVELS[i][1]),
+    h('div', { class: 'bar' }, h('i', { style: 'width:' + Math.max(pct, 3) + '%' })),
+    h('small', null, next ? 'Još ' + (next[0] - S.pts) + ' bodova do: ' + next[1] : 'Najviša razina!'));
+}
+function maybeLevelUp() {
+  const i = levelOf(S.pts);
+  if (S.lvSeen == null) { S.lvSeen = i; save(); return; }
+  if (i <= S.lvSeen) return;
+  S.lvSeen = i; save();
+  const ov = h('div', { class: 'overlay', role: 'dialog', 'aria-modal': 'true', 'aria-label': 'Nova razina' });
+  const close = () => ov.remove();
+  ov.append(h('section', { class: 'card pop' }, h('p', { class: 'eyebrow' }, 'Nova razina!'), mozgic('cheer', 110), h('div', { class: 'lv' }, String(i + 1)), h('h2', null, LEVELS[i][1]),
+    h('p', { class: 'muted' }, 'Imaš ' + S.pts + ' bodova. Samo tako!'), h('button', { class: 'btn', type: 'button', onclick: close }, 'Super!')));
+  ov.addEventListener('click', e => { if (e.target === ov) close(); });
+  document.body.append(ov); beep('win'); setTimeout(() => confetti(ov.querySelector('.lv'), 60), 150);
+}
+function ring(pct) {
+  const C = 2 * Math.PI * 31;
+  const svg = svgEl('<circle class="trk" cx="35" cy="35" r="31"/><circle class="val" cx="35" cy="35" r="31" stroke-dasharray="' + C + '" stroke-dashoffset="' + C + '"/>', '0 0 70 70');
+  svg.setAttribute('class', 'r');
+  requestAnimationFrame(() => requestAnimationFrame(() => { const v = svg.querySelector('.val'); if (v) v.style.strokeDashoffset = C * (1 - pct / 100); }));
+  return svg;
+}
+function starsFor(pct) { const n = pct >= 90 ? 3 : pct >= 70 ? 2 : pct >= 40 ? 1 : 0; return h('div', { class: 'stars', role: 'img', 'aria-label': n + ' od 3 zvjezdice' }, [0, 1, 2].map(k => { const s = svgEl(ICONS.star); if (k < n) { s.classList.add('on'); s.classList.add('pop'); s.style.animationDelay = (.25 + k * .2) + 's'; } return s; })); }
+function countUp(el, to, suffix) { if (reduced()) { el.textContent = to + (suffix || ''); return; } const t0 = performance.now(); const step = now => { const k = Math.min(1, (now - t0) / 700); el.textContent = Math.round(to * (1 - Math.pow(1 - k, 3))) + (suffix || ''); if (k < 1) requestAnimationFrame(step); }; requestAnimationFrame(step); }
+
+/* ---------- Mozgić ---------- */
+function mozgic(mood, size, anim) {
+  mood = mood || 'wave';
+  const arms = { wave: ['M72 160 Q40 170 46 196', 'M228 160 Q262 150 262 120', [46, 200], [262, 114]], cheer: ['M72 150 Q40 120 44 86', 'M228 150 Q260 120 256 86', [44, 80], [256, 80]], sad: ['M72 172 Q50 196 58 222', 'M228 172 Q250 196 242 222', [58, 226], [242, 226]] }[mood];
+  const eyes = mood === 'cheer'
+    ? '<path d="M102 156 Q120 134 138 156 M164 156 Q182 134 200 156" fill="none" stroke="#1E1B3A" stroke-width="8" stroke-linecap="round"/>'
+    : '<ellipse cx="120" cy="150" rx="20" ry="24" fill="#fff"/><ellipse cx="182" cy="150" rx="20" ry="24" fill="#fff"/><circle cx="124" cy="' + (mood === 'sad' ? 158 : 154) + '" r="11" fill="#1E1B3A"/><circle cx="178" cy="' + (mood === 'sad' ? 158 : 154) + '" r="11" fill="#1E1B3A"/><circle cx="128" cy="' + (mood === 'sad' ? 153 : 149) + '" r="4" fill="#fff"/><circle cx="182" cy="' + (mood === 'sad' ? 153 : 149) + '" r="4" fill="#fff"/>' +
+      (mood === 'sad' ? '<path d="M100 124 L138 116 M202 124 L164 116" stroke="#C2457A" stroke-width="6" stroke-linecap="round"/>' : '');
+  const mouth = mood === 'cheer' ? '<path d="M122 186 Q151 236 180 186 Z" fill="#1E1B3A"/><path d="M136 206 Q151 222 166 206 Q151 198 136 206Z" fill="#FF5C7A"/>'
+    : mood === 'sad' ? '<path d="M132 206 Q151 192 170 206" fill="none" stroke="#1E1B3A" stroke-width="6" stroke-linecap="round"/><path d="M214 112 q8 14 0 20 q-8 -6 0 -20z" fill="#7CC4FF"/>'
+    : '<path d="M128 192 Q151 214 174 192" fill="#1E1B3A"/><path d="M140 202 Q151 210 162 202" fill="#FF5C7A"/>';
+  const svg = svgEl(
+    '<ellipse cx="150" cy="284" rx="78" ry="10" fill="#000" opacity=".1"/>' +
+    '<path d="M112 236 v32 M188 236 v32" stroke="#E2558F" stroke-width="10" stroke-linecap="round"/>' +
+    '<ellipse cx="104" cy="272" rx="20" ry="10" fill="#6A44F2"/><ellipse cx="196" cy="272" rx="20" ry="10" fill="#6A44F2"/>' +
+    '<path d="' + arms[0] + ' M' + arms[1].slice(1) + '" stroke="#E2558F" stroke-width="10" fill="none" stroke-linecap="round"/>' +
+    '<circle cx="' + arms[2][0] + '" cy="' + arms[2][1] + '" r="11" fill="#FF8FB8"/><circle cx="' + arms[3][0] + '" cy="' + arms[3][1] + '" r="11" fill="#FF8FB8"/>' +
+    '<path d="M150 50 C120 30 80 44 76 76 C46 84 40 124 58 144 C42 170 60 210 92 214 C104 244 150 250 160 232 C186 252 226 236 230 206 C262 196 266 156 246 138 C262 108 240 70 210 72 C202 44 170 36 150 50Z" fill="#FF8FB8"/>' +
+    '<path d="M150 54 C146 90 158 120 150 160 M98 90 q20 10 18 34 M206 94 q-22 8 -18 36 M82 170 q26 -10 40 8 M220 172 q-24 -12 -40 6 M120 66 q8 14 0 26 M184 66 q-8 14 0 26" fill="none" stroke="#E2558F" stroke-width="5" stroke-linecap="round"/>' +
+    eyes + mouth +
+    '<ellipse cx="96" cy="182" rx="11" ry="7" fill="#E2558F" opacity=".5"/><ellipse cx="206" cy="182" rx="11" ry="7" fill="#E2558F" opacity=".5"/>' +
+    (mood === 'cheer' ? '<path d="M30 40 l5 12 l12 5 l-12 5 l-5 12 l-5 -12 l-12 -5 l12 -5z M268 30 l4 9 l9 4 l-9 4 l-4 9 l-4 -9 l-9 -4 l9 -4z" fill="#FFCB3D"/>' : ''),
+    '0 0 300 300');
+  svg.setAttribute('class', 'mz ' + (anim || (mood === 'cheer' ? 'jump' : mood === 'sad' ? 'droop' : 'idle')));
+  svg.setAttribute('width', size || 80); svg.setAttribute('height', size || 80);
+  return svg;
+}
+function buddy(mood, text, size) { return h('div', { class: 'buddy' }, mozgic(mood, size || 78), h('div', { class: 'bubble' }, text)); }
+const pick = a => a[Math.floor(Math.random() * a.length)];
+const YAY = ['Bravo!', 'Super!', 'Tako je!', 'Odlično!', 'Mozak radi!', 'Wow, točno!'];
+const OOPS = ['Ups! Ništa zato.', 'Skoro! Pogledaj odgovor.', 'Ne brini, idemo dalje!', 'Sljedeći put ćeš znati!'];
+
+/* ---------- Plan do ispita ---------- */
+function dayFromInput(v) { const [y, m, d] = v.split('-').map(Number); return Math.floor(Date.UTC(y, m - 1, d) / 864e5); }
+function dayToInput(t) { return new Date(t * 864e5).toISOString().slice(0, 10); }
+function dayLabel(t) { const d = new Date(t * 864e5); return d.getUTCDate() + '. ' + (d.getUTCMonth() + 1) + '.'; }
+function todayPlan() {
+  const t = DAY(), left = S.ex[SUBJ] - t;
+  if (S.plans[SUBJ] && S.plans[SUBJ].d === t && S.plans[SUBJ].e === S.ex[SUBJ]) return S.plans[SUBJ];
+  const unseen = Q.filter(q => !S.items[q.id]).length;
+  const due = Q.filter(q => S.items[q.id] && S.items[q.id].d <= t && S.items[q.id].l < 5).length;
+  let rounds, oral = 0, exam = 0, cards = 0;
+  if (left <= 0) { rounds = 1; }
+  else if (left <= 2) { rounds = Math.min(3, Math.max(1, Math.ceil(due / 10))); oral = 1; exam = 1; }
+  else {
+    const newToday = Math.ceil(unseen / (left - 2));
+    rounds = Math.min(4, Math.max(1, Math.ceil((newToday + due) / 10)));
+    if (left <= 7 || t % 2 === 0) oral = 1; else cards = 1;
+    if (left <= 5 && left % 2 === 1) exam = 1;
+  }
+  S.plans[SUBJ] = { d: t, e: S.ex[SUBJ], rounds, oral, exam, cards }; save();
+  return S.plans[SUBJ];
+}
+function dateForm(label) {
+  const inp = h('input', { class: 'namefield', type: 'date', min: dayToInput(DAY() + 1), value: S.ex[SUBJ] != null && S.ex[SUBJ] > DAY() ? dayToInput(S.ex[SUBJ]) : '' });
+  return [inp, h('button', { class: 'btn', type: 'button', onclick: () => { if (!inp.value) { inp.focus(); return; } S.ex[SUBJ] = dayFromInput(inp.value); S.plans[SUBJ] = null; save(); home(); } }, label)];
+}
+function planCard() {
+  const t = DAY();
+  if (S.ex[SUBJ] == null || S.ex[SUBJ] < t || S.editDate) {
+    const past = S.ex[SUBJ] != null && S.ex[SUBJ] < t;
+    return h('section', { class: 'card' },
+      h('h2', null, past ? 'Kako je prošao ispit?' : 'Kad je ispit?'),
+      h('p', { class: 'small muted' }, past ? 'Upiši datum sljedećeg ispita i dobit ćeš novi plan.' : 'Upiši datum ispita i dobit ćeš plan za svaki dan do tada.'),
+      ...dateForm('Napravi plan'),
+      S.editDate ? h('button', { class: 'chip-all', type: 'button', onclick: () => { S.editDate = false; home(); } }, 'Odustani') : null);
+  }
+  const left = S.ex[SUBJ] - t, p = todayPlan(), L = S.log[LK(t)] || { r: 0, oral: 0, ex: 0, cards: 0 };
+  const tasks = [];
+  tasks.push({ label: 'Vježbaj ' + p.rounds + (p.rounds === 1 ? ' krug' : ' kruga') + ' (po 10 pitanja)', have: L.r, need: p.rounds, go: () => { chosenCh = 'all'; startPractice(); } });
+  if (p.cards) tasks.push({ label: 'Prođi kartice s pojmovima', have: L.cards, need: 1, go: () => { chosenCh = 'all'; startCards(); } });
+  if (p.oral) tasks.push({ label: 'Usmeno: 5 pitanja naglas', have: Math.floor(L.oral / 5), need: 1, go: () => { chosenCh = 'all'; startOral(); } });
+  if (p.exam) tasks.push({ label: 'Probni ispit', have: L.ex, need: 1, go: () => { chosenCh = 'all'; startExam(); } });
+  const allDone = tasks.every(x => x.have >= x.need);
+  const title = left === 0 ? 'Danas je ispit. Sretno!' : left === 1 ? 'Ispit je sutra!' : 'Ispit za ' + left + ' dana';
+  const sub = left === 0 ? 'Samo jedan krug za zagrijavanje. Vjeruj si!' : left <= 2 ? 'Faza ponavljanja: probni ispit i usmeno.' : 'Danas učiš nova pitanja i ponavljaš stara.';
+  return h('section', { class: 'card' },
+    h('div', { class: 'top' }, h('h2', null, title), h('button', { class: 'chip-all', type: 'button', onclick: () => { S.editDate = true; home(); } }, dayLabel(S.ex[SUBJ]) + ' · promijeni')),
+    h('p', { class: 'small muted' }, sub),
+    h('div', { class: 'tasks' }, tasks.map(x => {
+      const done = x.have >= x.need;
+      return h('button', { class: 'task' + (done ? ' done' : ''), type: 'button', onclick: x.go },
+        h('span', { class: 'box' }, done ? '✓' : ''), h('span', null, x.label + (x.need > 1 && !done ? ' · ' + x.have + '/' + x.need : '')), done ? null : h('span', { class: 'go' }, 'Kreni'));
+    })),
+    allDone ? h('div', { class: 'feedback ok', style: 'margin-top:10px' }, h('h3', null, 'Današnji plan je gotov!'), h('p', null, 'Bravo. Sutra te čeka novi plan.')) : null);
+}
+
+/* ---------- Tjedni izvještaj i prijenos ---------- */
+function weekReport() {
+  const t = DAY(); let days = 0, q = 0, ok = 0, oral = 0, ex = 0;
+  for (let k = t - 6; k <= t; k++) { const L = S.log[LK(k)]; if (L && (L.q || L.oral || L.cards)) { days++; q += L.q; ok += L.ok; oral += L.oral; ex += L.ex; } }
+  const weak = Object.keys(CH).map(c => ({ c, p: chapterPct(c) })).sort((a, b) => a.p - b.p)[0];
+  const errs = Q.filter(x => S.items[x.id] && S.items[x.id].w > 0).sort((a, b) => S.items[b.id].w - S.items[a.id].w).slice(0, 3);
+  const lines = [
+    'Tjedni izvještaj: ' + S.name + ' · ' + DATA[SUBJ].name,
+    'Vježbao/la je ' + days + ' od 7 dana.',
+    'Odgovorenih pitanja: ' + q + (q ? ' (točno ' + Math.round(100 * ok / q) + ' %)' : '') + '.',
+    'Usmeno: ' + oral + ' pitanja. Probnih ispita: ' + ex + '.',
+    'Napredak: ' + Object.keys(CH).map(c => CH[c].name + ' ' + chapterPct(c) + ' %').join(', ') + '.',
+    'Najviše treba vježbati: ' + CH[weak.c].name + ' (' + CH[weak.c].pages + ').'
+  ];
+  if (errs.length) lines.push('Najčešće pogreške: ' + errs.map(x => x.q + ' (str. ' + x.p + ')').join(' | '));
+  if (S.ex[SUBJ] != null && S.ex[SUBJ] >= t) lines.push('Ispit: ' + dayLabel(S.ex[SUBJ]) + (S.ex[SUBJ] === t ? ' (danas)' : ' (za ' + (S.ex[SUBJ] - t) + ' dana)'));
+  return lines.join('\n');
+}
+async function shareText(text, btn, done) {
+  try { if (navigator.share) { await navigator.share({ text }); return; } } catch (e) { if (e && e.name === 'AbortError') return; }
+  try { await navigator.clipboard.writeText(text); btn.textContent = done; } catch (e) { btn.textContent = 'Označi tekst i kopiraj ga ručno'; }
+}
+function b64(bytes) { let s = ''; for (let i = 0; i < bytes.length; i += 8192) s += String.fromCharCode.apply(null, bytes.subarray(i, i + 8192)); return btoa(s); }
+function unb64(str) { const s = atob(str); const b = new Uint8Array(s.length); for (let i = 0; i < s.length; i++) b[i] = s.charCodeAt(i); return b; }
+async function pipe(bytes, Stream) { return new Uint8Array(await new Response(new Blob([bytes]).stream().pipeThrough(new Stream('deflate-raw'))).arrayBuffer()); }
+async function encodeState() {
+  const raw = new TextEncoder().encode(JSON.stringify(S));
+  if (window.CompressionStream) { try { return 'PV1Z' + b64(await pipe(raw, CompressionStream)); } catch (e) {} }
+  return 'PV1J' + b64(raw);
+}
+async function decodeState(code) {
+  code = code.replace(/\s+/g, '');
+  if (!code.startsWith('PV1')) throw new Error('bad');
+  let bytes = unb64(code.slice(4));
+  if (code[3] === 'Z') bytes = await pipe(bytes, DecompressionStream);
+  const obj = JSON.parse(new TextDecoder().decode(bytes));
+  if (!obj || typeof obj.items !== 'object') throw new Error('bad');
+  return obj;
+}
+function transferBox() {
+  const out = h('div');
+  const mk = h('button', { class: 'btn ghost', type: 'button', onclick: async () => {
+    const code = await encodeState();
+    const ta = h('textarea', { class: 'namefield', readonly: true }); ta.value = code;
+    const sb = h('button', { class: 'btn', type: 'button' }, 'Pošalji kod');
+    sb.onclick = () => shareText(code, sb, 'Kod je kopiran');
+    out.replaceChildren(h('p', { class: 'small' }, 'Pošalji ovaj kod na drugi uređaj (npr. WhatsAppom) i ondje ga zalijepi.'), ta, sb);
+  } }, 'Napravi kod');
+  const inp = h('textarea', { class: 'namefield', placeholder: 'Ovdje zalijepi kod s drugog uređaja' });
+  const msg = h('p', { class: 'small' });
+  const load = h('button', { class: 'btn ghost', type: 'button', onclick: async () => {
+    if (!inp.value.trim()) { inp.focus(); return; }
+    let obj; try { obj = await decodeState(inp.value); } catch (e) { msg.textContent = 'Kod nije ispravan. Kopiraj ga ponovno, cijeli.'; return; }
+    if (!load.dataset.sure) { load.dataset.sure = '1'; load.textContent = 'Sigurno? Napredak na ovom uređaju bit će zamijenjen.'; return; }
+    S = Object.assign(fresh(), obj); migrate(); S.plans = {}; save(); home();
+  } }, 'Učitaj kod');
+  return h('div', null,
+    h('h3', null, 'Prenesi napredak na drugi uređaj'),
+    h('p', { class: 'small muted' }, 'Na starom uređaju dodirni „Napravi kod”. Na novom uređaju zalijepi kod i dodirni „Učitaj kod”.'),
+    mk, out, inp, load, msg);
+}
+
+function askName() {
+  clear();
+  const inp = h('input', { class: 'namefield', type: 'text', maxlength: '24', autocomplete: 'given-name', placeholder: 'Tvoje ime', value: S.name || '' });
+  const go = () => { const v = inp.value.trim(); if (!v) { inp.focus(); return; } S.name = v; save(); hub(); };
+  inp.addEventListener('keydown', e => { if (e.key === 'Enter') go(); });
+  $app.append(h('section', { class: 'card' },
+    h('p', { class: 'eyebrow' }, 'Brainy · 5. razred'),
+    buddy('wave', 'Bok! Ja sam Mozgić. Pomoći ću ti učiti.', 96),
+    h('h1', null, 'Kako se zoveš?'),
+    h('p', { class: 'muted' }, 'Tvoj napredak sprema se na ovom uređaju.'),
+    inp, h('button', { class: 'btn', type: 'button', onclick: go }, 'Krenimo')));
+  inp.focus();
+}
+function home() {
+  if (!S.name) { askName(); return; }
+  clear();
+  const st = shownStreak();
+  const due = Q.filter(q => !S.items[q.id] || S.items[q.id].d <= DAY()).length;
+  $app.append(
+    h('section', { class: 'card hero' },
+      h('button', { class: 'back', type: 'button', onclick: () => { beep('tap'); hub(); } }, '‹ Svi predmeti'),
+      h('p', { class: 'eyebrow' }, BOOK() + ' · ' + Q.length + ' pitanja'),
+      h('h1', null, DATA[SUBJ].name),
+      h('div', { class: 'stats' },
+        h('div', { class: 'stat' }, h('b', null, String(S.pts)), h('span', null, 'bodova')),
+        h('div', { class: 'stat' }, h('b', null, String(st)), h('span', null, st === 1 ? 'dan zaredom' : 'dana zaredom')),
+        h('div', { class: 'stat' }, h('b', null, String(due)), h('span', null, 'za ponoviti danas'))
+      )
+    ),
+    (() => {
+      const n = Q.length, lv = q => S.items[q.id] ? S.items[q.id].l : -1;
+      const learned = Q.filter(q => lv(q) >= 3).length, learning = Q.filter(q => lv(q) >= 0 && lv(q) < 3).length, fresh_ = n - learned - learning;
+      return h('section', { class: 'card' },
+        h('div', { class: 'top' }, h('h2', null, 'Napredak'), h('span', { class: 'pill' }, Math.round(100 * learned / n) + ' % naučeno')),
+        h('div', { class: 'prog', role: 'img', 'aria-label': learned + ' naučeno, ' + learning + ' u učenju, ' + fresh_ + ' novih' },
+          h('i', { class: 'p1', style: 'width:' + (100 * learned / n) + '%' }), h('i', { class: 'p2', style: 'width:' + (100 * learning / n) + '%' })),
+        h('div', { class: 'legend' },
+          h('div', { style: '--c:var(--ok)' }, h('b', null, String(learned)), h('span', null, 'naučeno')),
+          h('div', { style: '--c:var(--sun)' }, h('b', null, String(learning)), h('span', null, 'u učenju')),
+          h('div', { style: '--c:var(--line)' }, h('b', null, String(fresh_)), h('span', null, 'novih'))),
+        h('p', { class: 'small muted' }, 'Pitanje je naučeno kad ga točno odgovoriš u tri različita dana. Zato je važno vježbati malo, ali svaki dan.'));
+    })(),
+    planCard(),
+    h('section', { class: 'card' },
+      h('h2', null, DATA[SUBJ].path),
+      (() => { const keys = Object.keys(CH); const here = keys.find(c => chapterPct(c) < 80);
+        return h('div', { class: 'path' }, keys.map(ch => {
+        const pct = chapterPct(ch);
+        return h('button', { class: 'station ' + ch + (chosenCh === ch ? ' sel' : ''), type: 'button', 'aria-pressed': String(chosenCh === ch), onclick: () => { beep('tap'); chosenCh = chosenCh === ch ? 'all' : ch; home(); } },
+          h('div', { class: 'ring' }, ring(pct), h('div', { class: 'ico' }, svgEl(ICONS[ch])), pct >= 80 ? h('span', { class: 'crown', 'aria-label': 'Savladano' }, '✓') : null),
+          h('div', null, h('h3', null, CH[ch].name, ch === here ? h('span', { class: 'here' }, 'Ti si ovdje') : null),
+            h('div', { class: 'meta' }, h('span', { class: 'pct' }, pct + ' %'), ' naučeno · ' + CH[ch].pages + ' · ' + Q.filter(q => q.ch === ch).length + ' pitanja')));
+      })); })(),
+      h('p', { class: 'small muted' }, chosenCh === 'all' ? 'Vježbaš sva poglavlja. Dodirni poglavlje ako želiš samo njega.' : 'Vježbaš samo: ' + CH[chosenCh].name + '. Dodirni ga ponovno za sva.')
+    ),
+    h('section', { class: 'card' },
+      h('div', { class: 'row' },
+        h('button', { class: 'btn', type: 'button', onclick: () => startPractice() }, 'Vježbaj (10 pitanja)'),
+        h('button', { class: 'btn ghost', type: 'button', onclick: () => startCards() }, 'Kartice s pojmovima')),
+      h('button', { class: 'btn gold', type: 'button', onclick: () => startExam() }, 'Probni ispit (15 pitanja, 20 min)'),
+      h('button', { class: 'btn ghost', type: 'button', onclick: () => startOral() }, 'Usmeno ispitivanje (5 pitanja)'),
+      h('p', { class: 'small muted' }, 'Usmeno: ' + ORAL.filter(o => S.oral[o.id] && S.oral[o.id].b >= .75).length + ' od ' + ORAL.length + ' pitanja dobro odgovoreno.')
+    ),
+    parentPanel()
+  );
+  maybeLevelUp();
+}
+
+function parentPanel() {
+  const rows = Q.filter(q => S.items[q.id] && S.items[q.id].w > 0).sort((a, b) => S.items[b.id].w - S.items[a.id].w).slice(0, 10);
+  const tot = Q.reduce((a, q) => { const s = S.items[q.id]; if (s) { a.r += s.r; a.w += s.w; } return a; }, { r: 0, w: 0 });
+  const acc = tot.r + tot.w ? Math.round(100 * tot.r / (tot.r + tot.w)) : null;
+  return h('details', { class: 'card' },
+    h('summary', null, 'Za roditelje'),
+    h('p', { class: 'small' }, 'Završenih krugova: ' + S.rounds + ' · Točnost: ' + (acc == null ? '–' : acc + ' %') + ' · Probnih ispita: ' + S.exams.length),
+    S.exams.length ? h('p', { class: 'small' }, 'Zadnji ispiti: ' + S.exams.slice(-5).map(e => e.g + ' (' + e.pct + ' %)').join(', ')) : null,
+    h('h3', null, 'Tjedni izvještaj'),
+    (() => { const txt = weekReport(); const b = h('button', { class: 'btn ghost', type: 'button' }, 'Podijeli izvještaj'); b.onclick = () => shareText(txt, b, 'Izvještaj je kopiran'); return h('div', null, h('div', { class: 'report' }, txt), b); })(),
+    h('h3', null, 'Najčešće pogreške'),
+    rows.length ? h('div', { class: 'tablewrap' }, h('table', null,
+      h('thead', null, h('tr', null, h('th', null, 'Pitanje'), h('th', { class: 'num' }, 'Str.'), h('th', { class: 'num' }, 'Krivo'))),
+      h('tbody', null, rows.map(q => h('tr', null, h('td', null, q.q), h('td', { class: 'num' }, String(q.p)), h('td', { class: 'num' }, String(S.items[q.id].w)))))))
+      : h('p', { class: 'small muted' }, 'Još nema pogrešaka.'),
+    h('h3', null, 'Usmeno: najslabija pitanja'),
+    (() => { const ow = ORAL.filter(o => S.oral[o.id]).sort((a, b) => S.oral[a.id].last - S.oral[b.id].last).slice(0, 5);
+      return ow.length ? h('div', { class: 'tablewrap' }, h('table', null,
+        h('thead', null, h('tr', null, h('th', null, 'Pitanje'), h('th', { class: 'num' }, 'Zadnji put'))),
+        h('tbody', null, ow.map(o => h('tr', null, h('td', null, o.q), h('td', { class: 'num' }, Math.round(100 * S.oral[o.id].last) + ' %'))))))
+        : h('p', { class: 'small muted' }, 'Još nema usmenih odgovora.'); })(),
+    h('p', { class: 'small muted' }, 'Kod usmenog ispitivanja roditelj može čitati pitanja naglas i sam označiti što je dijete reklo.'),
+    transferBox(),
+    h('button', { class: 'chip-all', type: 'button', onclick: askName }, 'Promijeni ime (' + S.name + ')'),
+    h('p', { class: 'small muted' }, 'Napredak se sprema u ovom pregledniku na ovom uređaju. Pitanje se smatra naučenim kad je točno odgovoreno tri dana.'),
+    h('button', { class: 'chip-all', type: 'button', onclick: e => {
+      const b = e.currentTarget;
+      if (b.dataset.sure) { S = fresh(); save(); home(); } else { b.dataset.sure = '1'; b.textContent = 'Sigurno? Dodirni još jednom za brisanje.'; }
+    } }, 'Izbriši sav napredak')
+  );
+}
+
+/* ---------- Vježba ---------- */
+function pool() { return Q.filter(q => chosenCh === 'all' || q.ch === chosenCh); }
+function pickPractice(n) {
+  const t = DAY(), list = pool();
+  const due = shuffle(list.filter(q => S.items[q.id] && S.items[q.id].d <= t && S.items[q.id].l < 5)).sort((a, b) => S.items[a.id].l - S.items[b.id].l);
+  const fresh = shuffle(list.filter(q => !S.items[q.id]));
+  const rest = shuffle(list.filter(q => S.items[q.id] && S.items[q.id].d > t)).sort((a, b) => S.items[a.id].l - S.items[b.id].l);
+  return due.concat(fresh, rest).slice(0, n);
+}
+function startPractice() {
+  const qs = pickPractice(10);
+  const res = [];
+  let i = 0, gained = 0, combo = 0;
+  function show() {
+    clear();
+    const q = qs[i];
+    const dots = h('div', { class: 'dots', 'aria-hidden': 'true' }, qs.map((_, k) => h('span', { class: 'dot' + (k < i ? (res[k] ? ' ok' : ' bad') : k === i ? ' now' : '') })));
+    const fbBox = h('div');
+    const checkBtn = h('button', { class: 'btn', type: 'button' }, 'Provjeri');
+    let done = false;
+    const w = widgetFor(q, () => check());
+    function check() {
+      if (done) { checkBtn.click(); return; }
+      const r = w.result();
+      if (!r) { checkBtn.textContent = q.t === 'text' ? 'Najprije upiši odgovor' : 'Najprije završi zadatak'; return; }
+      done = true; w.reveal(); record(q.id, r.ok); res.push(r.ok);
+      if (r.ok) { S.pts += 10; gained += 10; combo++; } else combo = 0;
+      save();
+      fbBox.replaceChildren(h('div', { class: 'feedback ' + (r.ok ? 'ok' : 'bad') },
+        h('div', { class: 'fbhead' }, mozgic(r.ok ? 'cheer' : 'sad', 64), h('div', null, h('h3', null, r.ok ? 'Točno! +10' : 'Nije točno.'), h('p', { class: 'small' }, r.ok ? pick(YAY) : pick(OOPS)))),
+        r.ok ? null : h('p', null, h('b', null, 'Točan odgovor: '), correctText(q)),
+        h('p', null, q.ex),
+        h('p', { class: 'src' }, BOOK() + ', str. ' + q.p)));
+      ptsPill.textContent = '+' + gained + ' bodova';
+      if (r.ok) { beep('ok'); floatText(ptsPill, '+10'); confetti(fbBox, combo >= 3 ? 40 : 18); ptsPill.classList.remove('pop'); void ptsPill.offsetWidth; ptsPill.classList.add('pop'); }
+      else { beep('bad'); shake(card); }
+      comboBox.replaceChildren(combo >= 2 ? h('span', { class: 'pill combo pop' }, svgEl(ICONS.flame), combo + ' zaredom!') : '');
+      checkBtn.hidden = false;
+      checkBtn.textContent = i + 1 < qs.length ? 'Dalje' : 'Završi krug';
+      checkBtn.onclick = () => { i++; if (i < qs.length) show(); else finish(); };
+      checkBtn.focus({ preventScroll: true });
+    }
+    checkBtn.onclick = check;
+    const ptsPill = h('span', { class: 'pill' }, '+' + gained + ' bodova');
+    const comboBox = h('span', null, combo >= 2 ? h('span', { class: 'pill combo' }, svgEl(ICONS.flame), combo + ' zaredom!') : '');
+    const card = h('section', { class: 'card' },
+      h('div', { class: 'top' }, h('span', { class: 'count' }, 'Pitanje ' + (i + 1) + ' / ' + qs.length), h('span', { class: 'row' }, comboBox, ptsPill)),
+      dots, chapterTag(q.ch), h('p', { class: 'q' }, q.q), w.el, fbBox,
+      h('div', { class: 'row' }, h('button', { class: 'btn ghost', type: 'button', onclick: home }, 'Prekini'), checkBtn)
+    );
+    $app.append(card);
+    if (q.t === 'mc') checkBtn.hidden = true;
+  }
+  function finish() {
+    S.pts += 5; gained += 5; S.rounds++; lg().r++; bumpStreak();
+    const nb = checkBadges(); save();
+    const ok = res.filter(Boolean).length;
+    clear();
+    $app.append(h('section', { class: 'card' },
+      h('p', { class: 'eyebrow' }, 'Krug završen'),
+      buddy(ok >= res.length * .7 ? 'cheer' : 'wave', ok === res.length ? 'Savršeno! Ponosan sam na tebe!' : ok >= res.length * .7 ? 'Odlično! Mozak ti radi punom parom.' : 'Dobar početak! Pogrešna pitanja vratit ću ti sutra.', 90),
+      starsFor(100 * ok / res.length),
+      h('div', { class: 'big' }, ok + ' / ' + res.length),
+      h('p', null, ok === res.length ? 'Savršeno! Sve točno.' : ok >= res.length * .7 ? 'Odlično, samo tako!' : 'Dobar početak. Pogrešna pitanja vraćaju se sutra.'),
+      h('p', null, h('b', null, '+' + gained + ' bodova'), ' (uključujući 5 za završen krug) · ' + shownStreak() + (shownStreak() === 1 ? ' dan zaredom' : ' dana zaredom')),
+      nb.length ? h('div', { class: 'feedback ok' }, h('h3', null, 'Nova značka!'), h('p', null, nb.join(', '))) : null,
+      h('div', { class: 'row' }, h('button', { class: 'btn', type: 'button', onclick: startPractice }, 'Još jedan krug'), h('button', { class: 'btn ghost', type: 'button', onclick: home }, 'Na početak'))
+    ));
+    if (ok >= res.length * .7) { beep('win'); setTimeout(() => confetti($app.querySelector('.big'), 50), 300); }
+  }
+  show();
+}
+
+/* ---------- Kartice ---------- */
+function startCards() {
+  let deck = shuffle(CARDS.filter(c => chosenCh === 'all' || c.ch === chosenCh));
+  const total = deck.length;
+  let known = 0;
+  function show() {
+    clear();
+    if (!deck.length) {
+      S.cardsDone++; lg().cards++; S.pts += 10; S.rounds++; bumpStreak(); const nb = checkBadges(); save();
+      setTimeout(() => { beep('win'); confetti($app.querySelector('h2'), 50); }, 300);
+      $app.append(h('section', { class: 'card' }, h('p', { class: 'eyebrow' }, 'Kartice'), h('h2', null, 'Znaš svih ' + total + ' pojmova!'),
+        h('p', null, h('b', null, '+10 bodova')), nb.length ? h('div', { class: 'feedback ok' }, h('h3', null, 'Nova značka!'), h('p', null, nb.join(', '))) : null,
+        h('div', { class: 'row' }, h('button', { class: 'btn', type: 'button', onclick: startPractice }, 'Sad vježbaj pitanja'), h('button', { class: 'btn ghost', type: 'button', onclick: home }, 'Na početak'))));
+      return;
+    }
+    const c = deck[0];
+    let flipped = false;
+    const face = h('button', { class: 'flash ' + c.ch, type: 'button', 'aria-label': 'Okreni karticu' },
+      h('div', { class: 'flip' },
+        h('div', { class: 'face front' }, h('span', { class: 'tapme' }, DATA[SUBJ].lang ? 'Što znači?' : 'Pojam'), h('div', { class: 'term' }, c.term), h('p', { class: 'hint' }, 'Što to znači? Reci naglas, pa dodirni karticu.')),
+        h('div', { class: 'face back' }, h('div', { class: 'term', style: 'font-size:1.3rem' }, c.term), h('p', { class: 'def' }, c.def), h('p', { class: 'src' }, BOOK() + ', str. ' + c.p))));
+    const answerRow = h('div', { class: 'row' });
+    function draw() { face.classList.toggle('flipped', flipped); answerRow.hidden = !flipped; }
+    face.onclick = () => { flipped = !flipped; beep('flip'); draw(); };
+    function away(dir, then) {
+      if (reduced()) { then(); return; }
+      const fl = face.querySelector('.flip');
+      fl.style.transition = 'none';
+      face.animate([{ transform: 'none', opacity: 1 }, { transform: 'translateX(' + dir * 120 + '%) rotate(' + dir * 14 + 'deg)', opacity: 0 }], { duration: 320, easing: 'ease-in' }).onfinish = then;
+    }
+    answerRow.append(
+      h('button', { class: 'btn ghost', type: 'button', onclick: () => { beep('tap'); away(-1, () => { deck.push(deck.shift()); show(); }); } }, 'Još ne znam'),
+      h('button', { class: 'btn', type: 'button', onclick: () => { beep('ok'); confetti(face, 14); away(1, () => { deck.shift(); known++; show(); }); } }, 'Znam!'));
+    draw();
+    $app.append(h('section', { class: 'card' },
+      h('div', { class: 'top' }, h('span', { class: 'count' }, 'Kartice · znaš ' + known + ' / ' + total), h('button', { class: 'chip-all', type: 'button', onclick: home }, 'Prekini')),
+      h('div', { class: 'bar' }, h('i', { class: 'hi', style: 'width:' + Math.max(2, Math.round(100 * known / total)) + '%' })),
+      face, answerRow));
+  }
+  show();
+}
+
+/* ---------- Usmeno ispitivanje ---------- */
+function startOral() {
+  const list = ORAL.filter(o => chosenCh === 'all' || o.ch === chosenCh);
+  const lvl = o => S.oral[o.id] ? S.oral[o.id].last : -1;
+  const qs = shuffle(list).sort((a, b) => lvl(a) - lvl(b)).slice(0, 5);
+  const res = [];
+  let i = 0;
+  function show() {
+    clear();
+    const o = qs[i];
+    const on = new Set();
+    const ptsBox = h('div', { class: 'pts' });
+    const fb = h('div');
+    const btn = h('button', { class: 'btn', type: 'button' }, 'Pokaži odgovor');
+    btn.onclick = () => {
+      ptsBox.replaceChildren(h('p', { class: 'small' }, h('b', null, 'Dobar odgovor sadrži: '), 'dodirni sve što si rekao ili rekla.'),
+        ...o.pts.map((t, k) => { const b = h('button', { class: 'pt', type: 'button', 'aria-pressed': 'false' }, h('span', { class: 'box' }), h('span', null, t));
+          b.onclick = () => { on.has(k) ? on.delete(k) : on.add(k); if (on.has(k)) beep('tap'); b.classList.toggle('on', on.has(k)); b.setAttribute('aria-pressed', String(on.has(k))); b.firstChild.textContent = on.has(k) ? '✓' : ''; };
+          return b; }),
+        o.model ? h('div', { class: 'model' }, h('p', { class: 'small' }, h('b', null, 'Primjer prepričavanja:')), h('p', null, o.model)) : null,
+        o.model && DATA[SUBJ].lang ? (() => { const b = h('button', { class: 'listen', type: 'button' }, svgEl(ICONS.speaker), 'Poslušaj'); b.onclick = () => speak(o.model, b); return b; })() : null,
+        h('p', { class: 'src' }, BOOK() + ', str. ' + o.p));
+      btn.textContent = i + 1 < qs.length ? 'Dalje' : 'Završi';
+      btn.onclick = () => {
+        const f = on.size / o.pts.length, prev = S.oral[o.id];
+        S.oral[o.id] = { last: f, b: Math.max(f, prev ? prev.b : 0), n: (prev ? prev.n : 0) + 1 };
+        S.pts += on.size * 5; lg().oral++; res.push({ o, f, missed: o.pts.filter((_, k) => !on.has(k)) }); save();
+        i++; if (i < qs.length) show(); else finish();
+      };
+    };
+    $app.append(h('section', { class: 'card' },
+      h('div', { class: 'top' }, h('span', { class: 'count' }, 'Usmeno · ' + (i + 1) + ' / ' + qs.length), h('button', { class: 'chip-all', type: 'button', onclick: home }, 'Prekini')),
+      chapterTag(o.ch), h('p', { class: 'q' }, o.q),
+      h('p', { class: 'hint' }, 'Odgovori naglas, cijelim rečenicama, kao da te pita učiteljica. Pokušaj reći što više toga. Tek onda dodirni gumb.'),
+      ptsBox, fb, h('div', { class: 'row' }, btn)));
+  }
+  function finish() {
+    S.rounds++; bumpStreak(); const nb = checkBadges(); save();
+    const avg = Math.round(100 * res.reduce((a, r) => a + r.f, 0) / res.length);
+    clear();
+    if (avg >= 70) setTimeout(() => { beep('win'); confetti($app.querySelector('.big'), 50); }, 300);
+    $app.append(h('section', { class: 'card' },
+        h('p', { class: 'eyebrow' }, 'Usmeno ispitivanje · rezultat'),
+        buddy(avg >= 70 ? 'cheer' : 'wave', avg >= 70 ? 'Bravo, lijepo ispričano!' : 'Pogledaj što je nedostajalo i pokušaj opet.', 90),
+        starsFor(avg),
+        h('div', { class: 'big' }, avg + ' %'),
+        h('p', null, avg >= 80 ? 'Odlično! Tako se odgovara na usmenom.' : avg >= 50 ? 'Dobro! Pogledaj što si izostavio ili izostavila.' : 'Još malo vježbe. Pročitaj stranice u knjizi i pokušaj ponovno.'),
+        nb.length ? h('div', { class: 'feedback ok' }, h('h3', null, 'Nova značka!'), h('p', null, nb.join(', '))) : null,
+        h('div', { class: 'row' }, h('button', { class: 'btn', type: 'button', onclick: startOral }, 'Još 5 pitanja'), h('button', { class: 'btn ghost', type: 'button', onclick: home }, 'Na početak'))),
+      h('section', { class: 'card' }, h('h2', null, 'Za sljedeći put'),
+        h('div', { class: 'review' }, res.map(r => h('div', { class: 'rv wide' }, h('span', { class: 'm ' + (r.f >= .75 ? 'ok' : 'bad') }, Math.round(100 * r.f) + '%'),
+          h('div', null, h('p', null, h('b', null, r.o.q)),
+            r.missed.length ? h('p', { class: 'small' }, 'Nedostaje: ' + r.missed.join(' · ')) : h('p', { class: 'small' }, 'Sve rečeno!'),
+            h('p', { class: 'src' }, BOOK() + ', str. ' + r.o.p)))))));
+  }
+  show();
+}
+
+/* ---------- Probni ispit ---------- */
+const GRADE_NAMES = { 5: 'odličan', 4: 'vrlo dobar', 3: 'dobar', 2: 'dovoljan', 1: 'nedovoljan' };
+function gradeFor(pct) { return pct >= 90 ? 5 : pct >= 78 ? 4 : pct >= 63 ? 3 : pct >= 50 ? 2 : 1; }
+let examTimer = null;
+function startExam() {
+  const list = pool();
+  // mix: mostly MC/text, max 3 order/match
+  const big = shuffle(list.filter(q => q.t === 'order' || q.t === 'match')).slice(0, 3);
+  const small = shuffle(list.filter(q => q.t === 'mc' || q.t === 'text')).slice(0, 15 - big.length);
+  const qs = shuffle(small.concat(big));
+  const answers = new Array(qs.length).fill(null);
+  let i = 0, left = 20 * 60, w = null;
+  clearInterval(examTimer);
+  const timerEl = h('span', { class: 'pill timer' });
+  function tick() {
+    const m = Math.floor(left / 60), s = left % 60;
+    timerEl.textContent = m + ':' + String(s).padStart(2, '0');
+    timerEl.classList.toggle('low', left <= 120);
+    if (left <= 0) { submit(); return; }
+    left--;
+  }
+  examTimer = setInterval(tick, 1000); tick();
+  function store() { if (w) { const r = w.result(); if (r) answers[i] = r; } }
+  function show() {
+    clear();
+    const q = qs[i];
+    w = widgetFor(q, null);
+    $app.append(h('section', { class: 'card' },
+      h('div', { class: 'top' }, h('span', { class: 'count' }, 'Probni ispit · ' + (i + 1) + ' / ' + qs.length), timerEl),
+      h('div', { class: 'dots', 'aria-hidden': 'true' }, qs.map((_, k) => h('span', { class: 'dot' + (k === i ? ' now' : answers[k] ? ' done' : '') }))),
+      chapterTag(q.ch), h('p', { class: 'q' }, q.q), w.el,
+      answers[i] ? h('p', { class: 'hint' }, 'Tvoj odgovor: ' + answers[i].given + '. Odgovori ponovno samo ako ga želiš promijeniti.') : null,
+      h('div', { class: 'row' },
+        i > 0 ? h('button', { class: 'btn ghost', type: 'button', onclick: () => { store(); i--; show(); } }, 'Natrag') : null,
+        i + 1 < qs.length ? h('button', { class: 'btn', type: 'button', onclick: () => { store(); i++; show(); } }, 'Dalje')
+          : h('button', { class: 'btn gold', type: 'button', onclick: () => { store(); submit(); } }, 'Predaj ispit'))
+    ));
+  }
+  function submit() {
+    clearInterval(examTimer);
+    const ok = answers.filter(a => a && a.ok).length;
+    const pct = Math.round(100 * ok / qs.length), g = gradeFor(pct);
+    qs.forEach((q, k) => record(q.id, !!(answers[k] && answers[k].ok)));
+    S.pts += ok * 10 + 5; S.rounds++; lg().ex++; S.exams.push({ d: DAY(), pct, g }); bumpStreak();
+    const nb = checkBadges(); save();
+    clear();
+    setTimeout(() => { beep(g >= 3 ? 'win' : 'tap'); if (g >= 4) confetti($app.querySelector('.mark'), 70); }, 300);
+    $app.append(
+      h('section', { class: 'card' },
+        h('p', { class: 'eyebrow' }, 'Probni ispit · rezultat'),
+        buddy(g >= 4 ? 'cheer' : g >= 2 ? 'wave' : 'sad', g >= 4 ? 'Wow, ocjena ' + g + '! Spreman/na si za ispit.' : g >= 2 ? 'Nije loše! Još malo vježbe i bit će još bolje.' : 'Ne odustaj! Vježbajmo pogreške zajedno.', 90),
+        h('div', { class: 'grade' }, h('div', { class: 'mark pop' }, String(g)),
+          h('div', null, h('h2', null, GRADE_NAMES[g]), h('p', null, ok + ' od ' + qs.length + ' točno (' + pct + ' %)'), h('p', { class: 'small muted' }, '+' + (ok * 10 + 5) + ' bodova'))),
+        nb.length ? h('div', { class: 'feedback ok' }, h('h3', null, 'Nova značka!'), h('p', null, nb.join(', '))) : null,
+        h('p', { class: 'small muted' }, 'Pogrešna pitanja automatski dolaze u sljedeće vježbe.'),
+        h('div', { class: 'row' }, h('button', { class: 'btn', type: 'button', onclick: startPractice }, 'Vježbaj pogreške'), h('button', { class: 'btn ghost', type: 'button', onclick: home }, 'Na početak'))
+      ),
+      h('section', { class: 'card' }, h('h2', null, 'Pregled odgovora'),
+        h('div', { class: 'review' }, qs.map((q, k) => {
+          const a = answers[k], good = !!(a && a.ok);
+          return h('div', { class: 'rv' }, h('span', { class: 'm ' + (good ? 'ok' : 'bad') }, good ? '✓' : '✗'),
+            h('div', null, h('p', null, h('b', null, q.q)),
+              good ? null : h('p', { class: 'small' }, 'Tvoj odgovor: ' + (a ? a.given : '(bez odgovora)')),
+              good ? null : h('p', { class: 'small' }, 'Točno: ' + correctText(q)),
+              h('p', { class: 'src' }, BOOK() + ', str. ' + q.p)));
+        })))
+    );
+  }
+  show();
+}
+
+hub();
+</script>
+<script>
+if ('serviceWorker' in navigator) { window.addEventListener('load', () => navigator.serviceWorker.register('/sw.js').catch(() => {})); }
+</script>
+</body>
+</html>
