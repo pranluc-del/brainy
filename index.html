@@ -1678,7 +1678,7 @@ function home() {
     h('section', { class: 'card' },
       h('div', { class: 'row' },
         h('button', { class: 'btn', type: 'button', onclick: () => startPractice() }, 'Vježbaj (10 pitanja)'),
-        h('button', { class: 'btn ghost', type: 'button', onclick: () => startCards() }, 'Kartice s pojmovima')),
+        h('button', { class: 'btn ghost', type: 'button', onclick: () => startCards() }, 'Kartice (10 pojmova)')),
       h('button', { class: 'btn gold', type: 'button', onclick: () => startExam() }, 'Probni ispit (15 pitanja, 20 min)'),
       DATA[SUBJ].lang && ORAL.some(o => o.model) ? h('button', { class: 'btn gold', type: 'button', onclick: () => startStory() }, 'Prepričaj priču (korak po korak)') : null,
       h('button', { class: 'btn ghost', type: 'button', onclick: () => startOral() }, DATA[SUBJ].lang ? 'Govori engleski (5 pitanja)' : 'Usmeno ispitivanje (5 pitanja)'),
@@ -1799,43 +1799,58 @@ function startPractice() {
 /* ---------- Kartice ---------- */
 function startCards() {
   enter(2);
-  let deck = shuffle(CARDS.filter(c => chosenCh === 'all' || c.ch === chosenCh));
-  const total = deck.length;
-  let known = 0;
+  let deck = shuffle(CARDS.filter(c => chosenCh === 'all' || c.ch === chosenCh)).slice(0, 10);
+  const total = deck.length, missed = new Set();
+  let known = 0, combo = 0;
+  const lang = !!DATA[SUBJ].lang;
+  function wrongDefs(c) {
+    const same = shuffle(CARDS.filter(x => x !== c && x.ch === c.ch && x.def !== c.def));
+    const other = shuffle(CARDS.filter(x => x !== c && x.ch !== c.ch && x.def !== c.def));
+    return same.concat(other).slice(0, 2).map(x => x.def);
+  }
   function show() {
     clear();
     if (!deck.length) {
       S.cardsDone++; lg().cards++; S.pts += 10; S.rounds++; bumpStreak(); const nb = checkBadges(); save();
-      setTimeout(() => { beep('win'); confetti($app.querySelector('h2'), 50); }, 300);
-      $app.append(h('section', { class: 'card' }, h('p', { class: 'eyebrow' }, 'Kartice'), h('h2', null, 'Znaš svih ' + total + ' pojmova!'),
-        h('p', null, h('b', null, '+10 bodova')), nb.length ? h('div', { class: 'feedback ok' }, h('h3', null, 'Nova značka!'), h('p', null, nb.join(', '))) : null,
-        h('div', { class: 'row' }, h('button', { class: 'btn', type: 'button', onclick: startPractice }, 'Sad vježbaj pitanja'), h('button', { class: 'btn ghost', type: 'button', onclick: toHome }, 'Na početak'))));
+      setTimeout(() => { beep('win'); confetti($app.querySelector('.card'), 50); }, 300);
+      $app.append(h('section', { class: 'card' }, h('p', { class: 'eyebrow' }, 'Kartice · gotovo'),
+        buddy('cheer', 'Svih ' + total + ' kartica točno! Bravo!', 90),
+        h('p', null, h('b', null, '+10 bodova'), missed.size ? ' · Ponavljao/la si ' + missed.size + ' pojmova.' : ' · Sve iz prve!'),
+        nb.length ? h('div', { class: 'feedback ok' }, h('h3', null, 'Nova značka!'), h('p', null, nb.join(', '))) : null,
+        h('div', { class: 'row' }, h('button', { class: 'btn', type: 'button', onclick: startCards }, 'Još 10 kartica'), h('button', { class: 'btn ghost', type: 'button', onclick: toHome }, 'Na početak'))));
       return;
     }
     const c = deck[0];
-    let flipped = false;
-    const face = h('button', { class: 'flash ' + c.ch, type: 'button', 'aria-label': 'Okreni karticu' },
-      h('div', { class: 'flip' },
-        h('div', { class: 'face front' }, h('span', { class: 'tapme' }, DATA[SUBJ].lang ? 'Što znači?' : 'Pojam'), h('div', { class: 'term' }, c.term), h('p', { class: 'hint' }, 'Što to znači? Reci naglas, pa dodirni karticu.')),
-        h('div', { class: 'face back' }, h('div', { class: 'term', style: 'font-size:1.3rem' }, c.term), h('p', { class: 'def' }, c.def), h('p', { class: 'src' }, BOOK() + ', str. ' + c.p))));
-    const answerRow = h('div', { class: 'row' });
-    function draw() { face.classList.toggle('flipped', flipped); answerRow.hidden = !flipped; }
-    face.onclick = () => { flipped = !flipped; beep('flip'); draw(); };
-    function away(dir, then) {
-      if (reduced()) { then(); return; }
-      const fl = face.querySelector('.flip');
-      fl.style.transition = 'none';
-      face.animate([{ transform: 'none', opacity: 1 }, { transform: 'translateX(' + dir * 120 + '%) rotate(' + dir * 14 + 'deg)', opacity: 0 }], { duration: 320, easing: 'ease-in' }).onfinish = then;
+    const opts = shuffle([c.def].concat(wrongDefs(c)));
+    const fb = h('div');
+    const next = h('button', { class: 'btn', type: 'button', hidden: true }, 'Dalje');
+    let done = false;
+    function answer(pickedDef) {
+      if (done) return; done = true;
+      const ok = pickedDef === c.def;
+      btns.forEach(b => { b.disabled = true; if (b.dataset.def === c.def) b.classList.add('ok'); else if (b.dataset.def === pickedDef) b.classList.add('bad'); });
+      dunno.hidden = true;
+      if (ok) { known++; combo++; deck.shift(); beep('ok'); confetti(fb, combo >= 3 ? 30 : 14); }
+      else { combo = 0; missed.add(c.term); deck.push(deck.shift()); beep(pickedDef ? 'bad' : 'tap'); if (pickedDef) shake(card); }
+      fb.replaceChildren(h('div', { class: 'feedback ' + (ok ? 'ok' : 'bad') },
+        h('div', { class: 'fbhead' }, mozgic(ok ? 'cheer' : 'wave', 56), h('div', null, h('h3', null, ok ? 'Točno!' : pickedDef ? 'Nije točno.' : 'Evo odgovora:'),
+          h('p', { class: 'small' }, ok ? pick(YAY) : 'Ova kartica vraća se na kraj. Zapamti je!'))),
+        h('p', null, h('b', null, c.term + ' = '), c.def),
+        h('p', { class: 'src' }, BOOK() + ', str. ' + c.p)));
+      next.hidden = false; next.focus({ preventScroll: true });
     }
-    answerRow.append(
-      h('button', { class: 'btn ghost', type: 'button', onclick: () => { beep('tap'); away(-1, () => { deck.push(deck.shift()); show(); }); } }, 'Još ne znam'),
-      h('button', { class: 'btn', type: 'button', onclick: () => { beep('ok'); confetti(face, 14); away(1, () => { deck.shift(); known++; show(); }); } }, 'Znam!'));
-    draw();
-    $app.append(h('section', { class: 'card' },
+    const btns = opts.map(d => h('button', { class: 'opt', type: 'button', 'data-def': d, onclick: () => answer(d) }, d));
+    const dunno = h('button', { class: 'chip-all', type: 'button', onclick: () => answer(null) }, 'Ne znam, pokaži odgovor');
+    next.onclick = () => { beep('tap'); show(); };
+    const card = h('section', { class: 'card' },
       backBtn(),
-      h('div', { class: 'top' }, h('span', { class: 'count' }, 'Kartice · znaš ' + known + ' / ' + total)),
+      h('div', { class: 'top' }, h('span', { class: 'count' }, 'Kartice · znaš ' + known + ' / ' + total), combo >= 2 ? h('span', { class: 'pill combo' }, svgEl(ICONS.flame), combo + ' zaredom!') : null),
       h('div', { class: 'bar' }, h('i', { class: 'hi', style: 'width:' + Math.max(2, Math.round(100 * known / total)) + '%' })),
-      face, answerRow));
+      h('div', { class: 'flash ' + c.ch, style: 'min-height:0;width:100%;justify-self:stretch' }, h('div', { class: 'face', style: 'padding:18px;text-align:center' },
+        h('span', { class: 'tapme' }, lang ? 'Što znači?' : 'Što je to?'), h('div', { class: 'term' }, c.term))),
+      h('p', { class: 'small muted' }, 'Dodirni točno objašnjenje.'),
+      h('div', { class: 'opts' }, btns), dunno, fb, next);
+    $app.append(card);
   }
   show();
 }
