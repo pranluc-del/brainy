@@ -361,6 +361,7 @@ main > :nth-child(2) { animation-delay: .05s; } main > :nth-child(3) { animation
 .cues { display: grid; gap: 6px; margin: 4px 0 0; padding: 0; list-style: none; }
 .cues li { background: var(--bg); border-radius: 12px; padding: 8px 12px; font-weight: 700; }
 .cues li b { color: var(--accent); margin-right: 6px; }
+.rec[hidden] { display: none; }
 .rec { display: inline-flex; gap: 8px; align-items: center; justify-content: center; border: 0; border-radius: 99px; padding: 14px 22px; font: inherit; font-weight: 900; color: #fff; background: #E0384B; }
 .rec.on { animation: pulse 1s ease-in-out infinite; }
 @keyframes pulse { 50% { transform: scale(1.05); box-shadow: 0 0 0 8px rgba(224,56,75,.18); } }
@@ -1916,6 +1917,15 @@ function startOral() {
 }
 
 /* ---------- Prepričaj priču (korak po korak) ---------- */
+const NUMW = { one: '1', two: '2', three: '3', four: '4', five: '5', six: '6', seven: '7', eight: '8', nine: '9', ten: '10', eleven: '11', twelve: '12', first: '1st', second: '2nd' };
+const STOP = new Set('the a an and or but is are am was were be has have got his her their they them he she it its in on at of to for with not isnt very really there this that you your from about too also some lot lots mr ms mrs my we do does can so as by up'.split(' '));
+function words(t) { return t.toLowerCase().replace(/[’']/g, '').replace(/[^a-z0-9 ]+/g, ' ').split(/\s+/).filter(Boolean).map(w => NUMW[w] || w); }
+function pointSaid(pt, said) {
+  const key = [...new Set(words(pt).filter(w => !STOP.has(w) && w.length > 1))];
+  const heard = words(said);
+  const hit = key.filter(k => heard.some(w => w === k || (k.length > 4 && w.slice(0, 4) === k.slice(0, 4))));
+  return key.length ? hit.length / key.length >= .6 : false;
+}
 function startStory(pre) {
   enter(2);
   const stories = ORAL.filter(o => o.model);
@@ -1936,8 +1946,8 @@ function startStory(pre) {
   const title = o.q.replace(/^Prepričaj: /, '');
   const steps = n => h('div', { class: 'steps', 'aria-label': 'Korak ' + n + ' od 3' }, [1, 2, 3].map(k => h('i', { class: k <= n ? 'on' : '' })));
   const back = backBtn('Druga priča', () => { beep('tap'); stopRec(); startStory(); });
-  let rec = null, stream = null;
-  function stopRec() { try { if (rec && rec.state !== 'inactive') rec.stop(); } catch (e) {} try { stream && stream.getTracks().forEach(t => t.stop()); } catch (e) {} try { speechSynthesis.cancel(); } catch (e) {} }
+  let rec = null, stream = null, stopListen = () => {};
+  function stopRec() { stopListen(); try { if (rec && rec.state !== 'inactive') rec.stop(); } catch (e) {} try { stream && stream.getTracks().forEach(t => t.stop()); } catch (e) {} try { speechSynthesis.cancel(); } catch (e) {} }
   function listenBtn() { const b = h('button', { class: 'listen', type: 'button' }, svgEl(ICONS.speaker), 'Poslušaj priču'); b.onclick = () => speak(o.model, b); return b; }
   function step1() {
     clear();
@@ -1973,41 +1983,55 @@ function startStory(pre) {
   function step3() {
     clear();
     const cues = h('ul', { class: 'cues', lang: 'en' }, o.pts.map((t, k) => h('li', null, h('b', null, (k + 1) + '.'), t.split(' ').slice(0, 3).join(' ') + ' …')));
-    const audio = h('div');
-    const recBtn = h('button', { class: 'rec', type: 'button' }, '🎤 Snimi se');
-    const canRec = !!(navigator.mediaDevices && navigator.mediaDevices.getUserMedia && window.MediaRecorder);
-    recBtn.onclick = async () => {
-      if (rec && rec.state === 'recording') { rec.stop(); return; }
-      try {
-        stream = await navigator.mediaDevices.getUserMedia({ audio: true });
-        const chunks = []; rec = new MediaRecorder(stream);
-        rec.ondataavailable = e => chunks.push(e.data);
-        rec.onstop = () => {
-          stream.getTracks().forEach(t => t.stop());
-          const url = URL.createObjectURL(new Blob(chunks, { type: rec.mimeType || 'audio/webm' }));
-          audio.replaceChildren(h('p', { class: 'small' }, h('b', null, 'Poslušaj se:')), h('audio', { controls: '', src: url, style: 'width:100%' }));
-          recBtn.classList.remove('on'); recBtn.textContent = '🎤 Snimi ponovno';
-        };
-        rec.start(); recBtn.classList.add('on'); recBtn.textContent = '■ Gotovo, zaustavi';
-      } catch (e) {
-        audio.replaceChildren(h('p', { class: 'small muted' }, 'Mikrofon nije dostupan. Ispričaj priču naglas nekome ili sebi pred ogledalom.'));
-      }
-    };
-    const rate = (f, label) => h('button', { type: 'button', onclick: () => {
-      stopRec(); const prev = S.oral[o.id];
+    const out = h('div');
+    const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+    const finish = f => { stopRec(); const prev = S.oral[o.id];
       S.oral[o.id] = { last: f, b: Math.max(f, prev ? prev.b : 0), n: (prev ? prev.n : 0) + 1 };
       S.pts += Math.round(f * 20); lg().oral++; S.rounds++; bumpStreak(); const nb = checkBadges(); save();
-      done(f, nb);
-    } }, h('span', null, label[0]), label[1]);
+      done(f, nb); };
+    const rate = (f, label) => h('button', { type: 'button', onclick: () => finish(f) }, h('span', null, label[0]), label[1]);
+    const selfRate = () => h('div', null, h('h3', null, 'Kako je išlo?'),
+      h('div', { class: 'moods' }, rate(1, ['😀', 'Sve sam ispričao/la']), rate(.5, ['🙂', 'Pola priče']), rate(.2, ['😕', 'Još ne ide'])));
+    const btn = h('button', { class: 'rec', type: 'button' }, '🎤 Počni pričati');
+    let said = '', live = '', on = false, sr = null;
+    const liveEl = h('p', { class: 'story', lang: 'en', style: 'min-height:3em;font-size:1rem', hidden: true });
+    function grade() {
+      const res = o.pts.map(pt => pointSaid(pt, said));
+      const f = res.filter(Boolean).length / o.pts.length;
+      out.replaceChildren(
+        h('div', { class: 'feedback ' + (f >= .75 ? 'ok' : 'bad') },
+          h('div', { class: 'fbhead' }, mozgic(f >= .75 ? 'cheer' : 'wave', 56), h('div', null, h('h3', null, 'Rekao/la si ' + res.filter(Boolean).length + ' od ' + o.pts.length + ' važnih dijelova'),
+            h('p', { class: 'small' }, f >= .75 ? 'Super prepričano!' : 'Zeleno si rekao/la. Crveno još nedostaje.'))),
+          h('ul', { class: 'cues', lang: 'en' }, o.pts.map((t, k) => h('li', { style: 'font-weight:600;background:' + (res[k] ? 'var(--ok-soft)' : 'var(--bg)') }, h('b', null, res[k] ? '✓' : '✗'), t)))),
+        h('div', { class: 'row' },
+          h('button', { class: 'btn ghost', type: 'button', onclick: () => { beep('tap'); step3(); } }, 'Pokušaj opet'),
+          h('button', { class: 'btn', type: 'button', onclick: () => finish(f) }, 'Gotovo')));
+      if (f >= .75) { beep('win'); confetti(out, 30); } else beep('tap');
+    }
+    function start() {
+      try {
+        sr = new SR(); sr.lang = 'en-GB'; sr.continuous = true; sr.interimResults = true;
+        sr.onresult = e => { live = ''; for (let k = e.resultIndex; k < e.results.length; k++) { if (e.results[k].isFinal) said += ' ' + e.results[k][0].transcript; else live += e.results[k][0].transcript; } liveEl.textContent = (said + ' ' + live).trim() || '…'; };
+        sr.onerror = e => { if (e.error === 'not-allowed' || e.error === 'service-not-allowed') { on = false; btn.hidden = true; out.replaceChildren(h('p', { class: 'small muted' }, 'Mikrofon nije dopušten. Ispričaj priču naglas i sam/a procijeni:'), selfRate()); } };
+        sr.onend = () => { if (on) { try { sr.start(); } catch (e) {} } };
+        sr.start(); on = true; liveEl.hidden = false; liveEl.textContent = 'Slušam… pričaj na engleskom.';
+        btn.classList.add('on'); btn.textContent = '■ Gotovo sam';
+      } catch (e) { btn.hidden = true; out.replaceChildren(selfRate()); }
+    }
+    btn.onclick = () => {
+      if (!on) { said = ''; start(); return; }
+      on = false; btn.classList.remove('on'); btn.hidden = true;
+      try { sr.stop(); } catch (e) {}
+      setTimeout(() => { said += ' ' + live; grade(); }, 700);
+    };
+    stopListen = () => { on = false; try { sr && sr.abort(); } catch (e) {} };
     $app.append(h('section', { class: 'card' }, back, steps(3),
       h('p', { class: 'eyebrow' }, 'Korak 3 od 3 · Sad ti pričaj'),
       h('h2', null, title),
-      h('p', { class: 'small muted' }, 'Ispričaj priču naglas na engleskom, svojim riječima. Ove riječi ti pomažu:'),
+      h('p', { class: 'small muted' }, SR ? 'Dodirni gumb i ispričaj priču naglas na engleskom. Mozgić sluša i provjerava što si rekao/la. Ove riječi ti pomažu:' : 'Ispričaj priču naglas na engleskom, svojim riječima. Ove riječi ti pomažu:'),
       cues,
-      canRec ? h('p', { class: 'small muted' }, 'Snimi se dok pričaš, pa se poslušaj.') : null,
-      canRec ? recBtn : null, audio,
-      h('h3', null, 'Kako je išlo?'),
-      h('div', { class: 'moods' }, rate(1, ['😀', 'Sve sam ispričao/la']), rate(.5, ['🙂', 'Pola priče']), rate(.2, ['😕', 'Još ne ide']))));
+      SR ? btn : null, liveEl, out,
+      SR ? null : selfRate()));
   }
   function done(f, nb) {
     clear();
