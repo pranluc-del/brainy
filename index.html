@@ -1926,6 +1926,30 @@ function pointSaid(pt, said) {
   const hit = key.filter(k => heard.some(w => w === k || (k.length > 4 && w.slice(0, 4) === k.slice(0, 4))));
   return key.length ? hit.length / key.length >= .6 : false;
 }
+let ASR = null;
+async function transcribe(blob, onProgress) {
+  if (!ASR) ASR = (async () => {
+    let tf;
+    try { // Vercel: biblioteka je na našem serveru
+      tf = await import(new URL('/asr/transformers.min.js', location.href).href);
+      tf.env.backends.onnx.wasm.wasmPaths = new URL('/asr/', location.href).href;
+    } catch (e) {
+      tf = await import('https://cdn.jsdelivr.net/npm/@huggingface/transformers@3.7.6');
+    }
+    tf.env.allowLocalModels = false; // model (Xenova/whisper-tiny.en) dolazi s Hugging Facea i ostaje u pregledniku
+    return tf.pipeline('automatic-speech-recognition', 'Xenova/whisper-tiny.en', { dtype: 'q8', progress_callback: onProgress });
+  })().catch(e => { ASR = null; throw e; });
+  const asr = await ASR;
+  const buf = await blob.arrayBuffer();
+  const AC = window.AudioContext || window.webkitAudioContext, ac = new AC();
+  const audio = await new Promise((ok, bad) => ac.decodeAudioData(buf, ok, bad));
+  ac.close && ac.close();
+  const off = new OfflineAudioContext(1, Math.max(1, Math.ceil(audio.duration * 16000)), 16000);
+  const src = off.createBufferSource(); src.buffer = audio; src.connect(off.destination); src.start();
+  const pcm = (await off.startRendering()).getChannelData(0);
+  const out = await asr(pcm, { chunk_length_s: 30, stride_length_s: 5 });
+  return out.text || '';
+}
 function startStory(pre) {
   enter(2);
   const stories = ORAL.filter(o => o.model);
@@ -1993,21 +2017,34 @@ function startStory(pre) {
     const selfRate = () => h('div', null, h('h3', null, 'Kako je išlo?'),
       h('div', { class: 'moods' }, rate(1, ['😀', 'Sve sam ispričao/la']), rate(.5, ['🙂', 'Pola priče']), rate(.2, ['😕', 'Još ne ide'])));
     function recorder() {
-      const box = h('div'), rb = h('button', { class: 'rec', type: 'button' }, '🎤 Snimi se');
-      if (!(navigator.mediaDevices && navigator.mediaDevices.getUserMedia && window.MediaRecorder)) return h('div', null, h('p', { class: 'small muted' }, 'Ispričaj priču naglas nekome ili sebi pred ogledalom.'), selfRate());
+      const box = h('div'), rb = h('button', { class: 'rec', type: 'button' }, '🎤 Počni pričati');
+      if (!(navigator.mediaDevices && navigator.mediaDevices.getUserMedia && window.MediaRecorder)) return h('div', null, h('p', { class: 'small muted' }, 'Ovaj preglednik ne može snimati. Ispričaj priču naglas i procijeni se:'), selfRate());
       rb.onclick = async () => {
         if (rec && rec.state === 'recording') { rec.stop(); return; }
         try {
           stream = await navigator.mediaDevices.getUserMedia({ audio: true });
           const chunks = []; rec = new MediaRecorder(stream);
           rec.ondataavailable = e => chunks.push(e.data);
-          rec.onstop = () => { stream.getTracks().forEach(t => t.stop());
-            box.replaceChildren(h('p', { class: 'small' }, h('b', null, 'Poslušaj se:')), h('audio', { controls: '', src: URL.createObjectURL(new Blob(chunks, { type: rec.mimeType || 'audio/webm' })), style: 'width:100%' }));
-            rb.classList.remove('on'); rb.textContent = '🎤 Snimi ponovno'; };
-          rec.start(); rb.classList.add('on'); rb.textContent = '■ Gotovo, zaustavi';
-        } catch (e) { box.replaceChildren(h('p', { class: 'small muted' }, 'Mikrofon nije dopušten. Dopusti mikrofon u postavkama preglednika ili ispričaj priču naglas.')); }
+          rec.onstop = async () => {
+            stream.getTracks().forEach(t => t.stop());
+            rb.classList.remove('on'); rb.hidden = true;
+            const blob = new Blob(chunks, { type: rec.mimeType || 'audio/mp4' });
+            const msg = h('p', { class: 'small' }, 'Mozgić sluša tvoju priču…');
+            box.replaceChildren(buddy('wave', 'Slušam i provjeravam… Prvi put traje malo duže.', 56), msg);
+            try {
+              said = await (window.brainyTranscribe || transcribe)(blob, p => { if (p && p.status === 'progress' && p.total > 1e6) msg.textContent = 'Pripremam slušanje (samo prvi put): ' + Math.round(p.progress || 0) + ' %'; });
+              liveEl.hidden = false; liveEl.textContent = said.trim() || '(nisam ništa čuo)';
+              box.replaceChildren(h('audio', { controls: '', src: URL.createObjectURL(blob), style: 'width:100%' }));
+              grade();
+            } catch (e) {
+              box.replaceChildren(h('audio', { controls: '', src: URL.createObjectURL(blob), style: 'width:100%' }),
+                h('p', { class: 'small muted' }, 'Provjera trenutno ne radi (treba internet). Poslušaj se i procijeni:'), selfRate());
+            }
+          };
+          rec.start(); rb.classList.add('on'); rb.textContent = '■ Gotovo sam';
+        } catch (e) { box.replaceChildren(h('p', { class: 'small muted' }, 'Mikrofon nije dopušten. Dopusti mikrofon u postavkama (Safari: aA → Postavke web-stranice → Mikrofon).'), selfRate()); }
       };
-      return h('div', null, h('p', { class: 'small muted' }, 'Snimi se dok pričaš, pa se poslušaj i usporedi s pričom.'), rb, box, selfRate());
+      return h('div', null, rb, box);
     }
     const btn = h('button', { class: 'rec', type: 'button' }, '🎤 Počni pričati');
     let said = '', live = '', on = false, sr = null;
