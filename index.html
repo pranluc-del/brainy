@@ -372,6 +372,9 @@ main > :nth-child(2) { animation-delay: .05s; } main > :nth-child(3) { animation
 .storylist { display: grid; gap: 8px; }
 .storylist button { display: flex; justify-content: space-between; gap: 10px; align-items: center; text-align: left; border: 2px solid var(--line); background: transparent; color: var(--ink); border-radius: 16px; padding: 12px 14px; font: inherit; font-weight: 800; }
 .storylist small { color: var(--muted); font-weight: 600; display: block; }
+.modes { display: grid; gap: 12px; }
+.mode { display: grid; gap: 4px; }
+.mode p { margin: 0 4px; }
 </style>
 </head>
 <body>
@@ -1676,15 +1679,19 @@ function home() {
       })); })(),
       h('p', { class: 'small muted' }, chosenCh === 'all' ? 'Vježbaš sva poglavlja. Dodirni poglavlje ako želiš samo njega.' : 'Vježbaš samo: ' + CH[chosenCh].name + '. Dodirni ga ponovno za sva.')
     ),
-    h('section', { class: 'card' },
-      h('div', { class: 'row' },
-        h('button', { class: 'btn', type: 'button', onclick: () => startPractice() }, 'Vježbaj (10 pitanja)'),
-        h('button', { class: 'btn ghost', type: 'button', onclick: () => startCards() }, 'Kartice (10 pojmova)')),
-      h('button', { class: 'btn gold', type: 'button', onclick: () => startExam() }, 'Probni ispit (15 pitanja, 20 min)'),
-      DATA[SUBJ].lang && ORAL.some(o => o.model) ? h('button', { class: 'btn gold', type: 'button', onclick: () => startStory() }, 'Prepričaj priču (korak po korak)') : null,
-      h('button', { class: 'btn ghost', type: 'button', onclick: () => startOral() }, DATA[SUBJ].lang ? 'Govori engleski (5 pitanja)' : 'Usmeno ispitivanje (5 pitanja)'),
-      h('p', { class: 'small muted' }, 'Usmeno: ' + ORAL.filter(o => S.oral[o.id] && S.oral[o.id].b >= .75).length + ' od ' + ORAL.length + ' pitanja dobro odgovoreno.')
-    ),
+    (() => {
+      const en = !!DATA[SUBJ].lang;
+      const modes = [
+        ['btn', 'Vježbaj · 10 pitanja', en ? 'Riječi i rečenice iz knjige. Odmah vidiš je li točno.' : 'Pitanja iz knjige. Odmah vidiš je li točno.', startPractice],
+        ['btn ghost', 'Kartice · 10 pojmova', en ? 'Što znači riječ? Izaberi točan prijevod.' : 'Što znači pojam? Izaberi točno objašnjenje.', startCards],
+        en && ORAL.some(o => o.model) ? ['btn gold', 'Prepričaj priču', 'Pročitaj, složi i ispričaj priču. Mozgić sluša i provjerava.', () => startStory()] : null,
+        !en ? ['btn ghost', 'Usmeno ispitivanje · 5 pitanja', 'Za vježbu s mamom ili tatom: oni čitaju pitanje, ti odgovaraš naglas.', startOral] : null,
+        ['btn gold', 'Probni ispit · 15 pitanja, 20 min', 'Kao pravi test. Na kraju dobiješ ocjenu od 1 do 5.', startExam]
+      ].filter(Boolean);
+      return h('section', { class: 'card' }, h('h2', null, 'Što želiš raditi?'),
+        h('div', { class: 'modes' }, modes.map(([cls, t, d, fn]) => h('div', { class: 'mode' },
+          h('button', { class: cls, type: 'button', onclick: () => fn() }, t), h('p', { class: 'small muted' }, d)))));
+    })(),
     parentPanel()
   );
   maybeLevelUp();
