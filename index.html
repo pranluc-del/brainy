@@ -1362,8 +1362,21 @@ const SUBJECTS = [
   { id: 'engleski', name: 'Engleski', book: 'Dip in 5 · Školska knjiga', on: true, icon: '<path d="M4 5h16v11H9l-5 4z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><path d="M8 9h8M8 12h5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>' }
 ];
 function subjPct(id) { const ks = Object.keys(DATA[id].CH); return Math.round(ks.reduce((a, c) => a + chapterPct(c), 0) / ks.length); }
+/* ---------- Navigacija (gumb Natrag na mobitelu) ---------- */
+function navL() { try { return (history.state && history.state.l) || 0; } catch (e) { return 0; } }
+function enter(L) { try { if (L > navL()) history.pushState({ l: L }, ''); } catch (e) {} }
+function leave(L) {
+  try { const cur = navL(); if (cur > L) { history.go(L - cur); return; } } catch (e) {}
+  render(L);
+}
+function render(L) { clearInterval(examTimer); try { speechSynthesis.cancel(); } catch (e) {} if (L >= 1 && S.name) home(); else hub(); }
+const toHome = () => { beep('tap'); leave(1); };
+function backBtn(label, fn) { return h('button', { class: 'back', type: 'button', onclick: fn || toHome }, '‹ ' + (label || 'Natrag')); }
+window.addEventListener('popstate', e => render((e.state && e.state.l) || 0));
+
 function hub() {
   if (!S.name) { askName(); return; }
+  enter(1);
   clear();
   const st = shownStreak();
   $app.append(
@@ -1610,7 +1623,7 @@ function home() {
   const due = Q.filter(q => !S.items[q.id] || S.items[q.id].d <= DAY()).length;
   $app.append(
     h('section', { class: 'card hero' },
-      h('button', { class: 'back', type: 'button', onclick: () => { beep('tap'); hub(); } }, '‹ Svi predmeti'),
+      h('button', { class: 'back', type: 'button', onclick: () => { beep('tap'); leave(0); } }, '‹ Svi predmeti'),
       h('p', { class: 'eyebrow' }, BOOK() + ' · ' + Q.length + ' pitanja'),
       h('h1', null, DATA[SUBJ].name),
       h('div', { class: 'stats' },
@@ -1700,6 +1713,7 @@ function pickPractice(n) {
   return due.concat(fresh, rest).slice(0, n);
 }
 function startPractice() {
+  enter(2);
   const qs = pickPractice(10);
   const res = [];
   let i = 0, gained = 0, combo = 0;
@@ -1736,9 +1750,10 @@ function startPractice() {
     const ptsPill = h('span', { class: 'pill' }, '+' + gained + ' bodova');
     const comboBox = h('span', null, combo >= 2 ? h('span', { class: 'pill combo' }, svgEl(ICONS.flame), combo + ' zaredom!') : '');
     const card = h('section', { class: 'card' },
+      backBtn(),
       h('div', { class: 'top' }, h('span', { class: 'count' }, 'Pitanje ' + (i + 1) + ' / ' + qs.length), h('span', { class: 'row' }, comboBox, ptsPill)),
       dots, chapterTag(q.ch), h('p', { class: 'q' }, q.q), w.el, fbBox,
-      h('div', { class: 'row' }, h('button', { class: 'btn ghost', type: 'button', onclick: home }, 'Prekini'), checkBtn)
+      h('div', { class: 'row' }, h('button', { class: 'btn ghost', type: 'button', onclick: toHome }, 'Prekini'), checkBtn)
     );
     $app.append(card);
     if (q.t === 'mc') checkBtn.hidden = true;
@@ -1756,7 +1771,7 @@ function startPractice() {
       h('p', null, ok === res.length ? 'Savršeno! Sve točno.' : ok >= res.length * .7 ? 'Odlično, samo tako!' : 'Dobar početak. Pogrešna pitanja vraćaju se sutra.'),
       h('p', null, h('b', null, '+' + gained + ' bodova'), ' (uključujući 5 za završen krug) · ' + shownStreak() + (shownStreak() === 1 ? ' dan zaredom' : ' dana zaredom')),
       nb.length ? h('div', { class: 'feedback ok' }, h('h3', null, 'Nova značka!'), h('p', null, nb.join(', '))) : null,
-      h('div', { class: 'row' }, h('button', { class: 'btn', type: 'button', onclick: startPractice }, 'Još jedan krug'), h('button', { class: 'btn ghost', type: 'button', onclick: home }, 'Na početak'))
+      h('div', { class: 'row' }, h('button', { class: 'btn', type: 'button', onclick: startPractice }, 'Još jedan krug'), h('button', { class: 'btn ghost', type: 'button', onclick: toHome }, 'Na početak'))
     ));
     if (ok >= res.length * .7) { beep('win'); setTimeout(() => confetti($app.querySelector('.big'), 50), 300); }
   }
@@ -1765,6 +1780,7 @@ function startPractice() {
 
 /* ---------- Kartice ---------- */
 function startCards() {
+  enter(2);
   let deck = shuffle(CARDS.filter(c => chosenCh === 'all' || c.ch === chosenCh));
   const total = deck.length;
   let known = 0;
@@ -1775,7 +1791,7 @@ function startCards() {
       setTimeout(() => { beep('win'); confetti($app.querySelector('h2'), 50); }, 300);
       $app.append(h('section', { class: 'card' }, h('p', { class: 'eyebrow' }, 'Kartice'), h('h2', null, 'Znaš svih ' + total + ' pojmova!'),
         h('p', null, h('b', null, '+10 bodova')), nb.length ? h('div', { class: 'feedback ok' }, h('h3', null, 'Nova značka!'), h('p', null, nb.join(', '))) : null,
-        h('div', { class: 'row' }, h('button', { class: 'btn', type: 'button', onclick: startPractice }, 'Sad vježbaj pitanja'), h('button', { class: 'btn ghost', type: 'button', onclick: home }, 'Na početak'))));
+        h('div', { class: 'row' }, h('button', { class: 'btn', type: 'button', onclick: startPractice }, 'Sad vježbaj pitanja'), h('button', { class: 'btn ghost', type: 'button', onclick: toHome }, 'Na početak'))));
       return;
     }
     const c = deck[0];
@@ -1798,7 +1814,8 @@ function startCards() {
       h('button', { class: 'btn', type: 'button', onclick: () => { beep('ok'); confetti(face, 14); away(1, () => { deck.shift(); known++; show(); }); } }, 'Znam!'));
     draw();
     $app.append(h('section', { class: 'card' },
-      h('div', { class: 'top' }, h('span', { class: 'count' }, 'Kartice · znaš ' + known + ' / ' + total), h('button', { class: 'chip-all', type: 'button', onclick: home }, 'Prekini')),
+      backBtn(),
+      h('div', { class: 'top' }, h('span', { class: 'count' }, 'Kartice · znaš ' + known + ' / ' + total)),
       h('div', { class: 'bar' }, h('i', { class: 'hi', style: 'width:' + Math.max(2, Math.round(100 * known / total)) + '%' })),
       face, answerRow));
   }
@@ -1807,6 +1824,7 @@ function startCards() {
 
 /* ---------- Usmeno ispitivanje ---------- */
 function startOral() {
+  enter(2);
   const list = ORAL.filter(o => chosenCh === 'all' || o.ch === chosenCh);
   const lvl = o => S.oral[o.id] ? S.oral[o.id].last : -1;
   const qs = shuffle(list).sort((a, b) => lvl(a) - lvl(b)).slice(0, 5);
@@ -1836,7 +1854,8 @@ function startOral() {
       };
     };
     $app.append(h('section', { class: 'card' },
-      h('div', { class: 'top' }, h('span', { class: 'count' }, 'Usmeno · ' + (i + 1) + ' / ' + qs.length), h('button', { class: 'chip-all', type: 'button', onclick: home }, 'Prekini')),
+      backBtn(),
+      h('div', { class: 'top' }, h('span', { class: 'count' }, 'Usmeno · ' + (i + 1) + ' / ' + qs.length)),
       chapterTag(o.ch), h('p', { class: 'q' }, o.q),
       h('p', { class: 'hint' }, 'Odgovori naglas, cijelim rečenicama, kao da te pita učiteljica. Pokušaj reći što više toga. Tek onda dodirni gumb.'),
       ptsBox, fb, h('div', { class: 'row' }, btn)));
@@ -1853,7 +1872,7 @@ function startOral() {
         h('div', { class: 'big' }, avg + ' %'),
         h('p', null, avg >= 80 ? 'Odlično! Tako se odgovara na usmenom.' : avg >= 50 ? 'Dobro! Pogledaj što si izostavio ili izostavila.' : 'Još malo vježbe. Pročitaj stranice u knjizi i pokušaj ponovno.'),
         nb.length ? h('div', { class: 'feedback ok' }, h('h3', null, 'Nova značka!'), h('p', null, nb.join(', '))) : null,
-        h('div', { class: 'row' }, h('button', { class: 'btn', type: 'button', onclick: startOral }, 'Još 5 pitanja'), h('button', { class: 'btn ghost', type: 'button', onclick: home }, 'Na početak'))),
+        h('div', { class: 'row' }, h('button', { class: 'btn', type: 'button', onclick: startOral }, 'Još 5 pitanja'), h('button', { class: 'btn ghost', type: 'button', onclick: toHome }, 'Na početak'))),
       h('section', { class: 'card' }, h('h2', null, 'Za sljedeći put'),
         h('div', { class: 'review' }, res.map(r => h('div', { class: 'rv wide' }, h('span', { class: 'm ' + (r.f >= .75 ? 'ok' : 'bad') }, Math.round(100 * r.f) + '%'),
           h('div', null, h('p', null, h('b', null, r.o.q)),
@@ -1868,6 +1887,7 @@ const GRADE_NAMES = { 5: 'odličan', 4: 'vrlo dobar', 3: 'dobar', 2: 'dovoljan',
 function gradeFor(pct) { return pct >= 90 ? 5 : pct >= 78 ? 4 : pct >= 63 ? 3 : pct >= 50 ? 2 : 1; }
 let examTimer = null;
 function startExam() {
+  enter(2);
   const list = pool();
   // mix: mostly MC/text, max 3 order/match
   const big = shuffle(list.filter(q => q.t === 'order' || q.t === 'match')).slice(0, 3);
@@ -1890,7 +1910,9 @@ function startExam() {
     clear();
     const q = qs[i];
     w = widgetFor(q, null);
+    const quit = backBtn('Prekini ispit', () => { if (quit.dataset.sure) { beep('tap'); leave(1); } else { quit.dataset.sure = '1'; quit.textContent = 'Sigurno? Odgovori se neće spremiti. Dodirni opet.'; } });
     $app.append(h('section', { class: 'card' },
+      quit,
       h('div', { class: 'top' }, h('span', { class: 'count' }, 'Probni ispit · ' + (i + 1) + ' / ' + qs.length), timerEl),
       h('div', { class: 'dots', 'aria-hidden': 'true' }, qs.map((_, k) => h('span', { class: 'dot' + (k === i ? ' now' : answers[k] ? ' done' : '') }))),
       chapterTag(q.ch), h('p', { class: 'q' }, q.q), w.el,
@@ -1918,7 +1940,7 @@ function startExam() {
           h('div', null, h('h2', null, GRADE_NAMES[g]), h('p', null, ok + ' od ' + qs.length + ' točno (' + pct + ' %)'), h('p', { class: 'small muted' }, '+' + (ok * 10 + 5) + ' bodova'))),
         nb.length ? h('div', { class: 'feedback ok' }, h('h3', null, 'Nova značka!'), h('p', null, nb.join(', '))) : null,
         h('p', { class: 'small muted' }, 'Pogrešna pitanja automatski dolaze u sljedeće vježbe.'),
-        h('div', { class: 'row' }, h('button', { class: 'btn', type: 'button', onclick: startPractice }, 'Vježbaj pogreške'), h('button', { class: 'btn ghost', type: 'button', onclick: home }, 'Na početak'))
+        h('div', { class: 'row' }, h('button', { class: 'btn', type: 'button', onclick: startPractice }, 'Vježbaj pogreške'), h('button', { class: 'btn ghost', type: 'button', onclick: toHome }, 'Na početak'))
       ),
       h('section', { class: 'card' }, h('h2', null, 'Pregled odgovora'),
         h('div', { class: 'review' }, qs.map((q, k) => {
