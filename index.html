@@ -354,6 +354,23 @@ main > :nth-child(2) { animation-delay: .05s; } main > :nth-child(3) { animation
 .overlay .lv { width: 84px; height: 84px; border-radius: 24px; background: var(--accent); color: var(--accent-ink); display: grid; place-items: center; font-family: var(--display); font-weight: 800; font-size: 2.6rem; }
 
 @media (prefers-reduced-motion: reduce) { *, *::before, *::after { transition: none !important; animation: none !important; } }
+.steps { display: flex; gap: 6px; margin: 4px 0 2px; }
+.steps i { flex: 1; height: 6px; border-radius: 99px; background: var(--line); }
+.steps i.on { background: var(--accent); }
+.story { font-size: 1.12rem; line-height: 1.7; background: var(--bg); border-radius: 14px; padding: 14px 16px; margin: 0; }
+.cues { display: grid; gap: 6px; margin: 4px 0 0; padding: 0; list-style: none; }
+.cues li { background: var(--bg); border-radius: 12px; padding: 8px 12px; font-weight: 700; }
+.cues li b { color: var(--accent); margin-right: 6px; }
+.rec { display: inline-flex; gap: 8px; align-items: center; justify-content: center; border: 0; border-radius: 99px; padding: 14px 22px; font: inherit; font-weight: 900; color: #fff; background: #E0384B; }
+.rec.on { animation: pulse 1s ease-in-out infinite; }
+@keyframes pulse { 50% { transform: scale(1.05); box-shadow: 0 0 0 8px rgba(224,56,75,.18); } }
+@media (prefers-reduced-motion: reduce) { .rec.on { animation: none; } }
+.moods { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
+.moods button { border: 2px solid var(--line); background: transparent; color: var(--ink); border-radius: 16px; padding: 12px 6px; font: inherit; font-weight: 800; display: grid; gap: 4px; justify-items: center; }
+.moods button span { font-size: 1.8rem; }
+.storylist { display: grid; gap: 8px; }
+.storylist button { display: flex; justify-content: space-between; gap: 10px; align-items: center; text-align: left; border: 2px solid var(--line); background: transparent; color: var(--ink); border-radius: 16px; padding: 12px 14px; font: inherit; font-weight: 800; }
+.storylist small { color: var(--muted); font-weight: 600; display: block; }
 </style>
 </head>
 <body>
@@ -1369,7 +1386,7 @@ function leave(L) {
   try { const cur = navL(); if (cur > L) { history.go(L - cur); return; } } catch (e) {}
   render(L);
 }
-function render(L) { clearInterval(examTimer); try { speechSynthesis.cancel(); } catch (e) {} if (L >= 1 && S.name) home(); else hub(); }
+function render(L) { clearInterval(examTimer); try { speechSynthesis.cancel(); } catch (e) {} document.querySelectorAll('audio').forEach(a => a.pause()); if (L >= 1 && S.name) home(); else hub(); }
 const toHome = () => { beep('tap'); leave(1); };
 function backBtn(label, fn) { return h('button', { class: 'back', type: 'button', onclick: fn || toHome }, '‹ ' + (label || 'Natrag')); }
 window.addEventListener('popstate', e => render((e.state && e.state.l) || 0));
@@ -1663,7 +1680,8 @@ function home() {
         h('button', { class: 'btn', type: 'button', onclick: () => startPractice() }, 'Vježbaj (10 pitanja)'),
         h('button', { class: 'btn ghost', type: 'button', onclick: () => startCards() }, 'Kartice s pojmovima')),
       h('button', { class: 'btn gold', type: 'button', onclick: () => startExam() }, 'Probni ispit (15 pitanja, 20 min)'),
-      h('button', { class: 'btn ghost', type: 'button', onclick: () => startOral() }, 'Usmeno ispitivanje (5 pitanja)'),
+      DATA[SUBJ].lang && ORAL.some(o => o.model) ? h('button', { class: 'btn gold', type: 'button', onclick: () => startStory() }, 'Prepričaj priču (korak po korak)') : null,
+      h('button', { class: 'btn ghost', type: 'button', onclick: () => startOral() }, DATA[SUBJ].lang ? 'Govori engleski (5 pitanja)' : 'Usmeno ispitivanje (5 pitanja)'),
       h('p', { class: 'small muted' }, 'Usmeno: ' + ORAL.filter(o => S.oral[o.id] && S.oral[o.id].b >= .75).length + ' od ' + ORAL.length + ' pitanja dobro odgovoreno.')
     ),
     parentPanel()
@@ -1825,7 +1843,7 @@ function startCards() {
 /* ---------- Usmeno ispitivanje ---------- */
 function startOral() {
   enter(2);
-  const list = ORAL.filter(o => chosenCh === 'all' || o.ch === chosenCh);
+  const list = ORAL.filter(o => (chosenCh === 'all' || o.ch === chosenCh) && !(DATA[SUBJ].lang && o.model));
   const lvl = o => S.oral[o.id] ? S.oral[o.id].last : -1;
   const qs = shuffle(list).sort((a, b) => lvl(a) - lvl(b)).slice(0, 5);
   const res = [];
@@ -1857,7 +1875,7 @@ function startOral() {
       backBtn(),
       h('div', { class: 'top' }, h('span', { class: 'count' }, 'Usmeno · ' + (i + 1) + ' / ' + qs.length)),
       chapterTag(o.ch), h('p', { class: 'q' }, o.q),
-      h('p', { class: 'hint' }, 'Odgovori naglas, cijelim rečenicama, kao da te pita učiteljica. Pokušaj reći što više toga. Tek onda dodirni gumb.'),
+      h('ol', { class: 'small', style: 'margin:0;padding-left:20px' }, h('li', null, 'Odgovori naglas, cijelim rečenicama.'), h('li', null, 'Zatim dodirni „Pokaži odgovor”.'), h('li', null, 'Označi sve što si rekao ili rekla.')),
       ptsBox, fb, h('div', { class: 'row' }, btn)));
   }
   function finish() {
@@ -1880,6 +1898,116 @@ function startOral() {
             h('p', { class: 'src' }, BOOK() + ', str. ' + r.o.p)))))));
   }
   show();
+}
+
+/* ---------- Prepričaj priču (korak po korak) ---------- */
+function startStory(pre) {
+  enter(2);
+  const stories = ORAL.filter(o => o.model);
+  if (!pre) {
+    clear();
+    $app.append(h('section', { class: 'card' }, backBtn(),
+      h('p', { class: 'eyebrow' }, 'Prepričaj priču'),
+      buddy('wave', 'Izaberi priču. Vodim te u 3 koraka: čitaj, složi, ispričaj!', 70),
+      h('div', { class: 'storylist' }, stories.map(o => {
+        const st = S.oral[o.id];
+        return h('button', { type: 'button', onclick: () => { beep('tap'); startStory(o); } },
+          h('span', null, o.q.replace(/^Prepričaj: /, '').replace(/ \(str\. \d+\)$/, ''), h('small', null, 'str. ' + o.p + (st ? ' · zadnji put ' + Math.round(100 * st.last) + ' %' : ' · nova'))),
+          h('span', { 'aria-hidden': 'true' }, st && st.b >= .75 ? '⭐' : '›'));
+      }))));
+    return;
+  }
+  const o = pre;
+  const title = o.q.replace(/^Prepričaj: /, '');
+  const steps = n => h('div', { class: 'steps', 'aria-label': 'Korak ' + n + ' od 3' }, [1, 2, 3].map(k => h('i', { class: k <= n ? 'on' : '' })));
+  const back = backBtn('Druga priča', () => { beep('tap'); stopRec(); startStory(); });
+  let rec = null, stream = null;
+  function stopRec() { try { if (rec && rec.state !== 'inactive') rec.stop(); } catch (e) {} try { stream && stream.getTracks().forEach(t => t.stop()); } catch (e) {} try { speechSynthesis.cancel(); } catch (e) {} }
+  function listenBtn() { const b = h('button', { class: 'listen', type: 'button' }, svgEl(ICONS.speaker), 'Poslušaj priču'); b.onclick = () => speak(o.model, b); return b; }
+  function step1() {
+    clear();
+    $app.append(h('section', { class: 'card' }, back, steps(1),
+      h('p', { class: 'eyebrow' }, 'Korak 1 od 3 · Pročitaj i poslušaj'),
+      h('h2', null, title),
+      h('p', { class: 'small muted' }, 'Pročitaj priču polako. Dodirni „Poslušaj priču” da čuješ kako se izgovara.'),
+      listenBtn(),
+      h('p', { class: 'story', lang: 'en' }, o.model),
+      h('button', { class: 'btn', type: 'button', onclick: () => { beep('tap'); speechSynthesis && speechSynthesis.cancel(); step2(); } }, 'Pročitao/la sam → Dalje')));
+  }
+  function step2() {
+    clear();
+    const w = orderWidget({ items: o.pts });
+    const fb = h('div');
+    const btn = h('button', { class: 'btn', type: 'button' }, 'Provjeri');
+    btn.onclick = () => {
+      const r = w.result();
+      if (!r) { btn.textContent = 'Najprije složi sve rečenice'; return; }
+      w.reveal();
+      fb.replaceChildren(h('div', { class: 'feedback ' + (r.ok ? 'ok' : 'bad') },
+        h('div', { class: 'fbhead' }, mozgic(r.ok ? 'cheer' : 'wave', 56), h('div', null, h('h3', null, r.ok ? 'Točno! Znaš redoslijed.' : 'Skoro! Ovo je pravi redoslijed:'))),
+        r.ok ? null : h('ol', { style: 'margin:6px 0 0;padding-left:20px', lang: 'en' }, o.pts.map(t => h('li', null, t)))));
+      if (r.ok) { beep('ok'); S.pts += 10; save(); confetti(fb, 18); } else beep('bad');
+      btn.textContent = 'Dalje: sad ti pričaj →'; btn.onclick = () => { beep('tap'); step3(); };
+    };
+    $app.append(h('section', { class: 'card' }, back, steps(2),
+      h('p', { class: 'eyebrow' }, 'Korak 2 od 3 · Složi priču'),
+      h('h2', null, title),
+      h('p', { class: 'small muted' }, 'Dodiruj rečenice redom kako se događaju u priči: prvo, drugo, treće…'),
+      w.el, fb, btn));
+  }
+  function step3() {
+    clear();
+    const cues = h('ul', { class: 'cues', lang: 'en' }, o.pts.map((t, k) => h('li', null, h('b', null, (k + 1) + '.'), t.split(' ').slice(0, 3).join(' ') + ' …')));
+    const audio = h('div');
+    const recBtn = h('button', { class: 'rec', type: 'button' }, '🎤 Snimi se');
+    const canRec = !!(navigator.mediaDevices && navigator.mediaDevices.getUserMedia && window.MediaRecorder);
+    recBtn.onclick = async () => {
+      if (rec && rec.state === 'recording') { rec.stop(); return; }
+      try {
+        stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+        const chunks = []; rec = new MediaRecorder(stream);
+        rec.ondataavailable = e => chunks.push(e.data);
+        rec.onstop = () => {
+          stream.getTracks().forEach(t => t.stop());
+          const url = URL.createObjectURL(new Blob(chunks, { type: rec.mimeType || 'audio/webm' }));
+          audio.replaceChildren(h('p', { class: 'small' }, h('b', null, 'Poslušaj se:')), h('audio', { controls: '', src: url, style: 'width:100%' }));
+          recBtn.classList.remove('on'); recBtn.textContent = '🎤 Snimi ponovno';
+        };
+        rec.start(); recBtn.classList.add('on'); recBtn.textContent = '■ Gotovo, zaustavi';
+      } catch (e) {
+        audio.replaceChildren(h('p', { class: 'small muted' }, 'Mikrofon nije dostupan. Ispričaj priču naglas nekome ili sebi pred ogledalom.'));
+      }
+    };
+    const rate = (f, label) => h('button', { type: 'button', onclick: () => {
+      stopRec(); const prev = S.oral[o.id];
+      S.oral[o.id] = { last: f, b: Math.max(f, prev ? prev.b : 0), n: (prev ? prev.n : 0) + 1 };
+      S.pts += Math.round(f * 20); lg().oral++; S.rounds++; bumpStreak(); const nb = checkBadges(); save();
+      done(f, nb);
+    } }, h('span', null, label[0]), label[1]);
+    $app.append(h('section', { class: 'card' }, back, steps(3),
+      h('p', { class: 'eyebrow' }, 'Korak 3 od 3 · Sad ti pričaj'),
+      h('h2', null, title),
+      h('p', { class: 'small muted' }, 'Ispričaj priču naglas na engleskom, svojim riječima. Ove riječi ti pomažu:'),
+      cues,
+      canRec ? h('p', { class: 'small muted' }, 'Snimi se dok pričaš, pa se poslušaj.') : null,
+      canRec ? recBtn : null, audio,
+      h('h3', null, 'Kako je išlo?'),
+      h('div', { class: 'moods' }, rate(1, ['😀', 'Sve sam ispričao/la']), rate(.5, ['🙂', 'Pola priče']), rate(.2, ['😕', 'Još ne ide']))));
+  }
+  function done(f, nb) {
+    clear();
+    if (f >= 1) setTimeout(() => { beep('win'); confetti($app.querySelector('.card'), 50); }, 300);
+    $app.append(h('section', { class: 'card' },
+      h('p', { class: 'eyebrow' }, 'Prepričaj priču · gotovo'),
+      buddy(f >= 1 ? 'cheer' : 'wave', f >= 1 ? 'Bravo! Ispričao/la si cijelu priču!' : f >= .5 ? 'Dobro! Još jednom i znat ćeš cijelu.' : 'Nema veze! Pročitaj je opet i pokušaj sutra.', 90),
+      h('p', null, h('b', null, '+' + Math.round(f * 20) + ' bodova')),
+      nb.length ? h('div', { class: 'feedback ok' }, h('h3', null, 'Nova značka!'), h('p', null, nb.join(', '))) : null,
+      h('div', { class: 'row' },
+        h('button', { class: 'btn', type: 'button', onclick: () => { beep('tap'); step1(); } }, 'Još jednom'),
+        h('button', { class: 'btn ghost', type: 'button', onclick: () => { beep('tap'); startStory(); } }, 'Druga priča')),
+      h('button', { class: 'btn ghost', type: 'button', onclick: toHome }, 'Na početak')));
+  }
+  step1();
 }
 
 /* ---------- Probni ispit ---------- */
