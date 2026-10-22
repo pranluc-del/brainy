@@ -307,6 +307,7 @@ main > :nth-child(2) { animation-delay: .05s; } main > :nth-child(3) { animation
 .hero-top { display: flex; justify-content: space-between; align-items: flex-start; gap: 10px; }
 .sound { border: 0; background: color-mix(in srgb, var(--ink) 7%, transparent); color: var(--ink); width: 44px; height: 44px; border-radius: 50%; display: grid; place-items: center; flex: none; }
 .sound svg { width: 22px; height: 22px; }
+.sound.lbl { width: auto; padding: 0 14px 0 12px; border-radius: 22px; display: flex; align-items: center; gap: 6px; font: inherit; font-weight: 700; font-size: 13px; white-space: nowrap; }
 .level { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 4px 12px; align-items: center; background: var(--uvod-soft); border-radius: 16px; padding: 10px 14px; margin: 12px 0; }
 .level .lv { grid-row: span 2; width: 48px; height: 48px; border-radius: 14px; background: var(--accent); color: var(--accent-ink); display: grid; place-items: center; font-family: var(--display); font-weight: 800; font-size: 1.5rem; }
 .level b { font-family: var(--display); font-size: 1.1rem; }
@@ -1840,8 +1841,8 @@ function hub() {
     h('section', { class: 'card hero' },
       h('p', { class: 'eyebrow' }, 'Brainy · 5. razred'),
       h('div', { class: 'hero-top' }, h('h1', null, 'Bok, ' + S.name + '!'),
-        h('button', { class: 'sound', type: 'button', 'aria-label': S.sound === false ? 'Uključi zvuk' : 'Isključi zvuk', onclick: () => { S.sound = S.sound === false; save(); if (S.sound) beep('tap'); hub(); } }, svgEl(S.sound === false ? ICONS.soundOff : ICONS.soundOn))),
-      buddy('wave', st >= 2 ? 'Već ' + st + ' dana zaredom! Nastavimo?' : S.rounds ? 'Drago mi je da si opet tu! Što učimo danas?' : 'Ja sam Mozgić. Odaberi predmet i krenimo!', 84),
+        h('button', { class: 'sound lbl', type: 'button', 'aria-label': S.sound === false ? 'Uključi zvuk' : 'Isključi zvuk', onclick: () => { S.sound = S.sound === false; save(); if (S.sound) beep('tap'); hub(); } }, svgEl(S.sound === false ? ICONS.soundOff : ICONS.soundOn), h("span", null, S.sound === false ? "Zvuk isključen" : "Zvuk uključen"))),
+      buddy('wave', st >= 2 ? 'Već ' + st + ' dana zaredom! Nastavimo?' : S.rounds ? 'Drago mi je da si opet tu! Što učimo danas?' : 'Ja sam Brainy. Odaberi predmet i krenimo!', 84),
       levelCard(),
       h('div', { class: 'stats' },
         h('div', { class: 'stat' }, h('b', null, String(S.pts)), h('span', null, 'bodova')),
@@ -2081,7 +2082,7 @@ function askName() {
   inp.addEventListener('keydown', e => { if (e.key === 'Enter') go(); });
   $app.append(h('section', { class: 'card' },
     h('p', { class: 'eyebrow' }, 'Brainy · 5. razred'),
-    buddy('wave', 'Bok! Ja sam Mozgić. Pomoći ću ti učiti.', 96),
+    buddy('wave', 'Bok! Ja sam Brainy. Pomoći ću ti učiti.', 96),
     h('h1', null, 'Kako se zoveš?'),
     h('p', { class: 'muted' }, 'Tvoj napredak sprema se na ovom uređaju.'),
     inp, h('button', { class: 'btn', type: 'button', onclick: go }, 'Krenimo')));
@@ -2134,7 +2135,7 @@ function home() {
       const modes = [
         ['btn', 'Vježbaj · 10 pitanja', en ? 'Riječi i rečenice iz knjige. Odmah vidiš je li točno.' : 'Pitanja iz knjige. Odmah vidiš je li točno.', startPractice],
         ['btn ghost', 'Kartice · 10 pojmova', en ? 'Što znači riječ? Izaberi točan prijevod.' : 'Što znači pojam? Izaberi točno objašnjenje.', startCards],
-        en && ORAL.some(o => o.model) ? ['btn gold', 'Prepričaj priču', 'Pročitaj, složi i ispričaj priču. Mozgić sluša i provjerava.', () => startStory()] : null,
+        en && ORAL.some(o => o.model) ? ['btn gold', 'Prepričaj priču', 'Pročitaj, složi i ispričaj priču. Brainy sluša i provjerava.', () => startStory()] : null,
         !en ? ['btn ghost', 'Usmeno ispitivanje · 5 pitanja', 'Za vježbu s mamom ili tatom: oni čitaju pitanje, ti odgovaraš naglas.', startOral] : null,
         ['btn gold', 'Probni ispit · 15 pitanja, 20 min', 'Kao pravi test. Na kraju dobiješ ocjenu od 1 do 5.', startExam]
       ].filter(Boolean);
@@ -2486,7 +2487,7 @@ function startStory(pre) {
             stream.getTracks().forEach(t => t.stop());
             rb.classList.remove('on'); rb.hidden = true;
             const blob = new Blob(chunks, { type: rec.mimeType || 'audio/mp4' });
-            const msg = h('p', { class: 'small' }, 'Mozgić sluša tvoju priču…');
+            const msg = h('p', { class: 'small' }, 'Brainy sluša tvoju priču…');
             box.replaceChildren(buddy('wave', 'Slušam i provjeravam… Prvi put traje malo duže.', 56), msg);
             try {
               said = await (window.brainyTranscribe || transcribe)(blob, p => { if (p && p.status === 'progress' && p.total > 1e6) msg.textContent = 'Pripremam slušanje (samo prvi put): ' + Math.round(p.progress || 0) + ' %'; });
@@ -2539,7 +2540,7 @@ function startStory(pre) {
     $app.append(h('section', { class: 'card' }, back, steps(3),
       h('p', { class: 'eyebrow' }, 'Korak 3 od 3 · Sad ti pričaj'),
       h('h2', null, title),
-      h('p', { class: 'small muted' }, SR ? 'Dodirni gumb i ispričaj priču naglas na engleskom. Mozgić sluša i provjerava što si rekao/la. Ove riječi ti pomažu:' : 'Ispričaj priču naglas na engleskom, svojim riječima. Ove riječi ti pomažu:'),
+      h('p', { class: 'small muted' }, SR ? 'Dodirni gumb i ispričaj priču naglas na engleskom. Brainy sluša i provjerava što si rekao/la. Ove riječi ti pomažu:' : 'Ispričaj priču naglas na engleskom, svojim riječima. Ove riječi ti pomažu:'),
       cues,
       SR ? btn : null, liveEl, out,
       SR ? null : recorder()));
