@@ -38,6 +38,7 @@
   --pra-soft: #F5E7DA;
   --istok: #17766B;
   --istok-soft: #DCF1EE;
+  --ra: #0E7C86; --ra-soft: #D9F0F2; --sk: #3D5AA8; --sk-soft: #E0E6F6; --bi: #2E7D32; --bi-soft: #E0F1E1; --je: #B5482B; --je-soft: #F8E3DC; --na: #8A5A00; --na-soft: #F6EBD4;
   --su: #7B3F9E;
   --su-soft: #EFE3F6;
   --f1: #1F6FB2;
@@ -56,7 +57,7 @@
   :root:not([data-theme="light"]) {
     --bg: #15132A; --bg2: #1C1426; --card: #211E3C; --ink: #EFEDFA; --muted: #ABA6C8; --line: #37325C;
     --accent: #A890FF; --accent-ink: #15132A; --gold: #FFA45C; --gold-soft: #3D2616; --hero1: #4A2FC4; --hero2: #8A2A99; --sun: #FFCB3D;
-    --uvod: #8FA7F2; --uvod-soft: #1F2A4A; --pra: #E0A271; --pra-soft: #3A2718; --istok: #5FCDBD; --istok-soft: #15332F; --su: #CDA2EA; --su-soft: #33223F; --f1: #8CC2F0; --f1-soft: #172C40; --f2: #F296BF; --f2-soft: #3D1A2A;
+    --uvod: #8FA7F2; --uvod-soft: #1F2A4A; --pra: #E0A271; --pra-soft: #3A2718; --istok: #5FCDBD; --istok-soft: #15332F; --su: #CDA2EA; --su-soft: #33223F; --f1: #8CC2F0; --f1-soft: #172C40; --f2: #F296BF; --f2-soft: #3D1A2A; --ra: #6FD3DC; --ra-soft: #12363A; --sk: #9DB2F2; --sk-soft: #1E2744; --bi: #8FD694; --bi-soft: #173019; --je: #F2A48C; --je-soft: #3D2018; --na: #E8C27A; --na-soft: #36290F;
     --ok: #5CCF8B; --ok-soft: #173826; --bad: #FF8B80; --bad-soft: #401E1C; --warn: #E9B44C;
     color-scheme: dark;
   }
@@ -64,7 +65,7 @@
 :root[data-theme="dark"] {
   --bg: #15132A; --bg2: #1C1426; --card: #211E3C; --ink: #EFEDFA; --muted: #ABA6C8; --line: #37325C;
   --accent: #A890FF; --accent-ink: #15132A; --gold: #FFA45C; --gold-soft: #3D2616; --hero1: #4A2FC4; --hero2: #8A2A99; --sun: #FFCB3D;
-  --uvod: #8FA7F2; --uvod-soft: #1F2A4A; --pra: #E0A271; --pra-soft: #3A2718; --istok: #5FCDBD; --istok-soft: #15332F; --su: #CDA2EA; --su-soft: #33223F; --f1: #8CC2F0; --f1-soft: #172C40; --f2: #F296BF; --f2-soft: #3D1A2A;
+  --uvod: #8FA7F2; --uvod-soft: #1F2A4A; --pra: #E0A271; --pra-soft: #3A2718; --istok: #5FCDBD; --istok-soft: #15332F; --su: #CDA2EA; --su-soft: #33223F; --f1: #8CC2F0; --f1-soft: #172C40; --f2: #F296BF; --f2-soft: #3D1A2A; --ra: #6FD3DC; --ra-soft: #12363A; --sk: #9DB2F2; --sk-soft: #1E2744; --bi: #8FD694; --bi-soft: #173019; --je: #F2A48C; --je-soft: #3D2018; --na: #E8C27A; --na-soft: #36290F;
   --ok: #5CCF8B; --ok-soft: #173826; --bad: #FF8B80; --bad-soft: #401E1C; --warn: #E9B44C;
   color-scheme: dark;
 }
@@ -375,6 +376,18 @@ main > :nth-child(2) { animation-delay: .05s; } main > :nth-child(3) { animation
 .modes { display: grid; gap: 12px; }
 .mode { display: grid; gap: 4px; }
 .mode p { margin: 0 4px; }
+.tag.ra { background: var(--ra-soft); color: var(--ra); } .flash.ra .face { background: var(--ra-soft); }
+.station.ra .val { stroke: var(--ra); } .station.ra .ico { background: var(--ra-soft); color: var(--ra); } .station.ra h3 { color: var(--ra); }
+.tag.sk { background: var(--sk-soft); color: var(--sk); } .flash.sk .face { background: var(--sk-soft); }
+.station.sk .val { stroke: var(--sk); } .station.sk .ico { background: var(--sk-soft); color: var(--sk); } .station.sk h3 { color: var(--sk); }
+.tag.bi { background: var(--bi-soft); color: var(--bi); } .flash.bi .face { background: var(--bi-soft); }
+.station.bi .val { stroke: var(--bi); } .station.bi .ico { background: var(--bi-soft); color: var(--bi); } .station.bi h3 { color: var(--bi); }
+.tag.je { background: var(--je-soft); color: var(--je); } .flash.je .face { background: var(--je-soft); }
+.station.je .val { stroke: var(--je); } .station.je .ico { background: var(--je-soft); color: var(--je); } .station.je h3 { color: var(--je); }
+.tag.na { background: var(--na-soft); color: var(--na); } .flash.na .face { background: var(--na-soft); }
+.station.na .val { stroke: var(--na); } .station.na .ico { background: var(--na-soft); color: var(--na); } .station.na h3 { color: var(--na); }
+.subj.informatika { background: var(--ra-soft); } .subj.informatika .sico { background: var(--ra); color: var(--card); } .subj.informatika h3 { color: var(--ra); }
+.subj.hrvatski { background: var(--je-soft); } .subj.hrvatski .sico { background: var(--je); color: var(--card); } .subj.hrvatski h3 { color: var(--je); }
 </style>
 </head>
 <body>
@@ -1132,13 +1145,171 @@ const EN_ORAL = [
   { id:'eo9', ch:'su', p:7, q:'Što kažeš na satu engleskog kad: kasniš, želiš izaći, ne razumiješ riječ, završio/la si?', pts:['Sorry I\'m late.','May I go out?','What does „…” mean?','I\'ve finished!'] }
 ];
 
+
+/* ---------- Informatika 5 (str. 7–11) ---------- */
+const IN_CH = {
+  ra: { name: 'Računalo i programi', pages: 'str. 7–8' },
+  sk: { name: 'Sklopovlje i spremnici', pages: 'str. 8–10' },
+  bi: { name: 'Kako radi računalo?', pages: 'str. 11' }
+};
+const IN_Q = [
+  { id:'i01', ch:'ra', t:'mc', p:7, q:'Što je računalo?', a:['Elektronički uređaj koji ima različite namjene','Program za pisanje','Dio monitora','Vrsta interneta'], ex:'Računalo je elektronički uređaj: služi za pregledavanje mrežnih stranica, zabavu, online kupovinu, izradu dokumenata, uređivanje fotografija itd.' },
+  { id:'i02', ch:'ra', t:'mc', p:7, q:'Od čega je sastavljeno svako računalo?', a:['Od sklopovlja i programa','Samo od monitora i miša','Od procesora i oblaka','Od tipkovnice i interneta'], ex:'Svako računalo sastavljeno je od sklopovlja (hardver) i programa (softver).' },
+  { id:'i03', ch:'ra', t:'mc', p:7, q:'Što je sklopovlje (hardver)?', a:['Svi fizički dijelovi računala koje možemo vidjeti i dotaknuti','Programi koji daju upute računalu','Podatci spremljeni u oblaku','Operacijski sustav'], ex:'Sklopovlje su npr. monitor, zvučnici, miš, tipkovnica, pisač, kućište, tvrdi disk, radna memorija, procesor, zvučna kartica.' },
+  { id:'i04', ch:'ra', t:'mc', p:7, q:'Što su programi (softver)?', a:['Programska oprema koja daje upute računalu kako i što treba raditi','Fizički dijelovi računala','Kabeli i utičnice','Vrsta procesora'], ex:'Programi daju upute računalu. Sklopovljem upravljamo preko programa.' },
+  { id:'i05', ch:'ra', t:'text', p:7, q:'Kako se još zove sklopovlje? (posuđenica iz engleskog)', a:['hardver','hardware','sklopovska oprema'], ex:'Sklopovlje = sklopovska oprema = hardver.' },
+  { id:'i06', ch:'ra', t:'text', p:7, q:'Kako se još zovu programi? (posuđenica iz engleskog)', a:['softver','software','programska oprema'], ex:'Programi = programska oprema = softver.' },
+  { id:'i07', ch:'ra', t:'mc', p:7, q:'Koji programi upravljaju radom računala i omogućuju izvođenje korisničkih programa?', a:['Operacijski sustavi','Korisnički programi','Igre','Pisači'], ex:'Operacijski sustavi upravljaju radom računala i njegovim dijelovima.' },
+  { id:'i08', ch:'ra', t:'mc', p:7, q:'Koji od ovih NIJE operacijski sustav?', a:['Google Drive','Windows','Linux','Android'], ex:'Najpoznatiji operacijski sustavi su Windows, Linux, Android i iOS. Google Drive je usluga spremanja u oblaku.' },
+  { id:'i09', ch:'ra', t:'match', p:7, q:'Poveži pojam s primjerom.', pairs:[['Sklopovlje','monitor, miš, procesor'],['Korisnički programi','pisanje referata, crtanje, uređivanje fotografija'],['Operacijski sustavi','Windows, Linux, Android, iOS']], ex:'Sklopovlje vidimo i dotaknemo, korisničke programe koristimo za konkretan posao, a operacijski sustav upravlja svime.' },
+  { id:'i10', ch:'ra', t:'mc', p:7, q:'Kojim programima pišemo referat, crtamo ili uređujemo fotografije?', a:['Korisničkim (primjenskim) programima','Operacijskim sustavima','Središnjim spremnikom','Mrežnom karticom'], ex:'Korisničkim programima koristimo se kad želimo nešto konkretno raditi na računalu.' },
+  { id:'i11', ch:'ra', t:'mc', p:7, q:'Što je točno o računalima?', a:['Puno su brža od čovjeka i uvijek točna, ali ne rade ništa bez naših uputa','Pametnija su od čovjeka','Rade sama, bez uputa','Često griješe u računanju'], ex:'Izumio ih je čovjek. Nisu pametnija od njega, ali su puno brža i uvijek točna.' },
+  { id:'i12', ch:'ra', t:'mc', p:8, q:'Stolna, prijenosna i ručna računala te pametni telefoni su…', a:['osobna računala','poslužiteljska računala','središnje jedinice','optički spremnici'], ex:'Osobna računala namijenjena su osobnoj upotrebi.' },
+  { id:'i13', ch:'ra', t:'mc', p:8, q:'Što je točno za poslužiteljska računala?', a:['Snažna su, mnogo korisnika im pristupa istodobno i nikad se ne isključuju','Mala su i stanu u džep','Služe samo za igre','Nemaju procesor'], ex:'Poslužiteljska računala susrećemo u velikim organizacijama i tvrtkama.' },
+  { id:'i14', ch:'ra', t:'mc', p:8, q:'Što je all-in-one računalo?', a:['Monitor i računalo u istom kućištu','Računalo bez monitora','Poslužiteljsko računalo','Pametni telefon'], ex:'All-in-one znači „sve u jednom”: monitor i računalo u istom kućištu.' },
+  { id:'i15', ch:'sk', t:'mc', p:8, q:'U koje tri kategorije dijelimo sklopovlje računala?', a:['Ulazne jedinice, središnja jedinica, izlazne jedinice','Monitor, miš, tipkovnica','RAM, ROM, disk','Programi, sustavi, igre'], ex:'Sklopovlje smještamo u tri kategorije: ulazne jedinice, središnja jedinica i izlazne jedinice računala.' },
+  { id:'i16', ch:'sk', t:'mc', p:8, q:'Što omogućuju ulazne jedinice?', a:['Unos podataka u računalo','Prikaz rezultata našeg rada','Trajno spremanje podataka','Povezivanje svih dijelova'], ex:'Ulazne jedinice su miš, tipkovnica, mikrofon, skener, digitalna kamera i fotoaparat.' },
+  { id:'i17', ch:'sk', t:'mc', p:8, q:'Koja je od ovih ulazna jedinica?', a:['Skener','Monitor','Pisač','Zvučnici'], ex:'Skener unosi podatke u računalo. Monitor, pisač i zvučnici su izlazne jedinice.' },
+  { id:'i18', ch:'sk', t:'mc', p:8, q:'Čime papirnate dokumente pretvaramo u digitalni oblik?', a:['Skenerom','Pisačem','Projektorom','Zvučnom karticom'], ex:'Skenerom pretvaramo papirnate dokumente u digitalni oblik i unosimo ih u računalo.' },
+  { id:'i19', ch:'sk', t:'mc', p:8, q:'Čime unosimo zvuk u računalo?', a:['Mikrofonom','Slušalicama','Zvučnicima','Monitorom'], ex:'Tipkovnicom unosimo znakove i naredbe, a mikrofonom zvuk.' },
+  { id:'i20', ch:'sk', t:'mc', p:8, q:'Što je kućište?', a:['Kutija u kojoj se nalaze svi dijelovi bez kojih računalo ne bi moglo raditi','Vrsta monitora','Program za crtanje','Memorijska kartica'], ex:'Središnju jedinicu čini sve što se nalazi u kućištu računala.' },
+  { id:'i21', ch:'sk', t:'mc', p:8, q:'Koji dio povezuje sve dijelove računala? (uspoređujemo ga sa srcem)', a:['Matična ploča','Procesor','Disk','Miš'], ex:'Matična ploča povezuje sve dijelove računala, svi su dijelovi spojeni na nju.' },
+  { id:'i22', ch:'sk', t:'mc', p:8, q:'Koji dio upravlja svim dijelovima i obrađuje podatke? (uspoređujemo ga s mozgom)', a:['Procesor (CPU)','Matična ploča','RAM','Grafička kartica'], ex:'Procesor (CPU, Central Processing Unit) upravlja svim dijelovima računala i obrađuje podatke.' },
+  { id:'i23', ch:'sk', t:'text', p:8, q:'Kratica za procesor ima tri slova. Koja?', a:['CPU'], ex:'CPU = Central Processing Unit.' },
+  { id:'i24', ch:'sk', t:'mc', p:9, q:'Koji spremnik čine ROM i RAM?', a:['Središnji spremnik','Pomoćni spremnik','Oblak','Optički spremnik'], ex:'Središnji spremnik glavni je spremnik računala. Čine ga ROM i RAM.' },
+  { id:'i25', ch:'sk', t:'mc', p:9, q:'Što se dogodi s podatcima u RAM-u kad isključimo računalo?', a:['Brišu se','Ostaju zauvijek','Prebace se u oblak','Ispišu se na pisaču'], ex:'RAM je radni spremnik. Čim isključimo računalo, podatci se brišu!' },
+  { id:'i26', ch:'sk', t:'mc', p:9, q:'Što sadrži ROM?', a:['Podatke koji omogućuju pokretanje računala i ne mogu se mijenjati','Naše fotografije','Igre i filmove','Internetske stranice'], ex:'ROM (Read Only Memory): podatci se mogu samo čitati, ne mogu se mijenjati.' },
+  { id:'i27', ch:'sk', t:'mc', p:9, q:'Što rade pomoćni spremnici?', a:['Trajno pohranjuju podatke i pomoću njih prenosimo podatke na drugo računalo','Brišu podatke kad isključimo računalo','Prikazuju sliku','Unose zvuk'], ex:'Pomoćni spremnici su disk, optički spremnici, prijenosni diskovi, memorijske kartice i ključići.' },
+  { id:'i28', ch:'sk', t:'mc', p:9, q:'Gdje se nalaze svi naši korisnički programi i operacijski sustav?', a:['Na disku','U RAM-u','Na zvučnoj kartici','Na monitoru'], ex:'Disk je spremnik na koji trajno pohranjujemo sve što radimo na računalu.' },
+  { id:'i29', ch:'sk', t:'mc', p:9, q:'Koja je razlika između HDD-a i SSD-a?', a:['HDD sprema podatke na rotirajuću ploču, SSD na neizbrisivu memoriju','HDD je u oblaku, SSD u kućištu','SSD se briše kad isključimo računalo','Nema nikakve razlike'], ex:'HDD = Hard disk drive (tvrdi disk), SSD = Solid-state drive. Hibridni diskovi (SSHD) su kombinacija obaju.' },
+  { id:'i30', ch:'sk', t:'match', p:9, q:'Poveži spremnik s njegovim kapacitetom.', pairs:[['CD','700 MB'],['DVD','4,7 GB'],['BD (Blu-ray)','50 GB'],['Disk','od 320 GB do 16 TB']], ex:'Tablica kapaciteta spremnika, sl. 1.12. Kartice i ključići imaju od 128 MB do 128 GB.' },
+  { id:'i31', ch:'sk', t:'mc', p:9, q:'Što znači spremati podatke u oblak (cloud)?', a:['Podatci nisu na našem računalu nego na internetu','Podatke spremamo na CD','Podatke spremamo u RAM','Podatke ispisujemo'], ex:'Oblak omogućuje pristup s više uređaja, u bilo koje vrijeme i s različitih lokacija.' },
+  { id:'i32', ch:'sk', t:'mc', p:9, q:'Što trebamo za pristup podatcima u oblaku?', a:['Pristup internetu','Skener','CD','Pisač'], ex:'Za pristup podatcima spremljenim u oblaku potreban je pristup internetu.' },
+  { id:'i33', ch:'sk', t:'mc', p:9, q:'Koja je od ovih usluga spremanja podataka u oblaku?', a:['OneDrive','Windows','Linux','Procesor'], ex:'Usluge spremanja u oblaku su npr. OneDrive, Google Drive i DropBox.' },
+  { id:'i34', ch:'sk', t:'mc', p:9, q:'U čemu mjerimo kapacitet spremnika?', a:['U bajtovima i većim jedinicama (MB, GB, TB)','U metrima','U kilogramima','U stupnjevima'], ex:'Spremnici se razlikuju svojim kapacitetima koje mjerimo u bajtovima, odnosno većim jedinicama.' },
+  { id:'i35', ch:'sk', t:'mc', p:10, q:'Što omogućuje zvučna kartica?', a:['Reprodukciju zvuka na zvučnicima i unos zvuka u računalo','Prikaz slike na monitoru','Pristup internetu','Ispis na papir'], ex:'U kućištu se nalaze tri kartice: zvučna, grafička i mrežna.' },
+  { id:'i36', ch:'sk', t:'mc', p:10, q:'Koja kartica omogućuje prikazivanje slike na monitoru?', a:['Grafička kartica','Zvučna kartica','Mrežna kartica','Memorijska kartica'], ex:'Grafička kartica omogućuje prikazivanje slike na monitoru.' },
+  { id:'i37', ch:'sk', t:'mc', p:10, q:'Koja kartica omogućuje pristup internetu i povezivanje s drugim računalima?', a:['Mrežna kartica','Grafička kartica','Zvučna kartica','Memorijska kartica'], ex:'Mrežna kartica povezuje računalo s internetom i drugim računalima.' },
+  { id:'i38', ch:'sk', t:'mc', p:10, q:'Što rade izlazne jedinice?', a:['Prikazuju rezultate našeg rada u nama razumljivom obliku','Unose podatke u računalo','Trajno spremaju podatke','Hlade procesor'], ex:'Izlazne jedinice su monitor, projektor, zvučnici, slušalice i pisač.' },
+  { id:'i39', ch:'sk', t:'match', p:10, q:'Kamo pripada uređaj?', pairs:[['Tipkovnica','ulazna jedinica'],['Matična ploča','središnja jedinica'],['Projektor','izlazna jedinica']], ex:'Ulazne jedinice → središnja jedinica → izlazne jedinice (sl. 1.17).' },
+  { id:'i40', ch:'sk', t:'mc', p:10, q:'Koji uređaj NIJE izlazna jedinica?', a:['Mikrofon','Monitor','Pisač','Slušalice'], ex:'Mikrofon je ulazna jedinica: njime unosimo zvuk u računalo.' },
+  { id:'i41', ch:'sk', t:'order', p:10, q:'Poredaj kojim putem podatci prolaze kroz računalo.', items:['Ulazne jedinice','Središnja jedinica','Izlazne jedinice'], ex:'Unesemo podatke (npr. tipkovnicom), središnja jedinica ih obradi, a izlazne jedinice pokažu rezultat.' },
+  { id:'i42', ch:'bi', t:'mc', p:11, q:'Koliko znamenaka ima dekadski brojevni sustav?', a:['Deset (od 0 do 9)','Dvije (0 i 1)','Osam','Šesnaest'], ex:'Ljudi se najčešće koriste dekadskim sustavom. Njegova je baza broj 10.' },
+  { id:'i43', ch:'bi', t:'mc', p:11, q:'Kojim jezikom računala „pričaju”?', a:['Binarnim sustavom, sa znamenkama 0 i 1','Dekadskim sustavom','Hrvatskim jezikom','Rimskim brojevima'], ex:'Računala sve podatke i naredbe zapisuju kombinacijama znamenaka 0 i 1.' },
+  { id:'i44', ch:'bi', t:'match', p:11, q:'Poveži znamenku sa stanjem.', pairs:[['0','isključeno (laž, false)'],['1','uključeno (istina, true)']], ex:'Kao žarulja: 0 = isključeno, 1 = uključeno (sl. 1.18).' },
+  { id:'i45', ch:'bi', t:'mc', p:11, q:'Što je bit?', a:['Najmanja količina informacije koju računalo može prikazati','Osam diskova','Vrsta procesora','Jedan program'], ex:'Jedan bit može imati stanje 0 ili stanje 1, poput prekidača.' },
+  { id:'i46', ch:'bi', t:'mc', p:11, q:'Koliko stanja imaju dva bita?', a:['Četiri','Dva','Osam','Šesnaest'], ex:'Dva bita: 00, 01, 10, 11.' },
+  { id:'i47', ch:'bi', t:'mc', p:11, q:'Koliko stanja imaju tri bita?', a:['Osam','Šest','Četiri','Devet'], ex:'Tri bita: 000, 001, 010, 011, 100, 101, 110, 111.' },
+  { id:'i48', ch:'bi', t:'mc', p:11, q:'Koliko stanja imaju četiri bita?', a:['Šesnaest','Osam','Četiri','Deset'], ex:'Svaki novi bit udvostruči broj stanja: 2, 4, 8, 16.' },
+  { id:'i49', ch:'bi', t:'mc', p:11, q:'Što se dogodi s brojem stanja kad dodamo još jedan bit?', a:['Udvostruči se','Utrostruči se','Smanji se','Ostane isti'], ex:'Uvijek množimo sa 2. Zato je 2 baza binarnoga brojevnog sustava.' },
+  { id:'i50', ch:'bi', t:'mc', p:11, q:'Koja je baza binarnoga brojevnog sustava?', a:['2','10','0','16'], ex:'Binarni sustav ima samo dvije znamenke, zato je njegova baza 2.' },
+  { id:'i51', ch:'bi', t:'text', p:11, q:'Kako nazivamo četiri udružena bita?', a:['četvorka bitova','četvorku bitova','četvorka'], ex:'Jednom četvorkom bitova možemo zapisati brojeve od 0 do 15.' },
+  { id:'i52', ch:'bi', t:'mc', p:11, q:'Koji dekadski broj je 0101?', a:['5','4','6','10'], ex:'Tablica četvorke bitova: 0101 = 5.' },
+  { id:'i53', ch:'bi', t:'mc', p:11, q:'Kako se broj 9 zapisuje četvorkom bitova?', a:['1001','1100','0110','1010'], ex:'9 = 1001.' },
+  { id:'i54', ch:'bi', t:'mc', p:11, q:'Koji dekadski broj je 1111?', a:['15','11','8','16'], ex:'1111 je najveći broj koji možemo zapisati četvorkom bitova: 15.' },
+  { id:'i55', ch:'bi', t:'text', p:11, q:'Koji dekadski broj je 1010? (upiši brojkom)', a:['10','deset'], ex:'1010 = 10.' },
+  { id:'i56', ch:'bi', t:'match', p:11, q:'Poveži četvorku bitova s dekadskim brojem.', pairs:[['0011','3'],['0110','6'],['1000','8'],['1100','12']], ex:'Pogledaj tablicu četvorke bitova (sl. 1.19).' },
+  { id:'i57', ch:'bi', t:'mc', p:11, q:'Zašto kažemo da je sve u računalima zapisano digitalno?', a:['Jer je sve zapisano brojevima, u obliku bitova 0 i 1','Jer računalo ima zaslon','Jer ga koristimo prstima','Jer je računalo brzo'], ex:'Sve je u računalima prikazano binarno, odnosno digitalno (brojevima).' }
+];
+const IN_CARDS = [
+  { ch:'ra', term:'Sklopovlje (hardver)', def:'Svi fizički dijelovi računala koje možemo vidjeti i dotaknuti.', p:7 },
+  { ch:'ra', term:'Programi (softver)', def:'Programska oprema koja daje upute računalu kako i što treba raditi.', p:7 },
+  { ch:'ra', term:'Operacijski sustav', def:'Program koji upravlja radom računala i njegovim dijelovima (Windows, Linux, Android, iOS).', p:7 },
+  { ch:'ra', term:'Korisnički programi', def:'Programi za konkretan posao: e-pošta, internet, referat, crtež, fotografije.', p:7 },
+  { ch:'ra', term:'Osobna računala', def:'Računala za osobnu upotrebu: stolna, prijenosna, all-in-one, ručna, pametni telefoni.', p:8 },
+  { ch:'ra', term:'Poslužiteljska računala', def:'Snažna računala u velikim tvrtkama; pristupa im mnogo korisnika i nikad se ne isključuju.', p:8 },
+  { ch:'sk', term:'Ulazne jedinice', def:'Uređaji za unos podataka: miš, tipkovnica, mikrofon, skener, kamera, fotoaparat.', p:8 },
+  { ch:'sk', term:'Središnja jedinica', def:'Sve što je u kućištu: matična ploča, procesor, spremnici, kartice.', p:8 },
+  { ch:'sk', term:'Izlazne jedinice', def:'Uređaji koji prikazuju rezultat: monitor, projektor, zvučnici, slušalice, pisač.', p:10 },
+  { ch:'sk', term:'Kućište', def:'Kutija u kojoj su svi dijelovi bez kojih računalo ne bi moglo raditi.', p:8 },
+  { ch:'sk', term:'Matična ploča', def:'Povezuje sve dijelove računala; uspoređujemo je sa srcem.', p:8 },
+  { ch:'sk', term:'Procesor (CPU)', def:'Upravlja svim dijelovima računala i obrađuje podatke; uspoređujemo ga s mozgom.', p:8 },
+  { ch:'sk', term:'RAM', def:'Radni spremnik; podatci se brišu kad isključimo računalo.', p:9 },
+  { ch:'sk', term:'ROM', def:'Spremnik s podatcima za pokretanje računala; ne mogu se mijenjati.', p:9 },
+  { ch:'sk', term:'Pomoćni spremnici', def:'Trajno pohranjuju podatke i služe za prijenos na drugo računalo.', p:9 },
+  { ch:'sk', term:'Disk (HDD, SSD)', def:'Spremnik na koji trajno pohranjujemo programe, operacijski sustav i svoj rad.', p:9 },
+  { ch:'sk', term:'Oblak (cloud)', def:'Spremanje podataka na internetu (OneDrive, Google Drive, DropBox).', p:9 },
+  { ch:'sk', term:'Zvučna kartica', def:'Omogućuje reprodukciju zvuka na zvučnicima i unos zvuka u računalo.', p:10 },
+  { ch:'sk', term:'Grafička kartica', def:'Omogućuje prikazivanje slike na monitoru.', p:10 },
+  { ch:'sk', term:'Mrežna kartica', def:'Omogućuje pristup internetu i povezivanje s drugim računalima.', p:10 },
+  { ch:'bi', term:'Dekadski sustav', def:'Brojevni sustav s deset znamenaka (0–9); baza je 10.', p:11 },
+  { ch:'bi', term:'Binarni sustav', def:'Jezik računala sa samo dvije znamenke, 0 i 1; baza je 2.', p:11 },
+  { ch:'bi', term:'Bit', def:'Najmanja količina informacije: stanje 0 ili stanje 1.', p:11 },
+  { ch:'bi', term:'Četvorka bitova', def:'Četiri udružena bita; zapisuje brojeve od 0 do 15.', p:11 }
+];
+const IN_ORAL = [
+  { id:'io1', ch:'ra', p:7, q:'Što je računalo i od čega se sastoji?', pts:['Računalo je elektronički uređaj s različitim namjenama.','Sastoji se od sklopovlja (hardver) i programa (softver).','Sklopovlje su fizički dijelovi koje vidimo i dotaknemo.','Programi daju upute računalu što treba raditi.'] },
+  { id:'io2', ch:'ra', p:7, q:'Navedi nekoliko primjera sklopovlja i računalnih programa.', pts:['Sklopovlje: npr. monitor, miš, tipkovnica, procesor, disk.','Korisnički programi: npr. za pisanje, crtanje, fotografije, internet.','Operacijski sustavi: Windows, Linux, Android, iOS.'] },
+  { id:'io3', ch:'ra', p:8, q:'Što je zajedničko osobnim i poslužiteljskim računalima, a po čemu se razlikuju?', pts:['Oboje su računala sa sklopovljem i programima.','Osobna su za osobnu upotrebu (stolna, prijenosna, mobitel).','Poslužiteljska su snažna, u velikim tvrtkama.','Poslužiteljskim pristupa mnogo korisnika i nikad se ne isključuju.'] },
+  { id:'io4', ch:'sk', p:10, q:'Opiši razliku između ulaznih i izlaznih jedinica računala.', pts:['Ulazne jedinice služe za unos podataka u računalo.','Primjeri ulaznih: miš, tipkovnica, mikrofon, skener.','Izlazne jedinice prikazuju rezultate našeg rada.','Primjeri izlaznih: monitor, projektor, zvučnici, pisač.'] },
+  { id:'io5', ch:'sk', p:9, q:'Objasni razliku između RAM-a i ROM-a.', pts:['Oba su središnji spremnik.','RAM je radni spremnik dok je računalo uključeno.','Iz RAM-a se podatci brišu kad isključimo računalo.','ROM sadrži podatke za pokretanje računala koji se ne mogu mijenjati.'] },
+  { id:'io6', ch:'bi', p:11, q:'Kako računalo „priča”? Objasni binarni sustav i bit.', pts:['Računalo koristi binarni sustav sa znamenkama 0 i 1.','0 = isključeno, 1 = uključeno.','Bit je najmanja količina informacije.','Četiri bita (četvorka) zapisuju brojeve od 0 do 15.'] }
+];
+
+/* ---------- Hrvatski jezik (Zoéina bilježnica) ---------- */
+const HR_CH = {
+  je: { name: 'Hrvatski jezik i vrste jezika', pages: 'bilježnica' },
+  na: { name: 'Narječja i govori', pages: 'bilježnica' }
+};
+const HR_Q = [
+  { id:'h01', ch:'je', t:'mc', q:'Što je hrvatski standardni jezik?', a:['Službeni, propisani jezik u Republici Hrvatskoj','Jezik kojim govorimo samo kod kuće','Jezik nacionalnih manjina','Jedno od narječja'], ex:'Hrvatski standardni jezik službeni je propisani jezik u Republici Hrvatskoj.' },
+  { id:'h02', ch:'je', t:'mc', q:'Gdje se upotrebljava hrvatski standardni jezik?', a:['U školi, u medijima te u kulturnome i javnome životu','Samo u igri s prijateljima','Samo u pjesmama','Samo na selu'], ex:'Standardni jezik upotrebljava se u školi, u medijima te u kulturnome i javnome životu.' },
+  { id:'h03', ch:'je', t:'mc', q:'Kojim se jezikom služimo spontano u svakodnevnim životnim situacijama?', a:['Razgovornim jezikom','Jezikom književnosti','Standardnim jezikom','Drugim jezikom'], ex:'Razgovorni jezik je jezik kojim se služimo spontano u svakodnevnim životnim situacijama.' },
+  { id:'h04', ch:'je', t:'mc', q:'Što je jezik književnosti?', a:['Jezik književnih djela','Jezik u trgovini','Jezik manjine','Prvi jezik koji naučimo'], ex:'Jezik književnosti je jezik književnih djela.' },
+  { id:'h05', ch:'je', t:'mc', q:'Što je materinski jezik?', a:['Prvi jezik koji se nauči od roditelja','Strani jezik koji učimo u školi','Jezik novina','Jezik nacionalne manjine'], ex:'Materinski jezik je prvi jezik koji se nauči od roditelja.' },
+  { id:'h06', ch:'je', t:'mc', q:'Što je jezik nacionalne manjine?', a:['Jezik nacionalnih skupina na području države','Službeni jezik države','Jezik književnih djela','Isto što i narječje'], ex:'Jezik nacionalne manjine je jezik nacionalnih skupina na području države.' },
+  { id:'h07', ch:'je', t:'mc', q:'Što je drugi jezik?', a:['Jezik koji govorimo uz materinski','Jezik koji uopće ne razumijemo','Jezik književnosti','Isto što i govor'], ex:'Drugi jezik je jezik koji govorimo uz materinski.' },
+  { id:'h08', ch:'je', t:'match', q:'Poveži vrstu jezika s objašnjenjem.', pairs:[['Standardni jezik','škola, mediji, javni život'],['Razgovorni jezik','svakodnevne situacije'],['Jezik književnosti','književna djela'],['Materinski jezik','prvi jezik, od roditelja']], ex:'Ponovi bilješke iz bilježnice: svaka vrsta jezika ima svoju namjenu.' },
+  { id:'h09', ch:'je', t:'mc', q:'Voditeljica čita vijesti na televiziji. Kojim se jezikom služi?', a:['Standardnim jezikom','Razgovornim jezikom','Jezikom nacionalne manjine','Kajkavskim narječjem'], ex:'Mediji (televizija, novine) koriste standardni jezik.' },
+  { id:'h10', ch:'je', t:'mc', q:'Zoé na odmoru priča s prijateljicom. Kojim se jezikom služi?', a:['Razgovornim jezikom','Standardnim jezikom','Jezikom književnosti','Jezikom nacionalne manjine'], ex:'U svakodnevnim situacijama govorimo spontano, razgovornim jezikom.' },
+  { id:'h11', ch:'je', t:'mc', q:'Kako zovemo jezik neke nacionalne skupine u Hrvatskoj, npr. talijanske zajednice u Istri?', a:['Jezik nacionalne manjine','Jezik književnosti','Standardni jezik','Narječje'], ex:'Jezik nacionalne manjine je jezik nacionalnih skupina na području države.' },
+  { id:'h12', ch:'na', t:'mc', q:'Što je narječje?', a:['Prepoznatljiv govor živoga i prirodnog jezika, skup određenih dijalekata','Službeni propisani jezik','Strani jezik','Jezik književnih djela'], ex:'Narječje je prepoznatljiv govor živoga i prirodnog jezika, skup određenih dijalekata.' },
+  { id:'h13', ch:'na', t:'mc', q:'Koliko narječja ima hrvatski jezik?', a:['Tri','Dva','Pet','Jedno'], ex:'Hrvatska narječja su štokavsko, čakavsko i kajkavsko.' },
+  { id:'h14', ch:'na', t:'match', q:'Poveži narječje s riječi po kojoj je dobilo ime.', pairs:[['Štokavsko','što'],['Čakavsko','ča'],['Kajkavsko','kaj']], ex:'Narječja su dobila ime po tome kako se kaže upitna zamjenica „što”.' },
+  { id:'h15', ch:'na', t:'text', q:'Kako se zove narječje u kojem se za „što” kaže „kaj”?', a:['kajkavsko','kajkavsko narječje','kajkavski'], ex:'Kaj → kajkavsko narječje.' },
+  { id:'h16', ch:'na', t:'text', q:'Kako se zove narječje u kojem se za „što” kaže „ča”?', a:['čakavsko','čakavsko narječje','čakavski'], ex:'Ča → čakavsko narječje.' },
+  { id:'h17', ch:'na', t:'mc', q:'Koji su govori zapisani u bilježnici?', a:['(i)jekavski, ikavski i ekavski','štokavski, čakavski i kajkavski','standardni i razgovorni','materinski i drugi'], ex:'Narječja su štokavsko, čakavsko i kajkavsko, a govori (i)jekavski, ikavski i ekavski.' },
+  { id:'h18', ch:'na', t:'mc', q:'Netko kaže „misec” umjesto „mjesec”. Koji je to govor?', a:['Ikavski','Ekavski','Ijekavski','Kajkavski'], ex:'Ikavski: mjesec → misec (umjesto „je” dolazi „i”).' },
+  { id:'h19', ch:'na', t:'mc', q:'Netko kaže „tela” i „volela” umjesto „htjela” i „voljela”. Koji je to govor?', a:['Ekavski','Ikavski','Ijekavski','Štokavski'], ex:'Ekavski: voljela → volela (umjesto „je” dolazi „e”).' },
+  { id:'h20', ch:'na', t:'mc', q:'„Smeh” umjesto „smijeh” je primjer kojeg govora?', a:['Ekavskog','Ikavskog','Ijekavskog','Čakavskog'], ex:'Smijeh → smeh: ekavski govor.' },
+  { id:'h21', ch:'na', t:'mc', q:'„Mjesec, voljela, smijeh” – koji je to govor?', a:['(I)jekavski','Ikavski','Ekavski','Kajkavski'], ex:'U (i)jekavskom govoru kažemo „je” ili „ije”: mjesec, smijeh.' },
+  { id:'h22', ch:'na', t:'mc', q:'„Litnja zora u stotinu boja … potonio misec iza škoja…” Koje je narječje i koji govor?', a:['Čakavsko narječje, ikavski govor','Kajkavsko narječje, ekavski govor','Štokavsko narječje, ijekavski govor','Čakavsko narječje, ekavski govor'], ex:'Misec i litnja su ikavski oblici; pjesma je napisana čakavskim narječjem.' },
+  { id:'h23', ch:'na', t:'mc', q:'„Nisam tela, samo bin volela pet šest ur više spat…” Koje je narječje i koji govor?', a:['Čakavsko narječje, ekavski govor','Čakavsko narječje, ikavski govor','Kajkavsko narječje, ijekavski govor','Štokavsko narječje, ekavski govor'], ex:'Tela i volela su ekavski oblici; pjesma je čakavska (u bilježnici: čakavsko, ekavski).' },
+  { id:'h24', ch:'na', t:'mc', q:'„Za svaku dobru reč, kaj reči si mi znala… za saki smeh, ti fala!” Koje je narječje i koji govor?', a:['Kajkavsko narječje, ekavski govor','Čakavsko narječje, ikavski govor','Štokavsko narječje, ijekavski govor','Kajkavsko narječje, ikavski govor'], ex:'„Kaj” pokazuje kajkavsko narječje, a „smeh” i „reč” ekavski govor.' },
+  { id:'h25', ch:'na', t:'mc', q:'Po kojoj riječi u pjesmi „Za svaku dobru reč…” odmah znamo da je narječje kajkavsko?', a:['kaj','smeh','fala','dobru'], ex:'Narječje prepoznajemo po zamjenici: kaj = kajkavsko.' }
+];
+const HR_CARDS = [
+  { ch:'je', term:'Hrvatski standardni jezik', def:'Službeni propisani jezik u RH: škola, mediji, kulturni i javni život.' },
+  { ch:'je', term:'Razgovorni jezik', def:'Jezik kojim se služimo spontano u svakodnevnim životnim situacijama.' },
+  { ch:'je', term:'Jezik književnosti', def:'Jezik književnih djela.' },
+  { ch:'je', term:'Materinski jezik', def:'Prvi jezik koji se nauči od roditelja.' },
+  { ch:'je', term:'Jezik nacionalne manjine', def:'Jezik nacionalnih skupina na području države.' },
+  { ch:'je', term:'Drugi jezik', def:'Jezik koji govorimo uz materinski.' },
+  { ch:'na', term:'Narječje', def:'Prepoznatljiv govor živoga i prirodnog jezika, skup određenih dijalekata.' },
+  { ch:'na', term:'Štokavsko narječje', def:'Narječje u kojem se kaže „što”.' },
+  { ch:'na', term:'Čakavsko narječje', def:'Narječje u kojem se kaže „ča”.' },
+  { ch:'na', term:'Kajkavsko narječje', def:'Narječje u kojem se kaže „kaj”.' },
+  { ch:'na', term:'Ikavski govor', def:'Kaže se „i”: misec, litnja (mjesec, ljetna).' },
+  { ch:'na', term:'Ekavski govor', def:'Kaže se „e”: smeh, volela, reč (smijeh, voljela, riječ).' },
+  { ch:'na', term:'(I)jekavski govor', def:'Kaže se „je” ili „ije”: mjesec, smijeh, voljela.' }
+];
+const HR_ORAL = [
+  { id:'ho1', ch:'je', q:'Što je hrvatski standardni jezik i gdje se upotrebljava?', pts:['Službeni, propisani jezik u Republici Hrvatskoj.','Upotrebljava se u školi i u medijima.','I u kulturnome i javnome životu.'] },
+  { id:'ho2', ch:'je', q:'Objasni: razgovorni jezik, jezik književnosti, materinski jezik, jezik nacionalne manjine i drugi jezik.', pts:['Razgovorni: spontano, u svakodnevnim situacijama.','Jezik književnosti: jezik književnih djela.','Materinski: prvi jezik, naučen od roditelja.','Jezik nacionalne manjine: jezik nacionalnih skupina u državi.','Drugi jezik: jezik koji govorimo uz materinski.'] },
+  { id:'ho3', ch:'na', q:'Što je narječje? Koja su hrvatska narječja i po čemu su dobila ime?', pts:['Narječje je prepoznatljiv govor živoga jezika, skup dijalekata.','Štokavsko (što).','Čakavsko (ča).','Kajkavsko (kaj).'] },
+  { id:'ho4', ch:'na', q:'Koji su govori? Za svaki reci primjer riječi.', pts:['(I)jekavski: mjesec, smijeh.','Ikavski: misec.','Ekavski: smeh, volela.'] }
+];
+
 const DATA = {
   povijest: { CH, Q, CARDS, ORAL, book: 'Klio 5', name: 'Povijest', path: 'Put kroz vrijeme' },
-  engleski: { CH: EN_CH, Q: EN_Q, CARDS: EN_CARDS, ORAL: EN_ORAL, book: 'Dip in 5', name: 'Engleski', path: 'Moj put kroz knjigu', lang: 'en-GB' }
+  engleski: { CH: EN_CH, Q: EN_Q, CARDS: EN_CARDS, ORAL: EN_ORAL, book: 'Dip in 5', name: 'Engleski', path: 'Moj put kroz knjigu', lang: 'en-GB' },
+  informatika: { CH: IN_CH, Q: IN_Q, CARDS: IN_CARDS, ORAL: IN_ORAL, book: 'Informatika 5', name: 'Informatika', path: 'Moj put kroz knjigu' },
+  hrvatski: { CH: HR_CH, Q: HR_Q, CARDS: HR_CARDS, ORAL: HR_ORAL, book: 'Bilježnica', name: 'Hrvatski jezik', path: 'Moje bilješke' }
 };
 let SUBJ = 'povijest';
 function useSubj(id) { SUBJ = id; ({ CH, Q, CARDS, ORAL } = DATA[id]); }
 const BOOK = () => DATA[SUBJ].book;
+const SRC = p => p ? BOOK() + ', str. ' + p : 'Iz bilježnice';
 const LK = t => SUBJ === 'povijest' ? t : t + '|' + SUBJ;
 function speak(text, btn) {
   try {
@@ -1379,7 +1550,8 @@ const SUBJECTS = [
   { id: 'geografija', name: 'Geografija', book: 'Gea 1 · Školska knjiga', icon: '<circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" stroke-width="2"/><path d="M3 12h18M12 3c3 3 3 15 0 18M12 3c-3 3-3 15 0 18" fill="none" stroke="currentColor" stroke-width="2"/>' },
   { id: 'priroda', name: 'Priroda', book: 'Priroda 5 · Alfa', icon: '<path d="M5 19C5 9 11 4 20 4c0 9-5 15-15 15z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><path d="M5 19l9-9" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>' },
   { id: 'matematika', name: 'Matematika', book: 'Uskoro', icon: '<path d="M7 4v6M4 7h6M14 7h6M5 15l4 4M9 15l-4 4M14 15h6M14 19h6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>' },
-  { id: 'hrvatski', name: 'Hrvatski', book: 'Uskoro', icon: '<path d="M4 19L8.5 5h1L14 19M5.5 14h7M16 19v-6a2.5 2.5 0 015 0v6M16 16h5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>' },
+  { id: 'hrvatski', name: 'Hrvatski', book: 'Bilježnica · jezik i narječja', on: true, icon: '<path d="M4 19L8.5 5h1L14 19M5.5 14h7M16 19v-6a2.5 2.5 0 015 0v6M16 16h5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>' },
+  { id: 'informatika', name: 'Informatika', book: 'Informatika 5 · str. 7–11', on: true, icon: '<rect x="3" y="4" width="18" height="12" rx="2" fill="none" stroke="currentColor" stroke-width="2"/><path d="M8 20h8M12 16v4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>' },
   { id: 'engleski', name: 'Engleski', book: 'Dip in 5 · Školska knjiga', on: true, icon: '<path d="M4 5h16v11H9l-5 4z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><path d="M8 9h8M8 12h5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>' }
 ];
 function subjPct(id) { const ks = Object.keys(DATA[id].CH); return Math.round(ks.reduce((a, c) => a + chapterPct(c), 0) / ks.length); }
@@ -1432,6 +1604,11 @@ function hub() {
   maybeLevelUp();
 }
 const ICONS = {
+  ra: '<rect x="3" y="4" width="18" height="12" rx="2" fill="none" stroke="currentColor" stroke-width="2"/><path d="M8 20h8M12 16v4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>',
+  sk: '<rect x="6" y="6" width="12" height="12" rx="1.5" fill="none" stroke="currentColor" stroke-width="2"/><rect x="9.5" y="9.5" width="5" height="5" fill="currentColor"/><path d="M9 2v4M15 2v4M9 18v4M15 18v4M2 9h4M2 15h4M18 9h4M18 15h4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>',
+  bi: '<text x="12" y="16.5" text-anchor="middle" font-family="monospace" font-weight="900" font-size="10" fill="currentColor">01</text><rect x="2.5" y="5" width="19" height="14" rx="3" fill="none" stroke="currentColor" stroke-width="2"/>',
+  je: '<path d="M4 5h11a3 3 0 013 3v11H7a3 3 0 01-3-3z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><path d="M8 10h6M8 14h4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>',
+  na: '<path d="M4 18c3-6 5-9 8-9s4 4 8-3" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><circle cx="5" cy="6" r="2" fill="currentColor"/><circle cx="12" cy="9" r="2" fill="currentColor"/><circle cx="19" cy="6" r="2" fill="currentColor"/>',
   su: '<path d="M7 7V5a5 5 0 0110 0v2" fill="none" stroke="currentColor" stroke-width="2"/><rect x="4" y="7" width="16" height="14" rx="3" fill="currentColor"/><path d="M9 13h6" stroke="var(--card)" stroke-width="2" stroke-linecap="round"/>',
   f1: '<circle cx="8" cy="8" r="3.2" fill="currentColor"/><circle cx="16" cy="8" r="3.2" fill="currentColor"/><path d="M2.5 20c0-4 2.5-6.5 5.5-6.5s5.5 2.5 5.5 6.5M10.5 20c0-4 2.5-6.5 5.5-6.5s5.5 2.5 5.5 6.5" fill="currentColor"/>',
   f2: '<rect x="3" y="4" width="18" height="17" rx="2" fill="none" stroke="currentColor" stroke-width="2"/><path d="M3 9h18M8 2v4M16 2v4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><path d="M7 13h4M7 17h7" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>',
@@ -1710,7 +1887,7 @@ function parentPanel() {
     h('h3', null, 'Najčešće pogreške'),
     rows.length ? h('div', { class: 'tablewrap' }, h('table', null,
       h('thead', null, h('tr', null, h('th', null, 'Pitanje'), h('th', { class: 'num' }, 'Str.'), h('th', { class: 'num' }, 'Krivo'))),
-      h('tbody', null, rows.map(q => h('tr', null, h('td', null, q.q), h('td', { class: 'num' }, String(q.p)), h('td', { class: 'num' }, String(S.items[q.id].w)))))))
+      h('tbody', null, rows.map(q => h('tr', null, h('td', null, q.q), h('td', { class: 'num' }, String(q.p || '–')), h('td', { class: 'num' }, String(S.items[q.id].w)))))))
       : h('p', { class: 'small muted' }, 'Još nema pogrešaka.'),
     h('h3', null, 'Usmeno: najslabija pitanja'),
     (() => { const ow = ORAL.filter(o => S.oral[o.id]).sort((a, b) => S.oral[a.id].last - S.oral[b.id].last).slice(0, 5);
@@ -1762,7 +1939,7 @@ function startPractice() {
         h('div', { class: 'fbhead' }, mozgic(r.ok ? 'cheer' : 'sad', 64), h('div', null, h('h3', null, r.ok ? 'Točno! +10' : 'Nije točno.'), h('p', { class: 'small' }, r.ok ? pick(YAY) : pick(OOPS)))),
         r.ok ? null : h('p', null, h('b', null, 'Točan odgovor: '), correctText(q)),
         h('p', null, q.ex),
-        h('p', { class: 'src' }, BOOK() + ', str. ' + q.p)));
+        h('p', { class: 'src' }, SRC(q.p))));
       ptsPill.textContent = '+' + gained + ' bodova';
       if (r.ok) { beep('ok'); floatText(ptsPill, '+10'); confetti(fbBox, combo >= 3 ? 40 : 18); ptsPill.classList.remove('pop'); void ptsPill.offsetWidth; ptsPill.classList.add('pop'); }
       else { beep('bad'); shake(card); }
@@ -1844,7 +2021,7 @@ function startCards() {
         h('div', { class: 'fbhead' }, mozgic(ok ? 'cheer' : 'wave', 56), h('div', null, h('h3', null, ok ? 'Točno!' : pickedDef ? 'Nije točno.' : 'Evo odgovora:'),
           h('p', { class: 'small' }, ok ? pick(YAY) : 'Ova kartica vraća se na kraj. Zapamti je!'))),
         h('p', null, h('b', null, c.term + ' = '), c.def),
-        h('p', { class: 'src' }, BOOK() + ', str. ' + c.p)));
+        h('p', { class: 'src' }, SRC(c.p))));
       next.hidden = false; next.focus({ preventScroll: true });
     }
     const btns = opts.map(d => h('button', { class: 'opt', type: 'button', 'data-def': d, onclick: () => answer(d) }, d));
@@ -1885,7 +2062,7 @@ function startOral() {
           return b; }),
         o.model ? h('div', { class: 'model' }, h('p', { class: 'small' }, h('b', null, 'Primjer prepričavanja:')), h('p', null, o.model)) : null,
         o.model && DATA[SUBJ].lang ? (() => { const b = h('button', { class: 'listen', type: 'button' }, svgEl(ICONS.speaker), 'Poslušaj'); b.onclick = () => speak(o.model, b); return b; })() : null,
-        h('p', { class: 'src' }, BOOK() + ', str. ' + o.p));
+        h('p', { class: 'src' }, SRC(o.p)));
       btn.textContent = i + 1 < qs.length ? 'Dalje' : 'Završi';
       btn.onclick = () => {
         const f = on.size / o.pts.length, prev = S.oral[o.id];
@@ -1918,7 +2095,7 @@ function startOral() {
         h('div', { class: 'review' }, res.map(r => h('div', { class: 'rv wide' }, h('span', { class: 'm ' + (r.f >= .75 ? 'ok' : 'bad') }, Math.round(100 * r.f) + '%'),
           h('div', null, h('p', null, h('b', null, r.o.q)),
             r.missed.length ? h('p', { class: 'small' }, 'Nedostaje: ' + r.missed.join(' · ')) : h('p', { class: 'small' }, 'Sve rečeno!'),
-            h('p', { class: 'src' }, BOOK() + ', str. ' + r.o.p)))))));
+            h('p', { class: 'src' }, SRC(r.o.p))))))));
   }
   show();
 }
@@ -2177,7 +2354,7 @@ function startExam() {
             h('div', null, h('p', null, h('b', null, q.q)),
               good ? null : h('p', { class: 'small' }, 'Tvoj odgovor: ' + (a ? a.given : '(bez odgovora)')),
               good ? null : h('p', { class: 'small' }, 'Točno: ' + correctText(q)),
-              h('p', { class: 'src' }, BOOK() + ', str. ' + q.p)));
+              h('p', { class: 'src' }, SRC(q.p))));
         })))
     );
   }
