@@ -2680,6 +2680,12 @@ hub();
 </script>
 <script>
 if ('serviceWorker' in navigator) { window.addEventListener('load', () => navigator.serviceWorker.register('/sw.js').catch(() => {})); }
+// new version online: reload as soon as the child is not inside an exercise
+const APP_V = '048fd6ec6ff6';
+let newV = false;
+async function chkV() { try { const t = await (await fetch('/?u=' + Date.now(), { cache: 'no-store' })).text(); const m = t.match(/APP_V = '([0-9a-f]+)'/); if (m && m[1] !== APP_V) { newV = true; if (navL() < 2) location.reload(); } } catch (e) {} }
+const render0 = render; render = function (L) { if (newV && L < 2) { location.reload(); return; } render0(L); };
+setInterval(chkV, 120000); document.addEventListener('visibilitychange', () => { if (!document.hidden) chkV(); }); window.addEventListener('load', () => setTimeout(chkV, 4000));
 </script>
 </body>
 </html>
