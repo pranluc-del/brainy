@@ -414,6 +414,14 @@ main > :nth-child(2) { animation-delay: .05s; } main > :nth-child(3) { animation
 .subj.geografija { background: var(--gz-soft); } .subj.geografija .sico { background: var(--gz); color: var(--card); } .subj.geografija h3 { color: var(--gz); }
 .subj.priroda { background: var(--vz-soft); } .subj.priroda .sico { background: var(--vz); color: var(--card); } .subj.priroda h3 { color: var(--vz); }
 .subj.matematika { background: var(--mj-soft); } .subj.matematika .sico { background: var(--mj); color: var(--card); } .subj.matematika h3 { color: var(--mj); }
+.sortq { display: grid; gap: 10px; }
+.srow { border: 2px solid var(--line); border-radius: 16px; padding: 12px 14px; background: var(--card); display: grid; gap: 10px; }
+.srow.ok { border-color: var(--ok); } .srow.bad { border-color: var(--bad); }
+.sitem { font-weight: 700; font-size: 17px; }
+.sbtns { display: flex; flex-wrap: wrap; gap: 8px; }
+.sbtns .chip { flex: 1 1 0; min-width: 90px; min-height: 44px; border: 2px solid color-mix(in srgb, var(--ink) 15%, transparent); background: var(--card); color: var(--ink); border-radius: 999px; padding: 8px 12px; font: inherit; font-weight: 700; font-size: 15px; }
+.sbtns .chip.on { background: var(--accent); border-color: transparent; color: var(--accent-ink); }
+.srow.bad .chip.right { border-color: var(--ok); color: var(--ok); }
 </style>
 </head>
 <body>
@@ -1756,10 +1764,29 @@ function matchWidget(q) {
     reveal: () => { locked = true; sel = null; draw(); }
   };
 }
+// "X ili Y?" questions: every pojam gets its own row with one button per group
+function sortWidget(q) {
+  const groups = [...new Set(q.pairs.map(p => p[1]))].sort((a, b) => a.localeCompare(b, 'hr', { numeric: true }));
+  const choice = {}; let locked = false;
+  const box = h('div', { class: 'sortq' });
+  function draw() {
+    box.replaceChildren(...q.pairs.map(([item, right]) => h('div', { class: 'srow' + (locked ? (choice[item] === right ? ' ok' : ' bad') : '') },
+      h('span', { class: 'sitem' }, item),
+      h('div', { class: 'sbtns' }, groups.map(g => h('button', { type: 'button', class: 'chip' + (choice[item] === g ? ' on' : '') + (locked && g === right ? ' right' : ''), disabled: locked, 'aria-pressed': String(choice[item] === g),
+        onclick: () => { beep('tap'); choice[item] = g; draw(); } }, g))))));
+  }
+  draw();
+  return {
+    el: h('div', { class: 'opts' }, h('p', { class: 'hint' }, 'Za svaki pojam dodirni gdje pripada.'), box),
+    result: () => q.pairs.some(p => !choice[p[0]]) ? null : { ok: q.pairs.every(p => choice[p[0]] === p[1]), given: q.pairs.map(p => p[0] + ' = ' + choice[p[0]]).join('; ') },
+    reveal: () => { locked = true; draw(); }
+  };
+}
 function widgetFor(q, onReady) {
   if (q.t === 'mc') return mcWidget(q, onReady);
   if (q.t === 'text') return textWidget(q, onReady);
   if (q.t === 'order') return orderWidget(q);
+  if (new Set(q.pairs.map(p => p[1])).size < q.pairs.length) return sortWidget(q);
   return matchWidget(q);
 }
 
