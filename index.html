@@ -1716,16 +1716,19 @@ function textWidget(q, onEnter) {
     reveal: () => { inp.disabled = true; }
   };
 }
+// years and dates stay hidden while ordering (otherwise it is too easy); they appear after Provjeri
+const noDate = x => { const y = x.replace(/^\d{3,4}\.\s+/, '').replace(/\s*\([^)]*(\d|st\.|tis\.)[^)]*\)$/, ''); return y === x ? x : y.replace(/^./, c => c.toUpperCase()); };
 function orderWidget(q) {
+  const lab = c => locked ? c : noDate(c);
   let pool = shuffle(q.items); while (q.items.length > 1 && pool.join('|') === q.items.join('|')) pool = shuffle(q.items);
   const chosen = [];
   const seq = h('div', { class: 'seq', 'aria-label': 'Tvoj redoslijed' });
   const poolEl = h('div', { class: 'pool' });
   let locked = false;
   function draw() {
-    seq.replaceChildren(...(chosen.length ? chosen.map((c, i) => h('button', { class: 'opt', type: 'button', disabled: locked, onclick: () => { chosen.splice(i, 1); pool.push(c); draw(); } }, h('span', { class: 'n' }, (i + 1) + '.'), c))
+    seq.replaceChildren(...(chosen.length ? chosen.map((c, i) => h('button', { class: 'opt', type: 'button', disabled: locked, onclick: () => { chosen.splice(i, 1); pool.push(c); draw(); } }, h('span', { class: 'n' }, (i + 1) + '.'), lab(c)))
       : [h('p', { class: 'hint' }, 'Dodiruj stavke ispod redom, od prve do zadnje.')]));
-    poolEl.replaceChildren(...pool.map((c, i) => h('button', { class: 'opt', type: 'button', disabled: locked, onclick: () => { pool.splice(i, 1); chosen.push(c); draw(); } }, c)));
+    poolEl.replaceChildren(...pool.map((c, i) => h('button', { class: 'opt', type: 'button', disabled: locked, onclick: () => { pool.splice(i, 1); chosen.push(c); draw(); } }, lab(c))));
   }
   draw();
   return {
