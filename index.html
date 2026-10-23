@@ -2230,9 +2230,9 @@ function pickPractice(n) {
   return shuffle(out);
 }
 function roundN() { const n = pool().length; return S.roundSize === 'all' ? n : Math.min(S.roundSize || 10, n); }
-function startPractice() {
+function startPractice(only) {
   enter(2);
-  const qs = pickPractice(roundN());
+  const qs = Array.isArray(only) ? shuffle(only) : pickPractice(roundN()); // only = just these questions (Vježbaj pogreške)
   const res = [];
   let i = 0, gained = 0, combo = 0;
   function show() {
@@ -2289,7 +2289,7 @@ function startPractice() {
       h('p', null, ok === res.length ? 'Savršeno! Sve točno.' : ok >= res.length * .7 ? 'Odlično, samo tako!' : 'Dobar početak. Pogrešna pitanja vraćaju se sutra.'),
       h('p', null, h('b', null, '+' + gained + ' bodova'), ' (uključujući 5 za završen krug) · ' + shownStreak() + (shownStreak() === 1 ? ' dan zaredom' : ' dana zaredom')),
       nb.length ? h('div', { class: 'feedback ok' }, h('h3', null, 'Nova značka!'), h('p', null, nb.join(', '))) : null,
-      h('div', { class: 'row' }, h('button', { class: 'btn', type: 'button', onclick: startPractice }, 'Još jedan krug'), h('button', { class: 'btn ghost', type: 'button', onclick: toHome }, 'Na početak'))
+      h('div', { class: 'row' }, res.some(r => !r) ? h('button', { class: 'btn', type: 'button', onclick: () => startPractice(qs.filter((q, k) => !res[k])) }, 'Ponovi pogreške (' + res.filter(r => !r).length + ')') : null, h('button', { class: 'btn' + (res.some(r => !r) ? ' ghost' : ''), type: 'button', onclick: () => startPractice() }, 'Još jedan krug'), h('button', { class: 'btn ghost', type: 'button', onclick: toHome }, 'Na početak'))
     ));
     if (ok >= res.length * .7) { beep('win'); setTimeout(() => confetti($app.querySelector('.big'), 50), 300); }
   }
@@ -2660,7 +2660,7 @@ function startExam() {
           h('div', null, h('h2', null, GRADE_NAMES[g]), h('p', null, ok + ' od ' + qs.length + ' točno (' + pct + ' %)'), h('p', { class: 'small muted' }, '+' + (ok * 10 + 5) + ' bodova'))),
         nb.length ? h('div', { class: 'feedback ok' }, h('h3', null, 'Nova značka!'), h('p', null, nb.join(', '))) : null,
         h('p', { class: 'small muted' }, 'Pogrešna pitanja automatski dolaze u sljedeće vježbe.'),
-        h('div', { class: 'row' }, h('button', { class: 'btn', type: 'button', onclick: startPractice }, 'Vježbaj pogreške'), h('button', { class: 'btn ghost', type: 'button', onclick: toHome }, 'Na početak'))
+        h('div', { class: 'row' }, qs.some((q, k) => !(answers[k] && answers[k].ok)) ? h('button', { class: 'btn', type: 'button', onclick: () => startPractice(qs.filter((q, k) => !(answers[k] && answers[k].ok))) }, 'Vježbaj pogreške (' + qs.filter((q, k) => !(answers[k] && answers[k].ok)).length + ')') : null, h('button', { class: 'btn ghost', type: 'button', onclick: toHome }, 'Na početak'))
       ),
       h('section', { class: 'card' }, h('h2', null, 'Pregled odgovora'),
         h('div', { class: 'review' }, qs.map((q, k) => {
@@ -2681,7 +2681,7 @@ hub();
 <script>
 if ('serviceWorker' in navigator) { window.addEventListener('load', () => navigator.serviceWorker.register('/sw.js').catch(() => {})); }
 // new version online: reload as soon as the child is not inside an exercise
-const APP_V = '048fd6ec6ff6';
+const APP_V = '322deeb6b856';
 let newV = false;
 async function chkV() { try { const t = await (await fetch('/?u=' + Date.now(), { cache: 'no-store' })).text(); const m = t.match(/APP_V = '([0-9a-f]+)'/); if (m && m[1] !== APP_V) { newV = true; if (navL() < 2) location.reload(); } } catch (e) {} }
 const render0 = render; render = function (L) { if (newV && L < 2) { location.reload(); return; } render0(L); };
