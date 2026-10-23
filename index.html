@@ -1728,7 +1728,7 @@ function orderWidget(q) {
 }
 function matchWidget(q) {
   const lefts = q.pairs.map(p => p[0]);
-  const rights = shuffle(q.pairs.map(p => p[1]));
+  const rights = shuffle([...new Set(q.pairs.map(p => p[1]))]), multi = rights.length < q.pairs.length; // same answer twice: one box, several pojmovi can go to it
   const link = {}; // left -> right
   let sel = null, locked = false;
   const L = h('div', { class: 'col' }), R = h('div', { class: 'col' });
@@ -1741,17 +1741,17 @@ function matchWidget(q) {
       return b;
     }));
     R.replaceChildren(...rights.map(r => {
-      const owner = Object.keys(link).find(k => link[k] === r);
+      const owners = lefts.filter(k => link[k] === r), owner = owners[0];
       return h('button', { class: 'opt', type: 'button', disabled: locked, onclick: () => {
-        if (!sel) { if (owner) { delete link[owner]; draw(); } return; }
-        if (owner) delete link[owner];
+        if (!sel) { if (owner && !multi) { delete link[owner]; draw(); } return; }
+        if (owner && !multi) delete link[owner];
         link[sel] = r; sel = null; draw();
-      } }, h('span', { class: 'k', style: 'background:' + (owner ? color(owner) : 'var(--line)') }, owner ? String(lefts.indexOf(owner) + 1) : ''), r);
+      } }, h('span', { class: 'k', style: 'background:' + (owners.length === 1 ? color(owner) : owners.length ? 'var(--accent)' : 'var(--line)') + (owners.length > 1 ? ';width:auto;padding:0 8px' : '') }, owners.map(o => lefts.indexOf(o) + 1).join(', ')), r);
     }));
   }
   draw();
   return {
-    el: h('div', { class: 'opts' }, h('p', { class: 'hint' }, 'Dodirni pojam lijevo, zatim njegov par desno.'), h('div', { class: 'match' }, L, R)),
+    el: h('div', { class: 'opts' }, h('p', { class: 'hint' }, multi ? 'Dodirni pojam lijevo, zatim kamo pripada desno. Desno možeš izabrati više puta.' : 'Dodirni pojam lijevo, zatim njegov par desno.'), h('div', { class: 'match' }, L, R)),
     result: () => Object.keys(link).length < lefts.length ? null : { ok: q.pairs.every(p => link[p[0]] === p[1]), given: lefts.map(l => l + ' = ' + link[l]).join('; ') },
     reveal: () => { locked = true; sel = null; draw(); }
   };
