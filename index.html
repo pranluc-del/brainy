@@ -307,6 +307,9 @@ main > :nth-child(2) { animation-delay: .05s; } main > :nth-child(3) { animation
 .hero-top { display: flex; justify-content: space-between; align-items: flex-start; gap: 10px; }
 .sound { border: 0; background: color-mix(in srgb, var(--ink) 7%, transparent); color: var(--ink); width: 44px; height: 44px; border-radius: 50%; display: grid; place-items: center; flex: none; }
 .sound svg { width: 22px; height: 22px; }
+.sizes { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin-top: 8px; }
+.sizes .chip { border: 2px solid color-mix(in srgb, var(--ink) 15%, transparent); background: var(--card); color: var(--ink); border-radius: 999px; padding: 6px 14px; font: inherit; font-weight: 700; font-size: 14px; min-height: 36px; }
+.sizes .chip.on { background: var(--accent); border-color: transparent; color: var(--accent-ink); }
 .sound.lbl { width: auto; padding: 0 14px 0 12px; border-radius: 22px; display: flex; align-items: center; gap: 6px; font: inherit; font-weight: 700; font-size: 13px; white-space: nowrap; }
 .level { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 4px 12px; align-items: center; background: var(--uvod-soft); border-radius: 16px; padding: 10px 14px; margin: 12px 0; }
 .level .lv { grid-row: span 2; width: 48px; height: 48px; border-radius: 14px; background: var(--accent); color: var(--accent-ink); display: grid; place-items: center; font-family: var(--display); font-weight: 800; font-size: 1.5rem; }
@@ -2133,7 +2136,7 @@ function home() {
     (() => {
       const en = !!DATA[SUBJ].lang;
       const modes = [
-        ['btn', 'Vježbaj · 10 pitanja', en ? 'Riječi i rečenice iz knjige. Odmah vidiš je li točno.' : 'Pitanja iz knjige. Odmah vidiš je li točno.', startPractice],
+        ['btn', 'Vježbaj · ' + roundN() + ' pitanja', en ? 'Riječi i rečenice iz knjige. Odmah vidiš je li točno.' : 'Pitanja iz knjige. Odmah vidiš je li točno.', startPractice],
         ['btn ghost', 'Kartice · 10 pojmova', en ? 'Što znači riječ? Izaberi točan prijevod.' : 'Što znači pojam? Izaberi točno objašnjenje.', startCards],
         en && ORAL.some(o => o.model) ? ['btn gold', 'Prepričaj priču', 'Pročitaj, složi i ispričaj priču. Brainy sluša i provjerava.', () => startStory()] : null,
         !en ? ['btn ghost', 'Usmeno ispitivanje · 5 pitanja', 'Za vježbu s mamom ili tatom: oni čitaju pitanje, ti odgovaraš naglas.', startOral] : null,
@@ -2141,7 +2144,9 @@ function home() {
       ].filter(Boolean);
       return h('section', { class: 'card' }, h('h2', null, 'Što želiš raditi?'),
         h('div', { class: 'modes' }, modes.map(([cls, t, d, fn]) => h('div', { class: 'mode' },
-          h('button', { class: cls, type: 'button', onclick: () => fn() }, t), h('p', { class: 'small muted' }, d)))));
+          h('button', { class: cls, type: 'button', onclick: () => fn() }, t), h('p', { class: 'small muted' }, d),
+          fn === startPractice ? h('div', { class: 'sizes', role: 'group', 'aria-label': 'Koliko pitanja' }, h('span', { class: 'small muted' }, 'Koliko pitanja:'),
+            [10, 20, 'all'].map(v => h('button', { type: 'button', class: 'chip' + ((S.roundSize || 10) === v ? ' on' : ''), 'aria-pressed': String((S.roundSize || 10) === v), onclick: () => { beep('tap'); S.roundSize = v; save(); home(); } }, v === 'all' ? 'Sva (' + pool().length + ')' : String(v)))) : null))));
     })(),
     parentPanel()
   );
@@ -2187,11 +2192,17 @@ function pickPractice(n) {
   const due = shuffle(list.filter(q => S.items[q.id] && S.items[q.id].d <= t && S.items[q.id].l < 5)).sort((a, b) => S.items[a.id].l - S.items[b.id].l);
   const fresh = shuffle(list.filter(q => !S.items[q.id]));
   const rest = shuffle(list.filter(q => S.items[q.id] && S.items[q.id].d > t)).sort((a, b) => S.items[a.id].l - S.items[b.id].l);
-  return due.concat(fresh, rest).slice(0, n);
+  // mix: some mistakes to repeat, mostly new questions; questions from the last round go to the back
+  const recent = new Set((S.recent && S.recent[SUBJ]) || []), nr = q => !recent.has(q.id);
+  const dueN = due.filter(nr), order = dueN.slice(0, Math.ceil(n * 0.4)).concat(fresh.filter(nr), dueN, rest.filter(nr), shuffle(list.filter(q => recent.has(q.id))));
+  const out = [...new Set(order)].slice(0, n);
+  S.recent = Object.assign({}, S.recent, { [SUBJ]: out.map(q => q.id) });
+  return shuffle(out);
 }
+function roundN() { const n = pool().length; return S.roundSize === 'all' ? n : Math.min(S.roundSize || 10, n); }
 function startPractice() {
   enter(2);
-  const qs = pickPractice(10);
+  const qs = pickPractice(roundN());
   const res = [];
   let i = 0, gained = 0, combo = 0;
   function show() {
